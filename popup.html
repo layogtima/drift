@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drift Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Solarized Light Palette */
+            --sol-base3: #fdf6e3;
+            --sol-base2: #eee8d5;
+            --sol-base1: #93a1a1;
+            --sol-base01: #586e75;
+            --sol-blue: #268bd2;
+            --sol-cyan: #2aa198;
+            --sol-green: #859900;
+            --sol-red: #dc322f;
+        }
+
+        body {
+            width: 360px;
+            font-family: 'Karla', sans-serif;
+            background-color: var(--sol-base3);
+            padding: 16px;
+            color: var(--sol-base01);
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--sol-blue);
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: var(--sol-base1);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .section {
+            background: var(--sol-base2);
+            border-radius: 6px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--sol-base2);
+        }
+
+        .section h2 {
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--sol-base1);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: var(--sol-base1);
+            font-weight: 400;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--sol-blue);
+        }
+
+        .setting-row {
+            margin-bottom: 12px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--sol-base01);
+        }
+
+        select {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid var(--sol-base2);
+            border-radius: 4px;
+            font-size: 13px;
+            background: var(--sol-base3);
+            color: var(--sol-base01);
+            cursor: pointer;
+            font-family: 'Karla', sans-serif;
+            font-weight: 400;
+        }
+
+        select:hover {
+            border-color: var(--sol-base1);
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        /* Toggle switch matching toolbar style */
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: var(--sol-base2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: 1px solid var(--sol-base1);
+            flex-shrink: 0;
+        }
+
+        .toggle.active {
+            background-color: var(--sol-blue);
+            border-color: var(--sol-blue);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--sol-base3);
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--sol-base1);
+        }
+
+        .footer a {
+            color: var(--sol-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Drift</h1>
+    <p class="tagline">Drift through the best parts of the internet!</p>
+
+    <div class="section">
+        <h2>Stats</h2>
+        <div class="stat-row">
+            <span class="stat-label">Total sites drifted:</span>
+            <span class="stat-value" id="total-drifts">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Liked:</span>
+            <span class="stat-value" id="total-likes">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Disliked:</span>
+            <span class="stat-value" id="total-dislikes">0</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Preferences</h2>
+        <div class="setting-row">
+            <div class="checkbox-row">
+                <label for="theme-toggle">Dark mode</label>
+                <div class="toggle" id="theme-toggle"></div>
+            </div>
+        </div>
+        <div class="setting-row">
+            <div class="checkbox-row">
+                <label for="open-in-new-tab">Open links in new tab</label>
+                <div class="toggle" id="open-in-new-tab"></div>
+            </div>
+        </div>
+        <div class="setting-row">
+            <label for="default-category">Default category:</label>
+            <select id="default-category">
+                <option value="all">All</option>
+                <option value="technology">Technology</option>
+                <option value="science">Science</option>
+                <option value="design">Design</option>
+                <option value="art">Art</option>
+                <option value="weird">Weird</option>
+                <option value="diy">DIY</option>
+                <option value="philosophy">Philosophy</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="footer">
+        Made with love for the indie web<br>
+        <a href="https://drift.surf" target="_blank">drift.surf</a>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

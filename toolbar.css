@@ -1,0 +1,396 @@
+/* Drift Toolbar - Solarized Light/Dark */
+
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Solarized Light Palette */
+  --sol-base3: #fdf6e3;    /* background (cream) */
+  --sol-base2: #eee8d5;    /* background highlights */
+  --sol-base1: #93a1a1;    /* comments / secondary */
+  --sol-base0: #839496;    /* body text / default */
+  --sol-base00: #657b83;   /* primary text */
+  --sol-base01: #586e75;   /* emphasized text */
+  --sol-blue: #268bd2;     /* primary actions */
+  --sol-cyan: #2aa198;     /* accents */
+  --sol-green: #859900;    /* success */
+  --sol-red: #dc322f;      /* danger */
+  --sol-orange: #cb4b16;   /* warnings */
+  --sol-yellow: #b58900;   /* highlights */
+  
+  /* Drift Theme Colors - Light */
+  --drift-bg: var(--sol-base3);
+  --drift-bg-elevated: var(--sol-base2);
+  --drift-border: var(--sol-base2);
+  --drift-text: var(--sol-base01);
+  --drift-text-secondary: var(--sol-base1);
+  --drift-primary: var(--sol-blue);
+  --drift-primary-hover: var(--sol-cyan);
+  --drift-success: var(--sol-green);
+  --drift-danger: var(--sol-red);
+  --drift-accent: var(--sol-yellow);
+}
+
+/* Dark Theme - when body has data-theme="dark" */
+body[data-theme="dark"] {
+  /* Solarized Dark Palette */
+  --sol-base03: #002b36;   /* background */
+  --sol-base02: #073642;   /* background highlights */
+  
+  /* Drift Theme Colors - Dark */
+  --drift-bg: var(--sol-base03);
+  --drift-bg-elevated: var(--sol-base02);
+  --drift-border: var(--sol-base02);
+  --drift-text: var(--sol-base0);
+  --drift-text-secondary: var(--sol-base01);
+  /* Keep accent colors the same - they work in both themes */
+}
+
+/* Toolbar Container - Full Width Bar */
+#drift-toolbar {
+  all: initial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background-color: var(--drift-bg);
+  border-bottom: 1px solid var(--drift-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 20px;
+  font-family: 'Karla', sans-serif;
+  font-size: 14px;
+  color: var(--drift-text);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#drift-toolbar.hidden {
+  transform: translateY(-100%);
+}
+
+/* Pull-down tab - shown when toolbar is hidden */
+#drift-pull-tab {
+  all: initial;
+  position: fixed;
+  top: 0;
+  right: 10%;
+  width: 60px;
+  height: 20px;
+  background-color: var(--drift-bg);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid var(--drift-border);
+  border-top: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Karla', sans-serif;
+  font-size: 12px;
+  color: var(--drift-text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background-color 0.15s ease;
+}
+
+#drift-toolbar.hidden + #drift-pull-tab {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#drift-pull-tab:hover {
+  background-color: var(--drift-bg-elevated);
+  color: var(--drift-primary);
+}
+
+/* Buttons Base Style */
+#drift-toolbar button {
+  all: initial;
+  font-family: inherit;
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--drift-text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+#drift-toolbar button:hover {
+  background-color: var(--drift-bg-elevated);
+  border-color: var(--drift-border);
+}
+
+#drift-toolbar button:active {
+  transform: scale(0.98);
+}
+
+/* Primary Drift Button */
+#drift-btn {
+  background-color: var(--drift-primary);
+  color: var(--drift-bg);
+  border-color: var(--drift-primary);
+  font-weight: 600;
+  padding: 7px 18px;
+}
+
+#drift-btn:hover {
+  background-color: var(--drift-primary-hover);
+  border-color: var(--drift-primary-hover);
+}
+
+/* Like/Dislike Buttons */
+#drift-like-btn:hover {
+  background-color: var(--drift-success);
+  border-color: var(--drift-success);
+  color: var(--drift-bg);
+}
+
+#drift-dislike-btn:hover {
+  background-color: var(--drift-danger);
+  border-color: var(--drift-danger);
+  color: var(--drift-bg);
+}
+
+#drift-like-btn.active {
+  background-color: var(--drift-success);
+  border-color: var(--drift-success);
+  color: var(--drift-bg);
+}
+
+#drift-dislike-btn.active {
+  background-color: var(--drift-danger);
+  border-color: var(--drift-danger);
+  color: var(--drift-bg);
+}
+
+/* Category Dropdown */
+#drift-category-select {
+  all: initial;
+  font-family: inherit;
+  padding: 7px 30px 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--drift-text);
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 140px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23586e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+#drift-category-select:hover {
+  background-color: var(--drift-bg-elevated);
+  border-color: var(--drift-border);
+}
+
+body[data-theme="dark"] #drift-category-select {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23839496" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+
+/* Stats Display */
+#drift-stats {
+  color: var(--drift-text-secondary);
+  font-size: 12px;
+  padding: 6px 10px;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* Share Button */
+#drift-share-btn.copied {
+  background-color: var(--drift-success) !important;
+  border-color: var(--drift-success) !important;
+  color: var(--drift-bg) !important;
+}
+
+/* Icon Buttons */
+.drift-icon-btn {
+  padding: 7px 10px !important;
+  min-width: 34px;
+}
+
+/* Settings Button */
+#drift-settings-btn {
+  padding: 7px 10px;
+  min-width: 34px;
+}
+
+/* Collapse Button */
+#drift-collapse-btn {
+  padding: 7px 10px;
+  min-width: 34px;
+}
+
+/* Popup Panel */
+#drift-popup {
+  all: initial;
+  position: fixed;
+  top: 56px;
+  right: 20px;
+  width: 320px;
+  background-color: var(--drift-bg);
+  border: 1px solid var(--drift-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  font-family: inherit;
+  color: var(--drift-text);
+  z-index: 2147483646;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#drift-popup.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.drift-popup-section {
+  margin-bottom: 16px;
+}
+
+.drift-popup-section:last-child {
+  margin-bottom: 0;
+}
+
+.drift-popup-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--drift-text-secondary);
+  margin-bottom: 10px;
+  letter-spacing: 0.8px;
+}
+
+.drift-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.drift-stat-label {
+  color: var(--drift-text-secondary);
+}
+
+.drift-stat-value {
+  font-weight: 600;
+  color: var(--drift-primary);
+}
+
+.drift-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.drift-setting-label {
+  color: var(--drift-text);
+}
+
+/* Toggle Switch */
+.drift-toggle {
+  all: initial;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--drift-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: 1px solid var(--drift-text-secondary);
+}
+
+.drift-toggle.active {
+  background-color: var(--drift-primary);
+  border-color: var(--drift-primary);
+}
+
+.drift-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--drift-bg);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.drift-toggle.active::after {
+  transform: translateX(20px);
+}
+
+/* First-Run Tooltip */
+#drift-tooltip {
+  all: initial;
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--drift-primary);
+  color: var(--drift-bg);
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: drift-tooltip-fade 0.3s ease;
+  z-index: 2147483646;
+  white-space: nowrap;
+}
+
+#drift-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--drift-primary);
+}
+
+@keyframes drift-tooltip-fade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

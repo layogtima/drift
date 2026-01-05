@@ -1,0 +1,96 @@
+{
+    "version": "1.0",
+    "lastUpdated": "2026-01-05",
+    "categories": {
+        "all": [],
+        "technology": [
+            {
+                "url": "https://indieweb.org",
+                "title": "IndieWeb",
+                "description": "Own your data, control your content"
+            },
+            {
+                "url": "https://100r.co",
+                "title": "Hundred Rabbits",
+                "description": "Research studio experimenting with resilient software and tools"
+            },
+            {
+                "url": "https://solar.lowtechmagazine.com",
+                "title": "Low-Tech Magazine",
+                "description": "Doubts on progress and technology"
+            }
+        ],
+        "science": [
+            {
+                "url": "https://neal.fun/space-elevator/",
+                "title": "Space Elevator",
+                "description": "Scroll through the atmosphere"
+            },
+            {
+                "url": "https://www.shadertoy.com",
+                "title": "ShaderToy",
+                "description": "Build and share shaders"
+            }
+        ],
+        "design": [
+            {
+                "url": "https://brutalistwebsites.com",
+                "title": "Brutalist Websites",
+                "description": "Raw concrete web design"
+            },
+            {
+                "url": "https://www.are.na",
+                "title": "Are.na",
+                "description": "Visual organization for research and ideas"
+            }
+        ],
+        "art": [
+            {
+                "url": "https://play.ertdfgcvb.xyz",
+                "title": "ASCII Art Player",
+                "description": "Real-time ASCII video art"
+            },
+            {
+                "url": "https://weirdWide.net",
+                "title": "Weird Wide Web",
+                "description": "Directory of weird websites"
+            }
+        ],
+        "weird": [
+            {
+                "url": "https://www.cameronsworld.net",
+                "title": "Cameron's World",
+                "description": "Web collage of GeoCities"
+            },
+            {
+                "url": "https://neal.fun/internet-artifacts/",
+                "title": "Internet Artifacts",
+                "description": "Museum of internet history"
+            }
+        ],
+        "diy": [
+            {
+                "url": "https://www.instructables.com/circuits",
+                "title": "Instructables",
+                "description": "DIY how-to community"
+            },
+            {
+                "url": "https://www.ifixit.com",
+                "title": "iFixit",
+                "description": "Repair guides for everything"
+            }
+        ],
+        "philosophy": [
+            {
+                "url": "https://meaningness.com",
+                "title": "Meaningness",
+                "description": "How to think better about meaning"
+            },
+            {
+                "url": "https://www.ribbonfarm.com",
+                "title": "Ribbonfarm",
+                "description": "Longform explorations of ideas"
+            }
+        ]
+    }
+}
