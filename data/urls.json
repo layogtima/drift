@@ -1,6 +1,6 @@
 {
-    "version": "1.0",
-    "lastUpdated": "2026-01-05",
+    "version": "2.0",
+    "lastUpdated": "2026-01-06",
     "categories": {
         "all": [],
         "technology": [
@@ -18,6 +18,31 @@
                 "url": "https://solar.lowtechmagazine.com",
                 "title": "Low-Tech Magazine",
                 "description": "Doubts on progress and technology"
+            },
+            {
+                "url": "https://wizardzines.com/",
+                "title": "Wizard Zines",
+                "description": "Programming comics and zines"
+            },
+            {
+                "url": "https://collapseos.org/",
+                "title": "Collapse OS",
+                "description": "Bootstrap post-collapse computing"
+            },
+            {
+                "url": "https://www.marginalia.nu/",
+                "title": "Marginalia Search",
+                "description": "Indie search engine for the small web"
+            },
+            {
+                "url": "https://text.npr.org/",
+                "title": "NPR Text",
+                "description": "Fast, minimal news"
+            },
+            {
+                "url": "https://urbit.org/",
+                "title": "Urbit",
+                "description": "Peer-to-peer internet OS"
             }
         ],
         "science": [
@@ -30,6 +55,16 @@
                 "url": "https://www.shadertoy.com",
                 "title": "ShaderToy",
                 "description": "Build and share shaders"
+            },
+            {
+                "url": "https://www.quantamagazine.org/",
+                "title": "Quanta Magazine",
+                "description": "Math and science journalism"
+            },
+            {
+                "url": "https://www.scientificamerican.com/",
+                "title": "Scientific American",
+                "description": "Science news and research"
             }
         ],
         "design": [
@@ -42,6 +77,26 @@
                 "url": "https://www.are.na",
                 "title": "Are.na",
                 "description": "Visual organization for research and ideas"
+            },
+            {
+                "url": "https://www.c82.net/work/",
+                "title": "C82",
+                "description": "Data visualization and infographics"
+            },
+            {
+                "url": "https://pudding.cool/",
+                "title": "The Pudding",
+                "description": "Visual essays with data"
+            },
+            {
+                "url": "https://www.creativebloq.com/",
+                "title": "Creative Bloq",
+                "description": "Design inspiration and tutorials"
+            },
+            {
+                "url": "https://www.dezeen.com/",
+                "title": "Dezeen",
+                "description": "Architecture and design magazine"
             }
         ],
         "art": [
@@ -51,9 +106,24 @@
                 "description": "Real-time ASCII video art"
             },
             {
-                "url": "https://weirdWide.net",
+                "url": "https://weirdwide.net",
                 "title": "Weird Wide Web",
                 "description": "Directory of weird websites"
+            },
+            {
+                "url": "https://hundred-rabbits.itch.io/",
+                "title": "Hundred Rabbits Games",
+                "description": "Creative tools and games"
+            },
+            {
+                "url": "https://thecreativeindependent.com/",
+                "title": "The Creative Independent",
+                "description": "Interviews with creative people"
+            },
+            {
+                "url": "https://www.guerrillagirls.com/",
+                "title": "Guerrilla Girls",
+                "description": "Activist art collective"
             }
         ],
         "weird": [
@@ -66,6 +136,46 @@
                 "url": "https://neal.fun/internet-artifacts/",
                 "title": "Internet Artifacts",
                 "description": "Museum of internet history"
+            },
+            {
+                "url": "http://www.timecube.com/",
+                "title": "Time Cube",
+                "description": "The legendary 4-day time cube theory"
+            },
+            {
+                "url": "http://www.darkroastedblend.com/",
+                "title": "Dark Roasted Blend",
+                "description": "Weird and wonderful vintage finds"
+            },
+            {
+                "url": "https://www.arngren.net/",
+                "title": "Arngren",
+                "description": "Most overwhelming product catalog ever"
+            },
+            {
+                "url": "https://www.atlasobscura.com/",
+                "title": "Atlas Obscura",
+                "description": "Curious and wondrous travel destinations"
+            },
+            {
+                "url": "https://neal.fun/",
+                "title": "Neal.fun",
+                "description": "Interactive experiments and games"
+            },
+            {
+                "url": "https://www.radiooooo.com/",
+                "title": "Radiooooo",
+                "description": "Musical time machine"
+            },
+            {
+                "url": "https://kottke.org/",
+                "title": "Kottke.org",
+                "description": "Home of fine hypertext products"
+            },
+            {
+                "url": "https://www.metafilter.com/",
+                "title": "MetaFilter",
+                "description": "Community weblog"
             }
         ],
         "diy": [
@@ -78,6 +188,16 @@
                 "url": "https://www.ifixit.com",
                 "title": "iFixit",
                 "description": "Repair guides for everything"
+            },
+            {
+                "url": "https://www.hackaday.com/",
+                "title": "Hackaday",
+                "description": "Hardware hacking and making"
+            },
+            {
+                "url": "https://makezine.com/",
+                "title": "Make Magazine",
+                "description": "DIY projects and how-tos"
             }
         ],
         "philosophy": [
@@ -90,6 +210,21 @@
                 "url": "https://www.ribbonfarm.com",
                 "title": "Ribbonfarm",
                 "description": "Longform explorations of ideas"
+            },
+            {
+                "url": "https://neustadt.fr/essays/the-small-web/",
+                "title": "The Small Web",
+                "description": "Essay on the beautiful small web"
+            },
+            {
+                "url": "https://www.lesswrong.com/",
+                "title": "LessWrong",
+                "description": "Rationality community"
+            },
+            {
+                "url": "https://aeon.co/",
+                "title": "Aeon",
+                "description": "Essays on philosophy and culture"
             }
         ]
     }

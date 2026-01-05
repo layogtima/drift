@@ -18,7 +18,8 @@ async function init() {
     'stats',
     'preferences',
     'categoryWeights',
-    'firstRun'
+    'firstRun',
+    'toolbarVisible'
   ]);
 
   driftHistory = data.driftHistory || [];
@@ -26,6 +27,7 @@ async function init() {
   preferences = data.preferences || { openInNewTab: false, toolbarPosition: 'top', defaultCategory: 'all', theme: 'light' };
   categoryWeights = data.categoryWeights || {};
   isFirstRun = data.firstRun || false;
+  toolbarVisible = data.toolbarVisible !== undefined ? data.toolbarVisible : true;
   currentCategory = preferences.defaultCategory;
 
   // Apply theme
@@ -40,20 +42,35 @@ async function init() {
   }
 }
 
+// SVG Icons as inline strings
+const icons = {
+  shuffle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/><path d="m18 14 4 4-4 4"/></svg>',
+  thumbsUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>',
+  thumbsDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>',
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+  chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>'
+};
+
 // Create toolbar HTML
 function createToolbar() {
   const toolbar = document.createElement('div');
   toolbar.id = 'drift-toolbar';
   
+  // Get page title (truncate if too long)
+  const pageTitle = document.title.length > 50 ? document.title.substring(0, 47) + '...' : document.title;
+  
   toolbar.innerHTML = `
     <button id="drift-btn" title="Drift to a random site!">
-      → Drift
+      <span class="drift-icon">${icons.shuffle}</span>
+      <span>Drift</span>
     </button>
     <button id="drift-like-btn" title="Like this site">
-      ↑ Like
+      <span class="drift-icon">${icons.thumbsUp}</span>
     </button>
     <button id="drift-dislike-btn" title="Dislike this site">
-      ↓ Dislike
+      <span class="drift-icon">${icons.thumbsDown}</span>
     </button>
     <select id="drift-category-select">
       <option value="all">All Categories</option>
@@ -65,55 +82,27 @@ function createToolbar() {
       <option value="diy">DIY</option>
       <option value="philosophy">Philosophy</option>
     </select>
+    <span id="drift-page-title" title="${document.title}">${pageTitle}</span>
     <button id="drift-share-btn" title="Share this page">
-      ↗ Share
+      <span class="drift-icon">${icons.share}</span>
     </button>
     <span id="drift-stats">Sites: ${stats.totalDrifts}</span>
-    <button id="drift-settings-btn" title="Settings">
-      ≡
+    <button id="drift-settings-btn" title="Open settings popup">
+      <span class="drift-icon">${icons.settings}</span>
     </button>
     <button id="drift-collapse-btn" title="Hide toolbar (Alt+D to restore)">
-      ×
+      <span class="drift-icon">${icons.x}</span>
     </button>
   `;
   
   // Create pull-down tab (shown when toolbar is hidden)
   const pullTab = document.createElement('div');
   pullTab.id = 'drift-pull-tab';
-  pullTab.textContent = '↓';
+  pullTab.innerHTML = `<span class="drift-icon">${icons.chevronDown}</span>`;
   pullTab.title = 'Show Drift toolbar';
-  
-  // Create popup panel
-  const popup = document.createElement('div');
-  popup.id = 'drift-popup';
-  popup.innerHTML = `
-    <div class="drift-popup-section">
-      <div class="drift-popup-title">Stats</div>
-      <div class="drift-stat-row">
-        <span class="drift-stat-label">Total drifts:</span>
-        <span class="drift-stat-value" id="stat-total-drifts">${stats.totalDrifts}</span>
-      </div>
-      <div class="drift-stat-row">
-        <span class="drift-stat-label">Liked:</span>
-        <span class="drift-stat-value" id="stat-total-likes">${stats.totalLikes}</span>
-      </div>
-      <div class="drift-stat-row">
-        <span class="drift-stat-label">Disliked:</span>
-        <span class="drift-stat-value" id="stat-total-dislikes">${stats.totalDislikes}</span>
-      </div>
-    </div>
-    <div class="drift-popup-section">
-      <div class="drift-popup-title">Preferences</div>
-      <div class="drift-setting-row">
-        <span class="drift-setting-label">Open in new tab</span>
-        <div class="drift-toggle" id="toggle-new-tab" data-active="${preferences.openInNewTab}"></div>
-      </div>
-    </div>
-  `;
   
   document.body.appendChild(toolbar);
   document.body.appendChild(pullTab);
-  document.body.appendChild(popup);
   
   // Add event listeners
   document.getElementById('drift-btn').addEventListener('click', handleDrift);
@@ -121,63 +110,48 @@ function createToolbar() {
   document.getElementById('drift-dislike-btn').addEventListener('click', handleDislike);
   document.getElementById('drift-category-select').addEventListener('change', handleCategoryChange);
   document.getElementById('drift-share-btn').addEventListener('click', handleShare);
-  document.getElementById('drift-settings-btn').addEventListener('click', toggleSettings);
+  document.getElementById('drift-settings-btn').addEventListener('click', openSettingsPopup);
   document.getElementById('drift-collapse-btn').addEventListener('click', toggleToolbar);
   pullTab.addEventListener('click', toggleToolbar);
-  document.getElementById('toggle-new-tab').addEventListener('click', toggleNewTab);
   
   // Set current category
   document.getElementById('drift-category-select').value = currentCategory;
   
-  // Set toggle states
-  updateToggleState('toggle-new-tab', preferences.openInNewTab);
-  
-  // Adjust page content position to account for toolbar
-  adjustPageContent();
-}
-
-// Toggle settings popup
-function toggleSettings() {
-  const popup = document.getElementById('drift-popup');
-  popup.classList.toggle('open');
-  
-  // Close when clicking outside
-  if (popup.classList.contains('open')) {
-    setTimeout(() => {
-      document.addEventListener('click', closeSettingsOnClickOutside);
-    }, 0);
+  // Apply saved toolbar visibility state
+  if (!toolbarVisible) {
+    toolbar.classList.add('hidden');
+    document.body.style.marginTop = '0';
+  } else {
+    adjustPageContent();
   }
 }
 
-// Close settings when clicking outside
-function closeSettingsOnClickOutside(e) {
-  const popup = document.getElementById('drift-popup');
-  const settingsBtn = document.getElementById('drift-settings-btn');
+// Open settings in extension popup
+function openSettingsPopup() {
+  // Content scripts can't programmatically open browser action popup
+  // Show tooltip directing user to click the extension icon
+  const tooltip = document.createElement('div');
+  tooltip.id = 'drift-settings-tooltip';
+  tooltip.textContent = '← Click Drift icon in extensions bar';
+  tooltip.style.cssText = `
+    position: fixed;
+    top: 56px;
+    right: 60px;
+    background-color: var(--drift-primary);
+    color: var(--drift-bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Karla', sans-serif;
+    font-size: 12px;
+    z-index: 2147483646;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  `;
   
-  if (!popup.contains(e.target) && !settingsBtn.contains(e.target)) {
-    popup.classList.remove('open');
-    document.removeEventListener('click', closeSettingsOnClickOutside);
-  }
-}
-
-// Toggle new tab preference
-async function toggleNewTab() {
-  preferences.openInNewTab = !preferences.openInNewTab;
-  await chrome.storage.local.set({ preferences });
-  updateToggleState('toggle-new-tab', preferences.openInNewTab);
-}
-
-// Update toggle switch visual state
-function updateToggleState(toggleId, isActive) {
-  const toggle = document.getElementById(toggleId);
-  if (toggle) {
-    if (isActive) {
-      toggle.classList.add('active');
-    } else {
-      toggle.classList.remove('active');
-    }
-    toggle.setAttribute('data-active', isActive);
-  }
+  document.body.appendChild(tooltip);
+  
+  setTimeout(() => {
+    tooltip.remove();
+  }, 3000);
 }
 
 // Adjust page content to not be hidden by toolbar
@@ -343,10 +317,10 @@ function toggleToolbar() {
   } else {
     toolbar.classList.add('hidden');
     body.style.marginTop = '0';
-    // Close settings if open
-    const popup = document.getElementById('drift-popup');
-    popup.classList.remove('open');
   }
+  
+  // Save toolbar visibility state
+  chrome.storage.local.set({ toolbarVisible });
 }
 
 // Update stats display
@@ -355,15 +329,6 @@ function updateStats() {
   if (statsEl) {
     statsEl.textContent = `Sites: ${stats.totalDrifts}`;
   }
-  
-  // Update stats in popup
-  const totalDriftsEl = document.getElementById('stat-total-drifts');
-  const totalLikesEl = document.getElementById('stat-total-likes');
-  const totalDislikesEl = document.getElementById('stat-total-dislikes');
-  
-  if (totalDriftsEl) totalDriftsEl.textContent = stats.totalDrifts;
-  if (totalLikesEl) totalLikesEl.textContent = stats.totalLikes;
-  if (totalDislikesEl) totalDislikesEl.textContent = stats.totalDislikes;
 }
 
 // Show first-run tooltip

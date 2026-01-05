@@ -153,6 +153,38 @@ body[data-theme="dark"] {
   border-color: var(--drift-primary-hover);
 }
 
+
+/* Icon spacing inside buttons */
+.drift-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drift-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+#drift-btn .drift-icon {
+  margin-right: 6px;
+}
+
+/* Page Title Display */
+#drift-page-title {
+  color: var(--drift-text);
+  font-size: 12px;
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.7;
+  margin-left: auto;
+  margin-right: 12px;
+}
+
 /* Like/Dislike Buttons */
 #drift-like-btn:hover {
   background-color: var(--drift-success);
@@ -215,7 +247,6 @@ body[data-theme="dark"] #drift-category-select {
   border-radius: 4px;
   border: 1px solid transparent;
   white-space: nowrap;
-  margin-left: auto;
 }
 
 /* Share Button */
