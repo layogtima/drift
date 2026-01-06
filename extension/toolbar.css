@@ -202,25 +202,21 @@ body[data-theme="dark"] {
 #drift-like-btn:hover {
   background-color: var(--drift-success) !important;
   border-color: var(--drift-success) !important;
-  color: var(--drift-bg) !important;
 }
 
 #drift-dislike-btn:hover {
   background-color: var(--drift-danger) !important;
   border-color: var(--drift-danger) !important;
-  color: var(--drift-bg) !important;
 }
 
 #drift-like-btn.active {
   background-color: var(--drift-success) !important;
   border-color: var(--drift-success) !important;
-  color: var(--drift-bg) !important;
 }
 
 #drift-dislike-btn.active {
   background-color: var(--drift-danger) !important;
   border-color: var(--drift-danger) !important;
-  color: var(--drift-bg) !important;
 }
 
 /* Category Dropdown */
