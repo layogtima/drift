@@ -1,0 +1,87 @@
+// ============================================================================
+// DRIFT TOOLBAR - DESIGN TOKENS & VARIABLES
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Solarized Color Palette
+// ----------------------------------------------------------------------------
+$sol-base3: #fdf6e3; // background (cream)
+$sol-base2: #eee8d5; // background highlights
+$sol-base1: #93a1a1; // comments / secondary
+$sol-base0: #839496; // body text / default
+$sol-base00: #657b83; // primary text
+$sol-base01: #586e75; // emphasized text
+$sol-base03: #002b36; // dark background
+$sol-base02: #073642; // dark background highlights
+
+// Accent colors (work in both themes)
+$sol-blue: #268bd2; // primary actions
+$sol-cyan: #2aa198; // accents
+$sol-green: #859900; // success
+$sol-red: #dc322f; // danger
+$sol-orange: #cb4b16; // warnings
+$sol-yellow: #b58900; // highlights
+
+// ----------------------------------------------------------------------------
+// Typography
+// ----------------------------------------------------------------------------
+$font-serif: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif;
+$font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+
+$font-size-base: 14px;
+$font-size-sm: 13px;
+$font-size-xs: 12px;
+$font-size-xxs: 11px;
+$font-size-micro: 10px;
+$font-size-lg: 16px;
+$font-size-xl: 20px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// ----------------------------------------------------------------------------
+// Spacing Scale (8px grid)
+// ----------------------------------------------------------------------------
+$spacing-xs: 4px;
+$spacing-sm: 6px;
+$spacing-md: 8px;
+$spacing-lg: 12px;
+$spacing-xl: 16px;
+$spacing-2xl: 20px;
+$spacing-3xl: 24px;
+
+// ----------------------------------------------------------------------------
+// Border Radius
+// ----------------------------------------------------------------------------
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-full: 50%;
+
+// ----------------------------------------------------------------------------
+// Z-Index Layers
+// ----------------------------------------------------------------------------
+$z-dropdown-backdrop: 2147483645;
+$z-dropdown: 2147483646;
+$z-toolbar: 2147483647;
+
+// ----------------------------------------------------------------------------
+// Animation
+// ----------------------------------------------------------------------------
+$duration-fast: 0.15s;
+$duration-normal: 0.2s;
+$duration-slow: 0.3s;
+$easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+$easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+
+// ----------------------------------------------------------------------------
+// Shadows
+// ----------------------------------------------------------------------------
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-colored-cyan: 0 2px 8px rgba(42, 161, 152, 0.3);
+$shadow-colored-green: 0 2px 6px rgba(133, 153, 0, 0.3);
+$shadow-colored-red: 0 2px 6px rgba(220, 50, 47, 0.25);

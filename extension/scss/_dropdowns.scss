@@ -1,0 +1,263 @@
+// ============================================================================
+// DRIFT TOOLBAR - DROPDOWNS & MODAL SYSTEM
+// ============================================================================
+
+html body {
+
+    // Dropdown backdrop
+    .drift-dropdown-backdrop {
+        @include drift-reset;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: $z-dropdown-backdrop;
+        display: block;
+    }
+
+    // Dropdown container
+    .drift-dropdown {
+        @include drift-dropdown-container;
+    }
+
+    // Dropdown header
+    .drift-dropdown-header {
+        @include drift-reset;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+        border-bottom: 1px solid var(--drift-border);
+
+        h2 {
+            @include drift-reset;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-normal;
+            line-height: 1.8rem;
+            font-style: italic;
+            color: var(--drift-text);
+            margin: 0 0 0.75rem 0;
+        }
+    }
+
+    // Close button
+    .drift-close-btn {
+        @include drift-reset;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: $spacing-xs;
+        color: var(--drift-text-secondary);
+        transition: color $duration-normal;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            color: var(--drift-danger);
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    // Tabs
+    .drift-tabs {
+        @include drift-reset;
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--drift-border);
+    }
+
+    .drift-tab {
+        @include drift-reset;
+        background: none;
+        border: none;
+        padding: $spacing-lg $spacing-xl;
+        cursor: pointer;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        color: var(--drift-text-secondary);
+        border-bottom: 2px solid transparent;
+        transition: all $duration-normal;
+
+        &:hover {
+            color: var(--drift-text);
+        }
+
+        &.active {
+            color: var(--drift-primary);
+            border-bottom-color: var(--drift-primary);
+        }
+    }
+
+    // Form containers
+    .drift-auth-form,
+    .drift-submit-form,
+    .drift-user-info {
+        @include drift-reset;
+        display: block;
+    }
+
+    // Form inputs
+    .drift-auth-form input,
+    .drift-submit-form input {
+        @include drift-reset;
+        display: block;
+        width: 100%;
+        padding: $spacing-md $spacing-lg;
+        margin-bottom: $spacing-lg;
+        border: 1px solid var(--drift-border);
+        border-radius: $radius-sm;
+        font-size: $font-size-base;
+        color: var(--drift-text);
+        background: var(--drift-bg-elevated);
+        transition: border-color $duration-normal;
+
+        &:focus {
+            outline: none;
+            border-color: var(--drift-primary);
+        }
+    }
+
+    // Form labels
+    .drift-submit-form>label {
+        @include drift-reset;
+        display: block;
+        font-size: 11.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: $font-weight-normal;
+        color: var(--drift-text);
+        margin-top: $spacing-xl;
+        margin-bottom: $spacing-sm;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    // Error messages
+    .drift-error {
+        @include drift-reset;
+        display: block;
+        color: var(--drift-danger);
+        font-size: $font-size-sm;
+        line-height: 2rem;
+        margin-bottom: $spacing-lg;
+    }
+
+    // Primary/Secondary buttons
+    .drift-primary-btn,
+    .drift-secondary-btn {
+        @include drift-reset;
+        display: block;
+        width: 100%;
+        padding: $spacing-md $spacing-xl;
+        border: none;
+        border-radius: $radius-sm;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        cursor: pointer;
+        transition: all $duration-normal;
+        text-align: center;
+        margin-top: $spacing-md;
+    }
+
+    .drift-primary-btn {
+        background: var(--drift-primary);
+        color: white;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .drift-secondary-btn {
+        background: var(--drift-bg-elevated);
+        color: var(--drift-text);
+        border: 1px solid var(--drift-border);
+
+        &:hover {
+            background: var(--drift-border);
+        }
+    }
+
+    // User info paragraphs
+    .drift-user-info p {
+        @include drift-reset;
+        font-size: $font-size-base;
+        color: var(--drift-text);
+        margin-bottom: $spacing-lg;
+        display: block;
+
+        strong {
+            font-weight: $font-weight-semibold;
+            color: var(--drift-text);
+        }
+    }
+
+    // Tag checkboxes
+    .drift-tags-checkboxes {
+        @include drift-reset;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0px;
+        margin-bottom: $spacing-lg;
+    }
+
+    .drift-tag-checkbox {
+        @include drift-reset;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        padding: $spacing-md $spacing-lg;
+        background: transparent;
+        border: 1.5px solid var(--drift-border);
+        border-radius: 0;
+        cursor: pointer;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: var(--drift-text);
+        transition: all $duration-normal $easing-standard;
+        user-select: none;
+        letter-spacing: 0.02em;
+
+        &:hover {
+            border-color: var(--drift-primary);
+            background: var(--drift-bg);
+            transform: translateY(-1px);
+            box-shadow: $shadow-md;
+        }
+
+        input[type="checkbox"] {
+            @include drift-reset;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        &:has(input:checked) {
+            background: var(--drift-primary);
+            border-color: var(--drift-primary);
+            color: var(--drift-bg);
+            transform: translateY(-1px);
+            box-shadow: $shadow-colored-cyan;
+        }
+    }
+
+    // Loading/No tags states
+    .drift-loading,
+    .drift-no-tags {
+        @include drift-reset;
+        font-size: $font-size-sm;
+        color: var(--drift-text-secondary);
+        font-style: italic;
+    }
+}

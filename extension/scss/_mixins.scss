@@ -1,0 +1,133 @@
+// ============================================================================
+// DRIFT TOOLBAR - MIXINS & UTILITIES
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Reset Mixin - Base styles for all drift elements
+// ----------------------------------------------------------------------------
+@mixin drift-reset {
+    all: initial;
+    box-sizing: border-box;
+    font-family: $font-serif;
+}
+
+// ----------------------------------------------------------------------------
+// High Specificity Wrapper
+// Use this to avoid !important while maintaining override power
+// ----------------------------------------------------------------------------
+@mixin drift-scope {
+
+    // This creates specificity of (0,1,2,0) which beats most host styles
+    html body & {
+        @content;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Button Base
+// ----------------------------------------------------------------------------
+@mixin drift-button-base {
+    @include drift-reset;
+    padding: 12.5px 15px;
+    border: 1px solid var(--drift-bg-elevated);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--drift-text);
+    cursor: pointer;
+    font-size: $font-size-base;
+    letter-spacing: 0.05rem;
+    font-weight: $font-weight-medium;
+    transition: background-color $duration-fast ease,
+        border-color $duration-fast ease,
+        color $duration-fast ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    white-space: nowrap;
+    line-height: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &:hover {
+        background-color: var(--drift-bg-elevated);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Card/Elevated Surface
+// ----------------------------------------------------------------------------
+@mixin drift-card {
+    background: var(--drift-bg-elevated);
+    border: 1px solid var(--drift-border);
+    border-radius: $radius-md;
+}
+
+// ----------------------------------------------------------------------------
+// Dropdown Container
+// ----------------------------------------------------------------------------
+@mixin drift-dropdown-container {
+    @include drift-reset;
+    position: fixed;
+    background: var(--drift-bg);
+    border: 1px solid var(--drift-border);
+    box-shadow: $shadow-lg;
+    min-width: 280px;
+    max-width: 390px;
+    z-index: $z-dropdown;
+    color: var(--drift-text);
+    opacity: 1;
+    transform: translateY(-8px);
+    animation: drift-dropdown-enter 0.18s ease-out forwards;
+    overflow: hidden;
+    padding: $spacing-xl;
+}
+
+// ----------------------------------------------------------------------------
+// Icon Container
+// ----------------------------------------------------------------------------
+@mixin drift-icon($size: 16px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: $size;
+        height: $size;
+        display: block;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Section Title (uppercase micro-labels)
+// ----------------------------------------------------------------------------
+@mixin drift-section-title {
+    @include drift-reset;
+    font-size: $font-size-micro;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: $font-weight-semibold;
+    color: var(--drift-text-secondary);
+    margin: 0 0 $spacing-lg 0;
+    display: block;
+}
+
+// ----------------------------------------------------------------------------
+// Visually Hidden (accessibility)
+// ----------------------------------------------------------------------------
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

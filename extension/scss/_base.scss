@@ -1,0 +1,93 @@
+// ============================================================================
+// DRIFT TOOLBAR - BASE STYLES & THEME
+// ============================================================================
+
+// Font imports
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+// ----------------------------------------------------------------------------
+// CSS Custom Properties (Theme Variables)
+// ----------------------------------------------------------------------------
+:root {
+    // Solarized Light Palette
+    --sol-base3: #{$sol-base3};
+    --sol-base2: #{$sol-base2};
+    --sol-base1: #{$sol-base1};
+    --sol-base0: #{$sol-base0};
+    --sol-base00: #{$sol-base00};
+    --sol-base01: #{$sol-base01};
+    --sol-blue: #{$sol-blue};
+    --sol-cyan: #{$sol-cyan};
+    --sol-green: #{$sol-green};
+    --sol-red: #{$sol-red};
+    --sol-orange: #{$sol-orange};
+    --sol-yellow: #{$sol-yellow};
+
+    // Drift Theme Colors - Light
+    --drift-bg: var(--sol-base3);
+    --drift-bg-elevated: var(--sol-base2);
+    --drift-border: var(--sol-base2);
+    --drift-text: var(--sol-base01);
+    --drift-text-secondary: var(--sol-base1);
+    --drift-primary: var(--sol-cyan);
+    --drift-primary-hover: var(--sol-blue);
+    --drift-success: var(--sol-green);
+    --drift-danger: var(--sol-red);
+    --drift-accent: var(--sol-yellow);
+}
+
+// ----------------------------------------------------------------------------
+// Dark Theme Override
+// ----------------------------------------------------------------------------
+body[data-theme="dark"] {
+    // Solarized Dark Palette
+    --sol-base03: #{$sol-base03};
+    --sol-base02: #{$sol-base02};
+
+    // Drift Theme Colors - Dark
+    --drift-bg: var(--sol-base03);
+    --drift-bg-elevated: var(--sol-base02);
+    --drift-border: var(--sol-base02);
+    --drift-text: var(--sol-base0);
+    --drift-text-secondary: var(--sol-base01);
+    // Accent colors stay the same - they work in both themes
+}
+
+// ----------------------------------------------------------------------------
+// Keyframe Animations
+// ----------------------------------------------------------------------------
+@keyframes drift-dropdown-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes drift-tooltip-fade {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes drift-notification-slide {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

@@ -1,0 +1,125 @@
+// ============================================================================
+// DRIFT TOOLBAR - BUTTONS & INTERACTIVE CONTROLS
+// ============================================================================
+
+html body {
+
+    #drift-toolbar button {
+        @include drift-button-base;
+    }
+
+    // Primary Drift button
+    #drift-btn {
+        background-color: var(--drift-primary);
+        color: var(--drift-bg);
+        font-weight: $font-weight-semibold;
+        padding: 7px 18px;
+
+        &:hover {
+            background-color: var(--drift-primary-hover);
+        }
+
+        .drift-icon {
+            margin-right: $spacing-sm;
+        }
+    }
+
+    // Icon buttons (settings, collapse, etc.)
+    .drift-icon-btn,
+    #drift-settings-btn,
+    #drift-collapse-btn {
+        padding: 7px $spacing-md;
+        min-width: 34px;
+    }
+
+    // Like/Dislike buttons
+    #drift-like-btn {
+        &:hover {
+            background-color: var(--drift-success);
+        }
+
+        &.active,
+        &.active:hover {
+            background-color: var(--drift-success);
+            color: $sol-base3;
+        }
+    }
+
+    #drift-dislike-btn {
+        &:hover {
+            background-color: var(--drift-danger);
+        }
+
+        &.active,
+        &.active:hover {
+            background-color: var(--drift-danger);
+            color: $sol-base3;
+        }
+    }
+
+    // Copy button
+    #drift-copy-btn {
+
+        &.copied,
+        &:hover.copied {
+            background-color: var(--drift-success);
+            border-color: var(--drift-success);
+            color: var(--drift-bg);
+        }
+    }
+
+    // Badge for pending count
+    .drift-badge {
+        @include drift-reset;
+        display: inline-block;
+        background: var(--drift-danger);
+        color: white;
+        font-size: $font-size-xxs;
+        font-weight: $font-weight-semibold;
+        padding: 2px $spacing-sm;
+        border-radius: $radius-sm;
+        margin-left: $spacing-sm;
+        vertical-align: middle;
+    }
+
+    // Approval mode button
+    #drift-approval-mode-btn {
+        background-color: transparent;
+        color: var(--drift-text);
+        border-color: var(--drift-border);
+    }
+
+    // Category dropdown select
+    #drift-category-select {
+        @include drift-reset;
+        padding: 7px 30px 7px $spacing-lg;
+        border: 1px solid transparent;
+        border-radius: $radius-sm;
+        background-color: transparent;
+        color: var(--drift-text);
+        cursor: pointer;
+        font-size: $font-size-sm;
+        min-width: 140px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23586e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right $spacing-md center;
+        transition: background-color $duration-fast ease, border-color $duration-fast ease;
+
+        &:hover {
+            background-color: var(--drift-bg-elevated);
+            border-color: var(--drift-border);
+        }
+    }
+
+    body[data-theme="dark"] #drift-category-select {
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23839496" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    }
+
+    // Icon containers
+    .drift-icon {
+        @include drift-icon(16px);
+    }
+}

@@ -516,7 +516,7 @@ function positionDropdown(dropdown, triggerBtn, options = {}) {
   const viewportHeight = window.innerHeight;
   const viewportWidth = window.innerWidth;
   
-  let top = btnRect.bottom + 8; // 8px gap below button
+  let top = btnRect.bottom - 1; // -1px gap below button
   let left = btnRect.left;
   
   // Only flip to above if:

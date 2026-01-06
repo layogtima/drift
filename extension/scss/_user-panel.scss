@@ -1,0 +1,191 @@
+// ============================================================================
+// DRIFT TOOLBAR - USER PANEL & PROFILE
+// ============================================================================
+
+html body {
+
+    // User header content
+    .drift-user-header-content {
+        @include drift-reset;
+        display: flex;
+        align-items: center;
+        gap: $spacing-lg;
+        flex: 1;
+    }
+
+    // User avatar
+    .drift-user-avatar {
+        @include drift-reset;
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-full;
+        background: var(--drift-bg-elevated);
+        border: 1.5px solid var(--drift-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--drift-primary);
+
+        .drift-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    // User title (name + badge)
+    .drift-user-title {
+        @include drift-reset;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        h2 {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    // Role badges
+    .drift-role-badge {
+        @include drift-reset;
+        display: inline-block;
+        font-size: $font-size-micro;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: $font-weight-semibold;
+        padding: 3px $spacing-md;
+        border-radius: $radius-sm;
+
+        &-user {
+            background: var(--drift-bg-elevated);
+            color: var(--drift-text-secondary);
+            border: 1px solid var(--drift-border);
+        }
+
+        &-mod {
+            background: var(--drift-primary);
+            color: var(--drift-bg);
+        }
+
+        &-admin {
+            background: var(--drift-accent);
+            color: var(--drift-bg);
+        }
+    }
+
+    // User panel sections
+    .drift-user-section {
+        @include drift-reset;
+        display: block;
+        padding: $spacing-xl 0;
+
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    // Section titles
+    .drift-section-title {
+        @include drift-section-title;
+    }
+
+    // Stats grid
+    .drift-stats-grid {
+        @include drift-reset;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $spacing-lg;
+    }
+
+    .drift-stat-item {
+        @include drift-reset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-md;
+        padding: $spacing-lg $spacing-md;
+        @include drift-card;
+        transition: transform $duration-normal ease, box-shadow $duration-normal ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: $shadow-md;
+        }
+    }
+
+    .drift-stat-icon {
+        @include drift-reset;
+        color: var(--drift-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        &-like {
+            color: var(--drift-success);
+        }
+
+        &-dislike {
+            color: var(--drift-danger);
+        }
+    }
+
+    .drift-stat-content {
+        @include drift-reset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .drift-stat-value {
+        @include drift-reset;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: var(--drift-text);
+        line-height: 1;
+        display: block;
+    }
+
+    .drift-stat-label {
+        @include drift-reset;
+        font-size: $font-size-xxs;
+        color: var(--drift-text-secondary);
+        letter-spacing: 0.05em;
+        display: block;
+    }
+
+    // Pending info (for mods/admins)
+    .drift-pending-info {
+        @include drift-reset;
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        padding: $spacing-md $spacing-lg;
+        @include drift-card;
+        font-size: $font-size-sm;
+        color: var(--drift-text);
+
+        strong {
+            font-weight: $font-weight-semibold;
+            color: var(--drift-accent);
+        }
+    }
+
+    .drift-pending-icon {
+        @include drift-reset;
+        font-size: 18px;
+        display: inline-block;
+    }
+
+    // User actions
+    .drift-user-actions {
+        @include drift-reset;
+        display: block;
+    }
+}

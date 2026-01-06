@@ -1,0 +1,146 @@
+// ============================================================================
+// DRIFT TOOLBAR - ACTION BAR & APPROVAL SYSTEM
+// ============================================================================
+
+html body {
+
+    // Action bar (inside toolbar)
+    .drift-action-bar {
+        @include drift-reset;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-md $spacing-2xl;
+        background-color: var(--drift-bg-elevated);
+        border-top: 1px solid var(--drift-border);
+        color: var(--drift-text);
+        min-height: 42px;
+
+        &.visible {
+            display: flex;
+        }
+    }
+
+    // Approval content
+    .drift-approval-content {
+        @include drift-reset;
+        display: flex;
+        align-items: center;
+        gap: $spacing-3xl;
+        flex: 1;
+
+        h3 {
+            @include drift-reset;
+            font-size: $font-size-xxs;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: $font-weight-semibold;
+            color: var(--drift-text-secondary);
+            margin: 0;
+            display: inline-block;
+        }
+
+        p {
+            @include drift-reset;
+            font-size: $font-size-sm;
+            color: var(--drift-text);
+            margin: 0;
+            display: inline-block;
+        }
+
+        strong {
+            font-weight: $font-weight-semibold;
+            color: var(--drift-text);
+            margin-right: $spacing-xs;
+        }
+    }
+
+    // Approval info container
+    .drift-approval-info {
+        @include drift-reset;
+        display: flex;
+        align-items: center;
+        gap: $spacing-2xl;
+        flex: 1;
+    }
+
+    // Approval actions
+    .drift-approval-actions {
+        @include drift-reset;
+        display: flex;
+        gap: $spacing-md;
+    }
+
+    // Approve/Reject buttons
+    .drift-approve-btn,
+    .drift-reject-btn {
+        @include drift-reset;
+        padding: 7px $spacing-xl;
+        border: 1px solid transparent;
+        border-radius: $radius-sm;
+        cursor: pointer;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        letter-spacing: 0.03em;
+        transition: all $duration-normal $easing-standard;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-sm;
+        white-space: nowrap;
+
+        .drift-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 14px;
+                height: 14px;
+                display: block;
+            }
+        }
+    }
+
+    .drift-approve-btn {
+        background-color: var(--drift-success);
+        color: var(--drift-bg);
+
+        &:hover {
+            background-color: var(--sol-green);
+            transform: translateY(-1px);
+            box-shadow: $shadow-colored-green;
+        }
+    }
+
+    .drift-reject-btn {
+        background-color: transparent;
+        color: var(--drift-text);
+        border-color: var(--drift-border);
+
+        &:hover {
+            background-color: var(--drift-danger);
+            color: var(--drift-bg);
+            border-color: var(--drift-danger);
+            transform: translateY(-1px);
+            box-shadow: $shadow-colored-red;
+        }
+    }
+
+    // Notification toast
+    .drift-notification {
+        @include drift-reset;
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        background: var(--drift-success);
+        color: var(--drift-bg);
+        padding: $spacing-lg $spacing-2xl;
+        border-radius: $radius-sm;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        z-index: $z-toolbar;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: drift-notification-slide $duration-slow ease-out;
+    }
+}

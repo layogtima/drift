@@ -1,0 +1,146 @@
+// ============================================================================
+// DRIFT TOOLBAR - MAIN TOOLBAR CONTAINER
+// ============================================================================
+
+html body {
+
+    // Utility class
+    #drift-toolbar .hidden {
+        display: none;
+    }
+
+    // Main toolbar container
+    #drift-toolbar {
+        @include drift-reset;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        background-color: var(--drift-bg);
+        border-bottom: 1px solid var(--drift-border);
+        box-shadow: $shadow-sm;
+        z-index: $z-toolbar;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 0;
+        font-size: $font-size-base;
+        color: var(--drift-text);
+        transition: transform 0.25s $easing-standard;
+        contain: layout style;
+        isolation: isolate;
+
+        * {
+            box-sizing: border-box;
+        }
+
+        &.hidden {
+            transform: translateY(-100%);
+        }
+    }
+
+    // Main toolbar row
+    .drift-toolbar-main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+    }
+
+    // Pull-down tab (shown when toolbar is hidden)
+    #drift-pull-tab {
+        @include drift-reset;
+        position: fixed;
+        top: 0;
+        right: 10%;
+        width: 60px;
+        height: 20px;
+        background-color: var(--drift-bg);
+        border-bottom-left-radius: $radius-lg;
+        border-bottom-right-radius: $radius-lg;
+        border: 1px solid var(--drift-border);
+        border-top: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: $z-toolbar;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-xs;
+        color: var(--drift-text-secondary);
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity $duration-normal ease, background-color $duration-fast ease;
+
+        &:hover {
+            background-color: var(--drift-bg-elevated);
+            color: var(--drift-primary);
+        }
+    }
+
+    #drift-toolbar.hidden+#drift-pull-tab {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    // Page title display
+    #drift-page-title {
+        color: var(--drift-text);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        opacity: 0.7;
+        margin-left: $spacing-md;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    // Stats display
+    #drift-stats {
+        color: var(--drift-text-secondary);
+        font-size: $font-size-xs;
+        padding: $spacing-sm $spacing-md;
+        background-color: transparent;
+        border-radius: $radius-sm;
+        border: 1px solid transparent;
+        white-space: nowrap;
+    }
+
+    // First-run tooltip
+    #drift-tooltip {
+        @include drift-reset;
+        position: fixed;
+        top: 56px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--drift-primary);
+        color: var(--drift-bg);
+        padding: 10px $spacing-xl;
+        border-radius: $radius-sm;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        animation: drift-tooltip-fade $duration-slow ease;
+        z-index: $z-dropdown-backdrop;
+        white-space: nowrap;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--drift-primary);
+        }
+    }
+}
