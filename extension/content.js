@@ -73,15 +73,15 @@ function createToolbar() {
       <span class="drift-icon">${icons.shuffle}</span>
       <span>Drift</span>
     </button>
-    <button id="drift-submit-btn" title="Submit current page">
-      <span class="drift-icon">${icons.plus}</span>
-      <span>Submit</span>
-    </button>
     <button id="drift-like-btn" title="Like this site">
       <span class="drift-icon">${icons.thumbsUp}</span>
     </button>
     <button id="drift-dislike-btn" title="Dislike this site">
       <span class="drift-icon">${icons.thumbsDown}</span>
+    </button>
+    <button id="drift-submit-btn" title="Submit current page">
+      <span class="drift-icon">${icons.plus}</span>
+      <span>Submit</span>
     </button>
     <span id="drift-page-title" title="${document.title}">${pageTitle}</span>
   `;
