@@ -457,7 +457,7 @@ body[data-theme="dark"] #drift-category-select {
 .drift-submit-form,
 .drift-user-info {
   all: initial !important;
-  display: block !important;
+  display: block;
   padding: 16px !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
@@ -508,7 +508,7 @@ body[data-theme="dark"] #drift-category-select {
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
   margin-bottom: 12px !important;
-  min-height: 20px !important;
+  min-height: 0 !important;
 }
 
 .drift-primary-btn,
@@ -521,7 +521,7 @@ body[data-theme="dark"] #drift-category-select {
   border-radius: 4px !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   cursor: pointer !important;
   transition: all 0.2s !important;
   text-align: center !important;

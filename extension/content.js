@@ -594,6 +594,14 @@ function showAuthModal() {
   
   const dropdown = createDropdown(triggerBtn, content);
   
+  // Set initial tab state (hide register form by default)
+  setTimeout(() => {
+    const registerForm = document.getElementById('drift-register-form');
+    if (registerForm) {
+      registerForm.style.setProperty('display', 'none', 'important');
+    }
+  }, 0);
+  
   // Add event listeners
   document.getElementById('drift-auth-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-tab-login').addEventListener('click', () => switchAuthTab('login'));
@@ -603,16 +611,21 @@ function showAuthModal() {
 }
 
 function switchAuthTab(tab) {
+  const loginTab = document.getElementById('drift-tab-login');
+  const registerTab = document.getElementById('drift-tab-register');
+  const loginForm = document.getElementById('drift-login-form');
+  const registerForm = document.getElementById('drift-register-form');
+  
   if (tab === 'login') {
-    document.getElementById('drift-tab-login').classList.add('active');
-    document.getElementById('drift-tab-register').classList.remove('active');
-    document.getElementById('drift-login-form').style.display = 'block';
-    document.getElementById('drift-register-form').style.display = 'none';
+    loginTab.classList.add('active');
+    registerTab.classList.remove('active');
+    loginForm.style.setProperty('display', 'block', 'important');
+    registerForm.style.setProperty('display', 'none', 'important');
   } else {
-    document.getElementById('drift-tab-register').classList.add('active');
-    document.getElementById('drift-tab-login').classList.remove('active');
-    document.getElementById('drift-register-form').style.display = 'block';
-    document.getElementById('drift-login-form').style.display = 'none';
+    registerTab.classList.add('active');
+    loginTab.classList.remove('active');
+    registerForm.style.setProperty('display', 'block', 'important');
+    loginForm.style.setProperty('display', 'none', 'important');
   }
 }
 
