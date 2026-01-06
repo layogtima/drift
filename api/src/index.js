@@ -1,6 +1,7 @@
 // Drift API - Cloudflare Workers
 import { handleRegister, handleLogin, handleLogout, handleGetMe } from './auth.js';
 import { handleGetUrls, handleSubmitUrl, handleApproveUrl, handleRejectUrl, handleUpdateUrl, handleImportLegacy } from './urls.js';
+import { handleGetTags, handleCreateTag, handleUpdateTag, handleDeleteTag } from './tags.js';
 
 // CORS headers
 function getCorsHeaders(origin) {
@@ -127,6 +128,27 @@ async function handleRequest(request, env) {
     // Admin routes
     if (path === '/admin/import-legacy' && method === 'POST') {
       return await handleImportLegacy(request, env);
+    }
+
+    // Tag routes
+    if (path === '/tags' && method === 'GET') {
+      return await handleGetTags(request, env);
+    }
+
+    if (path === '/tags' && method === 'POST') {
+      return await handleCreateTag(request, env);
+    }
+
+    // Tag update/delete
+    const tagMatch = path.match(/^\/tags\/(\d+)$/);
+    if (tagMatch && method === 'PATCH') {
+      const tagId = parseInt(tagMatch[1]);
+      return await handleUpdateTag(request, env, tagId);
+    }
+
+    if (tagMatch && method === 'DELETE') {
+      const tagId = parseInt(tagMatch[1]);
+      return await handleDeleteTag(request, env, tagId);
     }
 
     // Health check

@@ -49,7 +49,7 @@ export async function handleSubmitUrl(request, env) {
       });
     }
 
-    const { url, title, tags } = await request.json();
+    const { url, title, tagIds } = await request.json();
 
     // Validate inputs
     if (!url || !title) {
@@ -78,11 +78,14 @@ export async function handleSubmitUrl(request, env) {
       });
     }
 
-    // Parse tags
-    const tagArray = tags ? tags.split(',').map(t => t.trim()).filter(t => t.length > 0) : [];
+    // Validate tagIds - must be array of integers, max 3
+    let validTagIds = [];
+    if (tagIds && Array.isArray(tagIds)) {
+      validTagIds = tagIds.filter(id => Number.isInteger(id)).slice(0, 3);
+    }
 
-    // Create URL
-    const urlId = await db.createUrl(env.DB, url, title, user.id, tagArray);
+    // Create URL with tag IDs
+    const urlId = await db.createUrl(env.DB, url, title, user.id, validTagIds);
 
     return new Response(JSON.stringify({
       success: true,
@@ -228,7 +231,7 @@ export async function handleUpdateUrl(request, env, urlId) {
       });
     }
 
-    const { title, tags } = await request.json();
+    const { title, tagIds } = await request.json();
 
     // Check if URL exists
     const url = await db.getUrlById(env.DB, urlId);
@@ -246,9 +249,9 @@ export async function handleUpdateUrl(request, env, urlId) {
     }
 
     // Update tags if provided
-    if (tags) {
-      const tagArray = tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
-      await db.updateUrlTags(env.DB, urlId, tagArray);
+    if (tagIds && Array.isArray(tagIds)) {
+      const validTagIds = tagIds.filter(id => Number.isInteger(id)).slice(0, 3);
+      await db.updateUrlTags(env.DB, urlId, validTagIds);
     }
 
     return new Response(JSON.stringify({
