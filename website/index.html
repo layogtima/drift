@@ -4,107 +4,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drift - Rediscover the serendipitous web</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Drift - Discover serendipity</title>
+    <meta name="title" content="Drift - Discover serendipity" />
     <meta name="description"
-        content="A Chrome extension bringing back the joy of serendipitous discovery on the open internet.">
-    <link rel="stylesheet" href="styles.css">
+        content="One click. One random site from the beautiful, weird, indie corners of the web." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://drift.surf/" />
+    <meta property="og:title" content="Drift - Discover serendipity" />
+    <meta property="og:description"
+        content="One click. One random site from the beautiful, weird, indie corners of the web." />
+    <meta property="og:image" content="https://drift.surf/meta.jpg" />
+
+    <!-- X (Twitter) -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://drift.surf/" />
+    <meta property="twitter:title" content="Drift - Discover serendipity" />
+    <meta property="twitter:description"
+        content="One click. One random site from the beautiful, weird, indie corners of the web." />
+    <meta property="twitter:image" content="https://drift.surf/meta.jpg" />
+
+    <link rel="icon" type="image/png" href="https://drift.surf/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="https://drift.surf/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="https://drift.surf/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://drift.surf/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Drift" />
+    <link rel="manifest" href="https://drift.surf/favicon/site.webmanifest" />
+
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sol: {
+                            base3: '#fdf6e3',
+                            base2: '#eee8d5',
+                            base1: '#93a1a1',
+                            base0: '#839496',
+                            base00: '#657b83',
+                            base01: '#586e75',
+                            blue: '#268bd2',
+                            cyan: '#2aa198',
+                            green: '#859900',
+                            orange: '#cb4b16',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['EB Garamond', 'Lora', 'Merriweather', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/b32739cc1c.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
 </head>
 
-<body>
-    <main class="letter">
-        <header class="letter-header">
-            <div class="wave-icon">🌊</div>
-            <h1>Drift</h1>
-        </header>
+<body class="font-serif bg-sol-base3 text-sol-base00 min-h-screen px-4 sm:px-8 py-12">
+    <div class="max-w-2xl mx-auto mt-10">
 
-        <div class="letter-content">
-            <p class="greeting">Dear wanderer of the web,</p>
+        <div class="px-4 md:p-0">
+            <!-- Greeting -->
+            <i class="fa-light fa-person-hiking text-sol-base01 text-5xl mb-8"></i>
+            <p class="text-3xl md:text-5xl italic text-sol-base01 mb-4 md:mb-6">Dear drifter,</p>
 
-            <p>Remember when the internet felt like an <em>adventure</em>? When you'd stumble upon a stranger's passion
-                project, a quirky blog from 2003, or a hidden corner of creativity that made you smile?</p>
+            <!-- Main text -->
+            <p class="text-2xl md:text-3xl leading-relaxed mb-6">
+                We miss the serendipity of the old internet.<br><br>
+                So, we built <em>Drift</em> so you could stumble upon hidden corners of creativity,
+                quirky passion projects, and websites that make you go "What."
+            </p>
 
-            <p>We do too. And we miss it.</p>
-
-            <p>So we built <strong>Drift</strong> — a tiny love letter to the serendipitous web. One click, one random
-                site from the beautiful, weird, indie corners of the internet. No algorithms optimizing for engagement.
-                No endless scroll designed to trap you. Just pure discovery.</p>
-
-            <div class="feature-cards">
-                <div class="card">
-                    <div class="card-icon">🎲</div>
-                    <h3>One-Click Discovery</h3>
-                    <p>Hit "Drift" and visit a random curated site from the indie web</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">👍</div>
-                    <h3>Shape Your Journey</h3>
-                    <p>Like or dislike to gently tune what you see (algorithm is fully transparent!)</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔒</div>
-                    <h3>Privacy First</h3>
-                    <p>Everything stays on your device. No tracking, no accounts, no data collection</p>
-                </div>
-            </div>
-
-            <p>This is our small attempt to bring back what made the web magical: <strong>serendipity</strong>.</p>
-
-            <div class="cta-section">
-                <a href="#" class="btn btn-primary" id="install-btn">
-                    <span class="btn-icon">↓</span>
-                    Install for Chrome
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap gap-4 my-10">
+                <a href="#" id="install-btn"
+                    class="inline-flex items-center gap-3 px-7 py-2 bg-sol-base0 text-sol-base3 text-lg rounded-3xl border-2 border-sol-bg-base hover:bg-sol-cyan hover:border-sol-cyan transition-all duration-200">
+                    <i class="fa-light fa-person-hiking"></i>
+                    <span>Install Drift for Chrome</span>
                 </a>
-                <a href="https://github.com/layogtima/drift" class="btn btn-secondary" target="_blank" rel="noopener">
-                    <span class="btn-icon">→</span>
-                    Contribute on GitHub
+                <a href="https://github.com/layogtima/drift" target="_blank" rel="noopener"
+                    class="inline-flex items-center gap-3 px-7 py-2 bg-sol-base3 text-sol-base0 text-lg rounded-3xl border-2 border-sol-bg-base hover:text-sol-cyan hover:border-sol-cyan transition-all duration-200">
+                    <i class="fa-light fa-code-branch"></i>
+                    <span>Contribute</span>
                 </a>
             </div>
 
-            <div class="explainer">
-                <h2>How it works</h2>
-                <ol>
-                    <li>Install Drift from the Chrome Web Store</li>
-                    <li>Click the "→ Drift" button that appears on any page</li>
-                    <li>Discover a random gem from our curated collection</li>
-                    <li>Like or dislike to tune your preferences (transparently!)</li>
-                </ol>
-                <p class="note">Categories: Technology, Science, Design, Art, Weird, DIY, Philosophy</p>
+
+            <!-- Feature line -->
+            <div class=" text-sol-base1 italic my-7 text-base">
+                <div class="mb-2 md:mb-0 block md:inline-block">
+                    <i class="fa-light fa-shield-check text-sm mr-1.5"></i>
+                    <span>We track nothing</span><br class="block md:hidden">
+                </div>
+                <div class="mb-2 md:mb-0 md:ml-4 block md:inline-block">
+                    <i class="fa-light fa-sparkles text-sm mr-1.5"></i>
+                    <span>Joy of pure discovery</span><br class="block md:hidden">
+
+                </div>
+                <div class="md:ml-4 block md:inline-block">
+                    <i class="fa-light fa-user-check text-sm mr-1.5"></i>
+                    <span>Every link is vetted by Amit, Shreshth or Aparna</span>
+
+                </div>
             </div>
 
-            <div class="philosophy">
-                <h2>Our philosophy</h2>
-                <blockquote>
-                    "The web was meant to be a garden, not a highway. We're planting seeds of serendipity."
-                </blockquote>
-                <p>We curate with love. Indie creators, personal blogs, passion projects, and niche communities. No SEO
-                    spam, no corporate content farms. Just humans sharing their corners of the internet.</p>
-            </div>
-
-            <div class="contribute">
-                <h2>Join us</h2>
-                <p>Know a site that deserves more visitors? The code is open source (GPL-3.0). Contribute URLs, report
-                    bugs, or just say hi!</p>
-                <a href="https://github.com/layogtima/drift" class="link-arrow" target="_blank" rel="noopener">View on
-                    GitHub →</a>
-            </div>
-
-            <footer class="letter-footer">
-                <p class="signature">With warmth,<br>
-                    <a href="https://codeuncode.com" target="_blank" rel="noopener">CodeUncode</a>
-                </p>
-                <p class="credits">Made by Amit, Shresht, Parna & Amartha 🌸</p>
-                <p class="license">Licensed under GPL-3.0 • <a href="https://github.com/layogtima/drift" target="_blank"
-                        rel="noopener">Source Code</a></p>
+            <!-- Footer -->
+            <footer class="mt-14 pt-8 border-t border-sol-base2">
+                <div class="mb-4 text-sol-base1 text-sm">
+                    <p>Made with <i class="fa-light fa-heart text-sol-orange"></i> by
+                        <a href="https://codeuncode.com" target="_blank" rel="noopener"
+                            class="hover:text-sol-cyan font-medium transition-colors">codeuncode.com</a>
+                    </p>
+                </div>
             </footer>
         </div>
-    </main>
 
-    <script src="script.js"></script>
+        <!-- How it works section -->
+        <div class="hidden mb-10 p-7 bg-sol-base2 rounded-xl border border-sol-base2">
+            <h2 class="text-xl font-semibold text-sol-base01 mb-4">How it works</h2>
+            <ol class="list-decimal ml-6 space-y-2 text-sol-base00">
+                <li class="pl-2">Install from Chrome Web Store</li>
+                <li class="pl-2">Click "Drift" on any page</li>
+                <li class="pl-2">Discover something wonderful</li>
+                <li class="pl-2">Like or dislike to bring balance to the internet</li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script src="script.js?v2"></script>
 </body>
 
 </html>
