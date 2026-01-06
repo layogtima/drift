@@ -323,6 +323,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       try {
         const result = await login(request.email, request.password);
         console.log('[Drift BG] Login result:', result);
+
+        // Refresh URL database to get user info and pending URLs
+        if (result.success) {
+          cacheTimestamp = null;
+          await fetchUrlDatabase();
+        }
+
         sendResponse(result);
       } catch (error) {
         console.error('[Drift BG] Login error:', error);
@@ -338,6 +345,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       try {
         const result = await register(request.email, request.username, request.password);
         console.log('[Drift BG] Register result:', result);
+
+        // Refresh URL database to get user info
+        if (result.success) {
+          cacheTimestamp = null;
+          await fetchUrlDatabase();
+        }
+
         sendResponse(result);
       } catch (error) {
         console.error('[Drift BG] Register error:', error);
