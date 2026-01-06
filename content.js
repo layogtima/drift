@@ -104,6 +104,9 @@ function createToolbar() {
   document.body.appendChild(toolbar);
   document.body.appendChild(pullTab);
   
+  // Protect toolbar from removal by other scripts
+  protectToolbar(toolbar, pullTab);
+  
   // Add event listeners
   document.getElementById('drift-btn').addEventListener('click', handleDrift);
   document.getElementById('drift-like-btn').addEventListener('click', handleLike);
@@ -124,6 +127,52 @@ function createToolbar() {
   } else {
     adjustPageContent();
   }
+}
+
+// Protect toolbar from being removed by page scripts
+function protectToolbar(toolbar, pullTab) {
+  // Freeze elements to prevent modifications
+  try {
+    Object.freeze(toolbar);
+    Object.freeze(pullTab);
+  } catch (e) {
+    // Some properties might not be freezable, that's okay
+  }
+  
+  // Watch for removal attempts with MutationObserver
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.removedNodes.forEach((node) => {
+        // If toolbar was removed, re-inject it
+        if (node === toolbar || node.id === 'drift-toolbar') {
+          console.log('[Drift] Toolbar removed by page script, re-injecting...');
+          setTimeout(() => {
+            if (!document.getElementById('drift-toolbar')) {
+              init(); // Re-initialize
+            }
+          }, 100);
+        }
+        if (node === pullTab || node.id === 'drift-pull-tab') {
+          setTimeout(() => {
+            if (!document.getElementById('drift-pull-tab')) {
+              const newPullTab = document.createElement('div');
+              newPullTab.id = 'drift-pull-tab';
+              newPullTab.innerHTML = `<span class="drift-icon">${icons.chevronDown}</span>`;
+              newPullTab.title = 'Show Drift toolbar';
+              newPullTab.addEventListener('click', toggleToolbar);
+              document.body.appendChild(newPullTab);
+            }
+          }, 100);
+        }
+      });
+    });
+  });
+  
+  // Observe body for child removals
+  observer.observe(document.body, {
+    childList: true,
+    subtree: false
+  });
 }
 
 // Open settings in extension popup
@@ -156,6 +205,9 @@ function openSettingsPopup() {
 
 // Adjust page content to not be hidden by toolbar
 function adjustPageContent() {
+  // Simple approach: just add margin to body
+  // Accept that some sites with fixed navs might overlap
+  // Our z-index is high enough to stay on top
   document.body.style.marginTop = '48px';
 }
 
@@ -345,6 +397,7 @@ function showFirstRunTooltip() {
   }, 5000);
 }
 
+
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'toggleToolbar') {
@@ -355,8 +408,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
+// Use a flag to prevent double initialization
+let initialized = false;
+
+function safeInit() {
+  if (initialized) return;
+  if (document.getElementById('drift-toolbar')) return; // Already exists
+  initialized = true;
   init();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', safeInit);
+} else {
+  // DOM already loaded
+  safeInit();
 }
