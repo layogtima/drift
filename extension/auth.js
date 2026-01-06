@@ -1,7 +1,8 @@
 // Drift Extension - Authentication Module
 
 // API base URL
-const API_BASE_URL = 'http://localhost:8787/api'; // Change to 'https://drift.surf/api' for production
+// const API_BASE_URL = 'http://localhost:8787'; // Change to 'https://api.drift.surf' for production
+const API_BASE_URL = 'https://api.drift.surf'; // Change to 'https://api.drift.surf' for production
 
 // Get stored auth token
 export async function getAuthToken() {

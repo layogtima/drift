@@ -32,7 +32,7 @@ npm run db:migrate
 npm run dev
 ```
 
-The API will be available at `http://localhost:8787/api/*`
+The API will be available at `http://localhost:8787/*`
 
 ## Deploy
 
@@ -40,62 +40,62 @@ The API will be available at `http://localhost:8787/api/*`
 npm run deploy
 ```
 
-The API will be deployed to `https://drift.surf/api/*`
+The API will be deployed to `https://api.drift.surf/*`
 
 ## API Endpoints
 
 ### Authentication
 
-- `POST /api/auth/register` - Create account
+- `POST /auth/register` - Create account
   - Body: `{ email, username, password }`
   - Returns: `{ success, token, user }`
 
-- `POST /api/auth/login` - Login
+- `POST /auth/login` - Login
   - Body: `{ email, password }`
   - Returns: `{ success, token, user }`
 
-- `POST /api/auth/logout` - Logout
+- `POST /auth/logout` - Logout
   - Headers: `Authorization: Bearer <token>`
   - Returns: `{ success }`
 
-- `GET /api/auth/me` - Get current user
+- `GET /auth/me` - Get current user
   - Headers: `Authorization: Bearer <token>`
   - Returns: `{ user }`
 
 ### URLs
 
-- `GET /api/urls` - Get URLs (filtered by user role)
+- `GET /urls` - Get URLs (filtered by user role)
   - Headers: `Authorization: Bearer <token>` (optional)
   - Returns: `{ urls, pendingCount, user }`
 
-- `POST /api/urls` - Submit new URL
+- `POST /urls` - Submit new URL
   - Headers: `Authorization: Bearer <token>` (required)
   - Body: `{ url, title, tags }`
   - Returns: `{ success, urlId, message }`
 
-- `POST /api/urls/:id/approve` - Approve pending URL (mod/admin only)
+- `POST /urls/:id/approve` - Approve pending URL (mod/admin only)
   - Headers: `Authorization: Bearer <token>` (required)
   - Returns: `{ success, message }`
 
-- `POST /api/urls/:id/reject` - Reject pending URL (mod/admin only)
+- `POST /urls/:id/reject` - Reject pending URL (mod/admin only)
   - Headers: `Authorization: Bearer <token>` (required)
   - Returns: `{ success, message }`
 
-- `PATCH /api/urls/:id` - Update URL (mod/admin only)
+- `PATCH /urls/:id` - Update URL (mod/admin only)
   - Headers: `Authorization: Bearer <token>` (required)
   - Body: `{ title?, tags? }`
   - Returns: `{ success, message }`
 
 ### Admin
 
-- `POST /api/admin/import-legacy` - Import URLs from legacy urls.json (admin only)
+- `POST /admin/import-legacy` - Import URLs from legacy urls.json (admin only)
   - Headers: `Authorization: Bearer <token>` (required)
   - Body: `{ urls: [{ url, title, category?, tags? }] }`
   - Returns: `{ success, imported, skipped, message }`
 
 ### Health
 
-- `GET /api/health` - Health check
+- `GET /health` - Health check
   - Returns: `{ status, version }`
 
 ## Database Schema
@@ -114,20 +114,20 @@ You can test the API with curl:
 
 ```bash
 # Register
-curl -X POST http://localhost:8787/api/auth/register \
+curl -X POST http://localhost:8787/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","username":"testuser","password":"password123"}'
 
 # Login
-curl -X POST http://localhost:8787/api/auth/login \
+curl -X POST http://localhost:8787/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"password123"}'
 
 # Get URLs
-curl http://localhost:8787/api/urls
+curl http://localhost:8787/urls
 
 # Submit URL (requires token from login)
-curl -X POST http://localhost:8787/api/urls \
+curl -X POST http://localhost:8787/urls \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN_HERE" \
   -d '{"url":"https://example.com","title":"Example Site","tags":"example,test"}'

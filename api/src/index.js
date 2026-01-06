@@ -79,33 +79,33 @@ async function handleRequest(request, env) {
 
   try {
     // Auth routes
-    if (path === '/api/auth/register' && method === 'POST') {
+    if (path === '/auth/register' && method === 'POST') {
       return await handleRegister(request, env);
     }
 
-    if (path === '/api/auth/login' && method === 'POST') {
+    if (path === '/auth/login' && method === 'POST') {
       return await handleLogin(request, env);
     }
 
-    if (path === '/api/auth/logout' && method === 'POST') {
+    if (path === '/auth/logout' && method === 'POST') {
       return await handleLogout(request, env);
     }
 
-    if (path === '/api/auth/me' && method === 'GET') {
+    if (path === '/auth/me' && method === 'GET') {
       return await handleGetMe(request, env);
     }
 
     // URL routes
-    if (path === '/api/urls' && method === 'GET') {
+    if (path === '/urls' && method === 'GET') {
       return await handleGetUrls(request, env);
     }
 
-    if (path === '/api/urls' && method === 'POST') {
+    if (path === '/urls' && method === 'POST') {
       return await handleSubmitUrl(request, env);
     }
 
     // URL actions (approve, reject, update)
-    const urlActionMatch = path.match(/^\/api\/urls\/(\d+)\/(approve|reject)$/);
+    const urlActionMatch = path.match(/^\/urls\/(\d+)\/(approve|reject)$/);
     if (urlActionMatch && method === 'POST') {
       const urlId = parseInt(urlActionMatch[1]);
       const action = urlActionMatch[2];
@@ -118,19 +118,19 @@ async function handleRequest(request, env) {
     }
 
     // URL update
-    const urlUpdateMatch = path.match(/^\/api\/urls\/(\d+)$/);
+    const urlUpdateMatch = path.match(/^\/urls\/(\d+)$/);
     if (urlUpdateMatch && method === 'PATCH') {
       const urlId = parseInt(urlUpdateMatch[1]);
       return await handleUpdateUrl(request, env, urlId);
     }
 
     // Admin routes
-    if (path === '/api/admin/import-legacy' && method === 'POST') {
+    if (path === '/admin/import-legacy' && method === 'POST') {
       return await handleImportLegacy(request, env);
     }
 
     // Health check
-    if (path === '/api/health' && method === 'GET') {
+    if (path === '/health' && method === 'GET') {
       return new Response(JSON.stringify({ status: 'ok', version: '1.0.0' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }

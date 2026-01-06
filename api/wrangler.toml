@@ -5,14 +5,21 @@ compatibility_date = "2024-01-01"
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"
-database_name = "drift-db"
-database_id = "80daea29-9b02-46ca-bd47-8fbe0b512ec0"
+database_name = "drift-db-prod"
+database_id = "9a2de5d5-a31f-473c-b95f-42a5a64a6d31"
 
 # CORS settings
 [vars]
 ALLOWED_ORIGINS = "https://drift.surf,chrome-extension://*"
 
-# Routes - deploy to drift.surf/api/*
+# Routes - deploy to api.drift.surf/*
 routes = [
-  { pattern = "drift.surf/api/*", zone_name = "drift.surf" }
+  { pattern = "api.drift.surf/*", zone_name = "drift.surf" }
 ]
+
+[observability]
+[observability.logs]
+enabled = false
+head_sampling_rate = 1
+invocation_logs = true
+persist = true

@@ -3,7 +3,9 @@
 
 import { getAuthToken, getCurrentUser, login, register, logout } from './auth.js';
 
-const API_BASE_URL = 'http://localhost:8787/api'; // Change to 'https://drift.surf/api' for production
+// const API_BASE_URL = 'http://localhost:8787'; // Change to 'https://api.drift.surf' for production
+const API_BASE_URL = 'https://api.drift.surf'; // Change to 'https://api.drift.surf' for production
+
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 let urlDatabase = null;
