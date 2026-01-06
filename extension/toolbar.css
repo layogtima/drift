@@ -1,6 +1,6 @@
 /* Drift Toolbar - Solarized Light/Dark */
 
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swapp');
 
 :root {
   /* Solarized Light Palette */
@@ -62,7 +62,7 @@ body[data-theme="dark"] {
   justify-content: center !important;
   gap: 0 !important;
   padding: 0 0px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   color: var(--drift-text) !important;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -97,7 +97,7 @@ body[data-theme="dark"] {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 12px !important;
   color: var(--drift-text-secondary) !important;
   cursor: pointer !important;
@@ -120,7 +120,7 @@ body[data-theme="dark"] {
 /* Buttons Base Style */
 #drift-toolbar button {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   padding: 12.5px 15px !important;
   border: 1px solid var(--drift-bg-elevated) !important;
   border-radius: 0 !important;
@@ -183,17 +183,17 @@ body[data-theme="dark"] {
 /* Page Title Display */
 #drift-page-title {
   color: var(--drift-text) !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
   max-width: 200px !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   opacity: 0.7 !important;
-  margin-left: auto !important;
-  margin-right: 12px !important;
+  margin-left: 10px !important;
+  margin-right: auto !important;
   text-align: center !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
 
 /* Like/Dislike Buttons */
@@ -218,7 +218,7 @@ body[data-theme="dark"] {
 /* Category Dropdown */
 #drift-category-select {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   padding: 7px 30px 7px 12px !important;
   border: 1px solid transparent !important;
   border-radius: 4px !important;
@@ -255,7 +255,7 @@ body[data-theme="dark"] #drift-category-select {
   border-radius: 4px !important;
   border: 1px solid transparent !important;
   white-space: nowrap !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
 
 /* Share Button */
@@ -294,7 +294,7 @@ body[data-theme="dark"] #drift-category-select {
   color: var(--drift-bg) !important;
   padding: 10px 16px !important;
   border-radius: 4px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
   font-weight: 500 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
@@ -350,7 +350,7 @@ body[data-theme="dark"] #drift-category-select {
   min-width: 280px !important;
   max-width: 420px !important;
   z-index: 2147483646 !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   color: var(--drift-text) !important;
   box-sizing: border-box !important;
   opacity: 1 !important;
@@ -377,15 +377,16 @@ body[data-theme="dark"] #drift-category-select {
   align-items: center !important;
   padding: 16px 20px !important;
   border-bottom: 1px solid var(--drift-border) !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
 }
 
 .drift-dropdown-header h2 {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 600 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 24px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
   color: var(--drift-text) !important;
   margin: 0 !important;
 }
@@ -419,7 +420,7 @@ body[data-theme="dark"] #drift-category-select {
   gap: 0 !important;
   padding: 0 24px !important;
   border-bottom: 1px solid var(--drift-border) !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
 }
 
@@ -429,7 +430,7 @@ body[data-theme="dark"] #drift-category-select {
   border: none !important;
   padding: 12px 16px !important;
   cursor: pointer !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   font-weight: 500 !important;
   color: var(--drift-text-secondary) !important;
@@ -454,7 +455,7 @@ body[data-theme="dark"] #drift-category-select {
   all: initial !important;
   display: block !important;
   padding: 16px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
 }
 
@@ -467,7 +468,7 @@ body[data-theme="dark"] #drift-category-select {
   margin-bottom: 12px !important;
   border: 1px solid var(--drift-border) !important;
   border-radius: 4px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   color: var(--drift-text) !important;
   background: var(--drift-bg-elevated) !important;
@@ -484,7 +485,7 @@ body[data-theme="dark"] #drift-category-select {
 .drift-submit-form label {
   all: initial !important;
   display: block !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   color: var(--drift-text) !important;
@@ -500,7 +501,7 @@ body[data-theme="dark"] #drift-category-select {
   all: initial !important;
   display: block !important;
   color: var(--drift-danger) !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
   margin-bottom: 12px !important;
   min-height: 20px !important;
@@ -514,7 +515,7 @@ body[data-theme="dark"] #drift-category-select {
   padding: 10px 16px !important;
   border: none !important;
   border-radius: 4px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
@@ -545,7 +546,7 @@ body[data-theme="dark"] #drift-category-select {
 
 .drift-user-info p {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   color: var(--drift-text) !important;
   margin-bottom: 12px !important;
@@ -563,7 +564,7 @@ body[data-theme="dark"] #drift-category-select {
   display: inline-block !important;
   background: var(--drift-danger) !important;
   color: white !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 11px !important;
   font-weight: 600 !important;
   padding: 2px 6px !important;

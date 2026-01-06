@@ -518,16 +518,23 @@ function positionDropdown(dropdown, triggerBtn, options = {}) {
     top = btnRect.bottom + 8; // Force it below
   }
   
-  // Adjust horizontal if would overflow
-  if (left + dropdownRect.width > viewportWidth - 20) {
-    left = viewportWidth - dropdownRect.width - 20;
+  // Right-align dropdown with button if specified or if button is on right side of screen
+  const alignRight = options.alignRight || (btnRect.right > viewportWidth * 0.7);
+  
+  if (alignRight) {
+    // Align right edge of dropdown with right edge of button
+    left = btnRect.right - dropdownRect.width;
   }
   
-  // Ensure doesn't go off left edge
+  // Adjust horizontal if would overflow left
   if (left < 20) {
     left = 20;
   }
   
+  // Adjust horizontal if would overflow right (only if not right-aligned)
+  if (!alignRight && left + dropdownRect.width > viewportWidth - 20) {
+    left = viewportWidth - dropdownRect.width - 20;
+  }
 
   dropdown.style.setProperty('top', `${top}px`, 'important');
   dropdown.style.setProperty('left', `${left}px`, 'important');
@@ -548,7 +555,7 @@ function showAuthModal() {
   
   const content = `
     <div class="drift-dropdown-header">
-      <h2>Welcome to Drift</h2>
+      <h2>Sign up and submit serendipity for others to discover!</h2>
       <button id="drift-auth-close" class="drift-close-btn">${icons.x}</button>
     </div>
     <div class="drift-tabs">
