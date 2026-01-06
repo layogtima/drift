@@ -100,8 +100,7 @@ function createToolbar() {
   if (currentUser && (currentUser.role === 'mod' || currentUser.role === 'admin')) {
     toolbarHTML += `
       <button id="drift-approval-mode-btn" class="${approvalMode ? 'active' : ''}" title="Toggle Approval Mode">
-        <span class="drift-icon">${icons.check}</span>
-        <span>${approvalMode ? 'Approval ON' : 'Approval Mode'}</span>
+        <span>${approvalMode ? 'Approval Mode ON' : 'Approval Mode OFF'}</span>
         ${pendingCount > 0 ? `<span class="drift-badge">${pendingCount}</span>` : ''}
       </button>
     `;
@@ -286,16 +285,14 @@ function toggleApprovalMode() {
   if (approvalMode) {
     btn.classList.add('active');
     btn.innerHTML = `
-      <span class="drift-icon">${icons.check}</span>
-      <span>Approval ON</span>
+      <span>Approval Mode ON</span>
       ${pendingCount > 0 ? `<span class="drift-badge">${pendingCount}</span>` : ''}
     `;
     showNotification('🔍 Approval Mode: Only pending URLs will be shown');
   } else {
     btn.classList.remove('active');
     btn.innerHTML = `
-      <span class="drift-icon">${icons.check}</span>
-      <span>Approval Mode</span>
+      <span>Approval Mode OFF</span>
       ${pendingCount > 0 ? `<span class="drift-badge">${pendingCount}</span>` : ''}
     `;
     showNotification('✨ Normal Mode: Random URLs from all categories');
@@ -773,19 +770,6 @@ function showNotification(message) {
   const notification = document.createElement('div');
   notification.className = 'drift-notification';
   notification.textContent = message;
-  notification.style.cssText = `
-    position: fixed;
-    top: 70px;
-    right: 20px;
-    background: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 4px;
-    font-family: 'Karla', sans-serif;
-    font-size: 14px;
-    z-index: 2147483647;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  `;
   document.body.appendChild(notification);
 
   setTimeout(() => notification.remove(), 3000);
