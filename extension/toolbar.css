@@ -45,6 +45,10 @@ body[data-theme="dark"] {
   /* Keep accent colors the same - they work in both themes */
 }
 
+#drift-toolbar .hidden {
+  display: none !important;
+}
+
 /* Toolbar Container - Full Width Bar */
 #drift-toolbar {
   all: initial !important;
@@ -258,8 +262,8 @@ body[data-theme="dark"] #drift-category-select {
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
 
-/* Share Button */
-#drift-share-btn.copied {
+/* Copy Button */
+#drift-copy-btn.copied, #drift-copy-btn:hover.copied {
   background-color: var(--drift-success) !important;
   border-color: var(--drift-success) !important;
   color: var(--drift-bg) !important;
@@ -384,7 +388,7 @@ body[data-theme="dark"] #drift-category-select {
 .drift-dropdown-header h2 {
   all: initial !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
-  font-size: 24px !important;
+  font-size: 16px !important;
   font-weight: 400 !important;
   font-style: italic !important;
   color: var(--drift-text) !important;

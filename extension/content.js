@@ -58,7 +58,7 @@ const icons = {
   shuffle: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.--><path d="M288 112C301.3 112 312 101.3 312 88C312 74.7 301.3 64 288 64C274.7 64 264 74.7 264 88C264 101.3 274.7 112 288 112zM288 32C318.9 32 344 57.1 344 88C344 118.9 318.9 144 288 144C257.1 144 232 118.9 232 88C232 57.1 257.1 32 288 32zM288 208C274.7 208 264 218.7 264 232L264 336.4C264 351.4 271 365.4 282.8 374.5L312 396.8L312 232C312 218.7 301.3 208 288 208zM344 421.3L372.7 443.2C389.6 456.1 400.6 475.1 403.4 496.2L415.9 589.9C417.1 598.7 410.9 606.7 402.2 607.9C393.5 609.1 385.4 602.9 384.2 594.2L371.7 500.5C370 487.9 363.4 476.4 353.3 468.7L263.5 400C243.7 384.9 232.1 361.4 232.1 336.5L232 232C232 201.1 257.1 176 288 176C313.5 176 337.1 189.7 349.8 211.8L379.5 263.8C388 278.8 404 288 421.2 288L480.1 288L480.1 176C480.1 167.2 487.3 160 496.1 160C504.9 160 512.1 167.2 512.1 176L512.1 592C512.1 600.8 504.9 608 496.1 608C487.3 608 480.1 600.8 480.1 592L480.1 320L421.2 320C392.5 320 366 304.6 351.7 279.7L344 266.3L344 421.3zM229.2 475.7L239.8 438.5L266.5 461.4L259.9 484.5C256.2 497.6 249.2 509.5 239.5 519.1L155.3 603.3C149.1 609.5 138.9 609.5 132.7 603.3C126.5 597.1 126.5 586.9 132.7 580.7L217 496.4C222.8 490.6 227 483.5 229.2 475.6zM160 192C142.3 192 128 206.3 128 224L128 320L160 320L160 192zM96 224C96 188.7 124.7 160 160 160C177.7 160 192 174.3 192 192L192 320C192 337.7 177.7 352 160 352L128 352C110.3 352 96 337.7 96 320L96 224z"/></svg>',
   thumbsUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>',
   thumbsDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"/></svg>',
-  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>',
+  share: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.--><path d="M256 128C256 110.3 270.3 96 288 96L420.1 96C428.6 96 436.7 99.4 442.7 105.4L502.6 165.3C508.6 171.3 512 179.4 512 187.9L512 384C512 401.7 497.7 416 480 416L288 416C270.3 416 256 401.7 256 384L256 128zM288 64C252.7 64 224 92.7 224 128L224 384C224 419.3 252.7 448 288 448L480 448C515.3 448 544 419.3 544 384L544 187.9C544 170.9 537.3 154.6 525.3 142.6L465.4 82.7C453.4 70.7 437.1 64 420.1 64L288 64zM160 192C124.7 192 96 220.7 96 256L96 512C96 547.3 124.7 576 160 576L352 576C387.3 576 416 547.3 416 512L416 496L384 496L384 512C384 529.7 369.7 544 352 544L160 544C142.3 544 128 529.7 128 512L128 256C128 238.3 142.3 224 160 224L176 224L176 192L160 192z"/></svg>',
   settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
   chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
@@ -117,15 +117,15 @@ function createToolbar() {
     `;
   } else {
     toolbarHTML += `
-      <button id="drift-login-btn" title="Login">
+      <button id="drift-login-btn" title="Sign in">
         <span class="drift-icon">${icons.user}</span>
-        <span>Login</span>
+        <span>Sign in</span>
       </button>
     `;
   }
 
   toolbarHTML += `
-    <button id="drift-share-btn" title="Share this page">
+    <button id="drift-copy-btn" title="Copy page URL">
       <span class="drift-icon">${icons.share}</span>
     </button>
     <span class="hidden" id="drift-stats">Sites: ${stats.totalDrifts}</span>
@@ -157,7 +157,7 @@ function createToolbar() {
   if (submitBtn) submitBtn.addEventListener('click', handleSubmitClick);
   document.getElementById('drift-like-btn').addEventListener('click', handleLike);
   document.getElementById('drift-dislike-btn').addEventListener('click', handleDislike);
-  document.getElementById('drift-share-btn').addEventListener('click', handleShare);
+  document.getElementById('drift-copy-btn').addEventListener('click', handleCopy);
   document.getElementById('drift-settings-btn').addEventListener('click', openSettingsPopup);
   document.getElementById('drift-collapse-btn').addEventListener('click', toggleToolbar);
   pullTab.addEventListener('click', toggleToolbar);
@@ -365,29 +365,42 @@ async function handleDislike() {
   updateStats();
 }
 
-// Handle Share button
-async function handleShare() {
+// Handle Copy button - copy current URL to clipboard
+async function handleCopy() {
   const currentUrl = window.location.href;
-  const btn = document.getElementById('drift-share-btn');
+  const btn = document.getElementById('drift-copy-btn');
 
   try {
-    if (navigator.share) {
-      await navigator.share({
-        title: document.title,
-        url: currentUrl
-      });
-    } else {
-      await navigator.clipboard.writeText(currentUrl);
+    await navigator.clipboard.writeText(currentUrl);
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="drift-icon">' + icons.check + '</span>';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = originalHTML;
+      btn.classList.remove('copied');
+    }, 2000);
+  } catch (error) {
+    console.error('Copy failed:', error);
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = currentUrl;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
       const originalHTML = btn.innerHTML;
-      btn.innerHTML = 'Copied!';
+      btn.innerHTML = '<span class="drift-icon">' + icons.check + '</span>';
       btn.classList.add('copied');
       setTimeout(() => {
         btn.innerHTML = originalHTML;
         btn.classList.remove('copied');
       }, 2000);
+    } catch (err) {
+      console.error('Fallback copy failed:', err);
     }
-  } catch (error) {
-    console.error('Share failed:', error);
+    document.body.removeChild(textarea);
   }
 }
 
@@ -561,21 +574,21 @@ function showAuthModal() {
       <button id="drift-auth-close" class="drift-close-btn">${icons.x}</button>
     </div>
     <div class="drift-tabs">
-      <button id="drift-tab-login" class="drift-tab active">Login</button>
-      <button id="drift-tab-register" class="drift-tab">Register</button>
+      <button id="drift-tab-login" class="drift-tab active">Sign in</button>
+      <button id="drift-tab-register" class="drift-tab">Sign up</button>
     </div>
     <div id="drift-login-form" class="drift-auth-form">
       <input type="email" id="drift-login-email" placeholder="Email" />
       <input type="password" id="drift-login-password" placeholder="Password" />
       <div id="drift-login-error" class="drift-error"></div>
-      <button id="drift-login-submit" class="drift-primary-btn">Login</button>
+      <button id="drift-login-submit" class="drift-primary-btn">Sign in</button>
     </div>
     <div id="drift-register-form" class="drift-auth-form" style="display: none;">
       <input type="email" id="drift-register-email" placeholder="Email" />
       <input type="text" id="drift-register-username" placeholder="Username" />
       <input type="password" id="drift-register-password" placeholder="Password (8+ chars)" />
       <div id="drift-register-error" class="drift-error"></div>
-      <button id="drift-register-submit" class="drift-primary-btn">Register</button>
+      <button id="drift-register-submit" class="drift-primary-btn">Sign up</button>
     </div>
   `;
   
@@ -723,7 +736,7 @@ function showUserMenu() {
     <div class="drift-user-info">
       <p><strong>Role:</strong> ${currentUser.role}</p>
       ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `<p><strong>Pending URLs:</strong> ${pendingCount}</p>` : ''}
-      <button id="drift-logout-btn" class="drift-secondary-btn">Logout</button>
+      <button id="drift-logout-btn" class="drift-secondary-btn">Sign out</button>
     </div>
   `;
   
