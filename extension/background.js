@@ -1,90 +1,365 @@
 // Drift Background Service Worker
-// Handles URL database fetching and message passing
+// Handles URL database fetching from API and message passing
 
-// Default URL database (embedded fallback)
+import { getAuthToken, getCurrentUser, login, register, logout } from './auth.js';
+
+const API_BASE_URL = 'http://localhost:8787/api'; // Change to 'https://drift.surf/api' for production
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
 let urlDatabase = null;
+let cacheTimestamp = null;
 
-// Fetch URL database from drift.surf (or local for development)
+// Fetch URL database from API
 async function fetchUrlDatabase() {
   try {
-    // For MVP, use local database
-    const response = await fetch(chrome.runtime.getURL('data/urls.json'));
-    urlDatabase = await response.json();
-    console.log('✅ Drift: URL database loaded', urlDatabase.version);
+    console.log('🌊 Drift: Fetching URLs from API...');
+
+    // Get auth token (optional - works without auth too)
+    const token = await getAuthToken();
+
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/urls`, { headers });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Transform API response to match expected format
+    urlDatabase = {
+      urls: data.urls,
+      pendingCount: data.pendingCount || 0,
+      user: data.user || null,
+      version: '3.0',
+      lastUpdated: new Date().toISOString()
+    };
+
+    // Cache the response
+    cacheTimestamp = Date.now();
+    await chrome.storage.local.set({
+      urlCache: urlDatabase,
+      cacheTimestamp: cacheTimestamp
+    });
+
+    console.log(`✅ Drift: Loaded ${urlDatabase.urls.length} URLs from API`);
+    if (urlDatabase.user) {
+      console.log(`👤 Logged in as: ${urlDatabase.user.username} (${urlDatabase.user.role})`);
+    }
+
     return urlDatabase;
   } catch (error) {
-    console.error('❌ Drift: Failed to load URL database', error);
+    console.error('❌ Drift: API fetch failed:', error);
+
+    // Try to use cached data
+    const cached = await chrome.storage.local.get(['urlCache', 'cacheTimestamp']);
+    if (cached.urlCache && cached.cacheTimestamp) {
+      console.log('📦 Drift: Using cached data');
+      urlDatabase = cached.urlCache;
+      cacheTimestamp = cached.cacheTimestamp;
+      return urlDatabase;
+    }
+
+    // Fallback to local JSON file
+    console.log('📄 Drift: Falling back to local database');
+    return await fetchLocalDatabase();
+  }
+}
+
+// Fallback: Load local JSON database
+async function fetchLocalDatabase() {
+  try {
+    const response = await fetch(chrome.runtime.getURL('data/urls.json'));
+    const data = await response.json();
+
+    // Transform legacy format to new format
+    const urls = [];
+    Object.entries(data.categories || {}).forEach(([category, categoryUrls]) => {
+      if (category !== 'all') {
+        categoryUrls.forEach(item => {
+          urls.push({
+            id: urls.length + 1,
+            url: item.url,
+            title: item.title,
+            description: item.description,
+            tags: [category],
+            status: 'live',
+            submitter_id: null
+          });
+        });
+      }
+    });
+
+    urlDatabase = {
+      urls,
+      pendingCount: 0,
+      user: null,
+      version: data.version || '2.0',
+      lastUpdated: data.lastUpdated
+    };
+
+    console.log(`✅ Drift: Loaded ${urls.length} URLs from local fallback`);
+    return urlDatabase;
+  } catch (error) {
+    console.error('❌ Drift: Failed to load local database', error);
     return null;
   }
 }
 
-// Get random URL from category
-function getRandomUrl(category = 'all', excludeUrls = []) {
-  if (!urlDatabase) return null;
-
-  let urls = [];
-  
-  // If "all" category, collect from all categories
-  if (category === 'all') {
-    Object.keys(urlDatabase.categories).forEach(cat => {
-      if (cat !== 'all') {
-        urls = urls.concat(urlDatabase.categories[cat]);
-      }
-    });
-  } else {
-    urls = urlDatabase.categories[category] || [];
-  }
-
-  // Filter out already-seen URLs
-  const unseenUrls = urls.filter(item => !excludeUrls.includes(item.url));
-  
-  // If all URLs seen, reset and use all URLs
-  const availableUrls = unseenUrls.length > 0 ? unseenUrls : urls;
-  
-  // Pick random URL
-  if (availableUrls.length === 0) return null;
-  const randomIndex = Math.floor(Math.random() * availableUrls.length);
-  return availableUrls[randomIndex];
+// Check if cache is valid
+function isCacheValid() {
+  if (!cacheTimestamp || !urlDatabase) return false;
+  return (Date.now() - cacheTimestamp) < CACHE_DURATION;
 }
 
-// Apply category weights for frequency algorithm
-function getWeightedRandomUrl(category, categoryWeights, excludeUrls) {
-  // If specific category requested, just get from that category
-  if (category !== 'all') {
-    return getRandomUrl(category, excludeUrls);
+// Get URLs with refresh if needed
+async function getUrls() {
+  if (!urlDatabase || !isCacheValid()) {
+    await fetchUrlDatabase();
+  }
+  return urlDatabase;
+}
+
+// Get random URL
+function getRandomUrl(excludeUrls = [], approvalMode = false) {
+  if (!urlDatabase || !urlDatabase.urls) return null;
+
+  // If in approval mode, only show pending URLs
+  if (approvalMode) {
+    const pendingUrls = urlDatabase.urls.filter(item => {
+      if (excludeUrls.includes(item.url)) return false;
+      return item.status === 'pending';
+    });
+
+    if (pendingUrls.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * pendingUrls.length);
+    return pendingUrls[randomIndex];
   }
 
-  // For "all", apply category weights
-  const categories = Object.keys(urlDatabase.categories).filter(cat => cat !== 'all');
-  const weightedCategories = [];
+  // Normal mode: Filter to only live URLs (or pending if user submitted them)
+  const availableUrls = urlDatabase.urls.filter(item => {
+    // Don't show URLs that have been seen
+    if (excludeUrls.includes(item.url)) return false;
 
-  categories.forEach(cat => {
-    const weight = categoryWeights[cat] || 1.0;
-    const count = Math.round(weight * 10); // Convert weight to count
-    for (let i = 0; i < count; i++) {
-      weightedCategories.push(cat);
+    // Show live URLs
+    if (item.status === 'live') return true;
+
+    // Show pending URLs if user is mod/admin or if they submitted it
+    if (item.status === 'pending') {
+      if (urlDatabase.user) {
+        return urlDatabase.user.role === 'mod' ||
+               urlDatabase.user.role === 'admin' ||
+               item.submitter_id === urlDatabase.user.id;
+      }
     }
+
+    return false;
   });
 
-  // Pick random weighted category
-  const randomCat = weightedCategories[Math.floor(Math.random() * weightedCategories.length)];
-  return getRandomUrl(randomCat, excludeUrls);
+  // If all URLs seen, reset and use all available
+  const urlsToChooseFrom = availableUrls.length > 0 ? availableUrls : urlDatabase.urls.filter(item => item.status === 'live');
+
+  if (urlsToChooseFrom.length === 0) return null;
+
+  const randomIndex = Math.floor(Math.random() * urlsToChooseFrom.length);
+  return urlsToChooseFrom[randomIndex];
 }
 
 // Message listener from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getDriftUrl') {
-    const { category, categoryWeights, excludeUrls } = request;
-    const url = getWeightedRandomUrl(category, categoryWeights, excludeUrls);
-    sendResponse({ url });
+    (async () => {
+      console.log('[Drift BG] getDriftUrl request received');
+      await getUrls(); // Ensure URLs are loaded
+      console.log('[Drift BG] URL database loaded:', urlDatabase ? `${urlDatabase.urls?.length} URLs` : 'null');
+      const { excludeUrls, approvalMode } = request;
+      console.log('[Drift BG] Approval mode:', approvalMode);
+      const url = getRandomUrl(excludeUrls, approvalMode);
+      console.log('[Drift BG] Random URL selected:', url);
+      sendResponse({ url, user: urlDatabase?.user, pendingCount: urlDatabase?.pendingCount });
+    })();
+    return true; // Keep channel open for async response
   }
-  
-  if (request.action === 'getCategories') {
-    const categories = urlDatabase ? Object.keys(urlDatabase.categories) : [];
-    sendResponse({ categories });
+
+  if (request.action === 'refreshUrls') {
+    (async () => {
+      cacheTimestamp = null; // Force refresh
+      await fetchUrlDatabase();
+      sendResponse({ success: true, urlCount: urlDatabase?.urls?.length || 0 });
+    })();
+    return true;
   }
-  
-  return true; // Keep channel open for async response
+
+  if (request.action === 'submitUrl') {
+    (async () => {
+      try {
+        const token = await getAuthToken();
+        if (!token) {
+          sendResponse({ success: false, error: 'Not logged in' });
+          return;
+        }
+
+        const { url, title, tags } = request;
+
+        const response = await fetch(`${API_BASE_URL}/urls`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ url, title, tags })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          sendResponse({ success: false, error: data.error });
+          return;
+        }
+
+        // Refresh URL database
+        cacheTimestamp = null;
+        await fetchUrlDatabase();
+
+        sendResponse({ success: true, message: data.message });
+      } catch (error) {
+        console.error('Submit URL error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'approveUrl') {
+    (async () => {
+      try {
+        const token = await getAuthToken();
+        if (!token) {
+          sendResponse({ success: false, error: 'Not logged in' });
+          return;
+        }
+
+        const { urlId } = request;
+
+        const response = await fetch(`${API_BASE_URL}/urls/${urlId}/approve`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          sendResponse({ success: false, error: data.error });
+          return;
+        }
+
+        // Refresh URL database
+        cacheTimestamp = null;
+        await fetchUrlDatabase();
+
+        sendResponse({ success: true, message: data.message });
+      } catch (error) {
+        console.error('Approve URL error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'rejectUrl') {
+    (async () => {
+      try {
+        const token = await getAuthToken();
+        if (!token) {
+          sendResponse({ success: false, error: 'Not logged in' });
+          return;
+        }
+
+        const { urlId } = request;
+
+        const response = await fetch(`${API_BASE_URL}/urls/${urlId}/reject`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          sendResponse({ success: false, error: data.error });
+          return;
+        }
+
+        // Refresh URL database
+        cacheTimestamp = null;
+        await fetchUrlDatabase();
+
+        sendResponse({ success: true, message: data.message });
+      } catch (error) {
+        console.error('Reject URL error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  // Auth actions
+  if (request.action === 'login') {
+    (async () => {
+      console.log('[Drift BG] Login request received:', request.email);
+      try {
+        const result = await login(request.email, request.password);
+        console.log('[Drift BG] Login result:', result);
+        sendResponse(result);
+      } catch (error) {
+        console.error('[Drift BG] Login error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'register') {
+    (async () => {
+      console.log('[Drift BG] Register request received:', request.email, request.username);
+      try {
+        const result = await register(request.email, request.username, request.password);
+        console.log('[Drift BG] Register result:', result);
+        sendResponse(result);
+      } catch (error) {
+        console.error('[Drift BG] Register error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'logout') {
+    (async () => {
+      console.log('[Drift BG] Logout request received');
+      try {
+        await logout();
+        sendResponse({ success: true });
+      } catch (error) {
+        console.error('[Drift BG] Logout error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  return false;
 });
 
 // Keyboard command listener
@@ -100,8 +375,8 @@ chrome.commands.onCommand.addListener((command) => {
 chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install') {
     console.log('🌊 Drift installed! Welcome aboard.');
-    
-    // Initialize localStorage defaults
+
+    // Initialize localStorage defaults (remove categoryWeights)
     chrome.storage.local.set({
       driftHistory: [],
       stats: {
@@ -111,22 +386,12 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       },
       preferences: {
         openInNewTab: false,
-        toolbarPosition: 'top',
-        defaultCategory: 'all'
-      },
-      categoryWeights: {
-        technology: 1.0,
-        science: 1.0,
-        design: 1.0,
-        art: 1.0,
-        weird: 1.0,
-        diy: 1.0,
-        philosophy: 1.0
+        toolbarPosition: 'top'
       },
       firstRun: true
     });
   }
-  
+
   // Load URL database
   await fetchUrlDatabase();
 });

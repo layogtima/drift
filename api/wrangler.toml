@@ -1,0 +1,18 @@
+name = "drift-api"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "drift-db"
+database_id = "80daea29-9b02-46ca-bd47-8fbe0b512ec0"
+
+# CORS settings
+[vars]
+ALLOWED_ORIGINS = "https://drift.surf,chrome-extension://*"
+
+# Routes - deploy to drift.surf/api/*
+routes = [
+  { pattern = "drift.surf/api/*", zone_name = "drift.surf" }
+]
