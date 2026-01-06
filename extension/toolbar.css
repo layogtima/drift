@@ -52,7 +52,7 @@ body[data-theme="dark"] {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  height: 48px !important;
+  height: auto !important;
   background-color: var(--drift-bg) !important;
   border-bottom: 1px solid var(--drift-border) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
@@ -60,8 +60,8 @@ body[data-theme="dark"] {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px !important;
-  padding: 0 6px !important;
+  gap: 0 !important;
+  padding: 0 0px !important;
   font-family: 'Karla', sans-serif !important;
   font-size: 14px !important;
   color: var(--drift-text) !important;
@@ -121,10 +121,10 @@ body[data-theme="dark"] {
 #drift-toolbar button {
   all: initial !important;
   font-family: 'Karla', sans-serif !important;
-  padding: 7px 14px !important;
-  border: 1px solid transparent !important;
-  border-radius: 4px !important;
-  background-color: var(--drift-bg-elevated) !important;
+  padding: 12.5px 15px !important;
+  border: 1px solid var(--drift-bg-elevated) !important;
+  border-radius: 0 !important;
+  background-color: transparent!important;
   color: var(--drift-text) !important;
   cursor: pointer !important;
   font-size: 14px !important;
@@ -145,7 +145,6 @@ body[data-theme="dark"] {
 
 #drift-toolbar button:hover {
   background-color: var(--drift-bg-elevated) !important;
-  border-color: var(--drift-border) !important;
 }
 
 #drift-toolbar button:active {
@@ -156,14 +155,12 @@ body[data-theme="dark"] {
 #drift-btn {
   background-color: var(--drift-primary) !important;
   color: var(--drift-bg) !important;
-  border-color: var(--drift-primary) !important;
   font-weight: 600 !important;
   padding: 7px 18px !important;
 }
 
 #drift-btn:hover {
   background-color: var(--drift-primary-hover) !important;
-  border-color: var(--drift-primary-hover) !important;
 }
 
 /* Icon spacing inside buttons */
@@ -202,22 +199,20 @@ body[data-theme="dark"] {
 /* Like/Dislike Buttons */
 #drift-like-btn:hover {
   background-color: var(--drift-success) !important;
-  border-color: var(--drift-success) !important;
 }
 
 #drift-dislike-btn:hover {
   background-color: var(--drift-danger) !important;
-  border-color: var(--drift-danger) !important;
 }
 
-#drift-like-btn.active {
+#drift-like-btn.active, #drift-like-btn.active:hover {
   background-color: var(--drift-success) !important;
-  border-color: var(--drift-success) !important;
+  color: var(--sol-base3) !important;
 }
 
-#drift-dislike-btn.active {
+#drift-dislike-btn.active, #drift-dislike-btn.active:hover {
   background-color: var(--drift-danger) !important;
-  border-color: var(--drift-danger) !important;
+  color: var(--sol-base3) !important;
 }
 
 /* Category Dropdown */
