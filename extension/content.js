@@ -136,7 +136,12 @@ function createToolbar() {
     </button>
   `;
 
-  toolbar.innerHTML = toolbarHTML;
+  toolbar.innerHTML = `
+    <div class="drift-toolbar-main">
+      ${toolbarHTML}
+    </div>
+    <div class="drift-action-bar" id="drift-action-bar"></div>
+  `;
 
   // Create pull-down tab
   const pullTab = document.createElement('div');
@@ -816,12 +821,18 @@ async function handleLogout() {
 
 // Show notification
 function showNotification(message) {
-  const notification = document.createElement('div');
-  notification.className = 'drift-notification';
-  notification.textContent = message;
-  document.body.appendChild(notification);
-
-  setTimeout(() => notification.remove(), 3000);
+  const content = `
+    <div class="drift-approval-content">
+      <p style="margin: 0 !important;">${message}</p>
+    </div>
+  `;
+  
+  showActionBar(content);
+  
+  // Auto-hide after 3 seconds
+  setTimeout(() => {
+    hideActionBar();
+  }, 3000);
 }
 
 // Check if current URL is pending and show approval overlay
@@ -870,13 +881,37 @@ function showPendingBanner() {
   document.body.appendChild(banner);
 }
 
+// Show action bar with content (for approval or notifications)
+function showActionBar(content) {
+  const actionBar = document.getElementById('drift-action-bar');
+  if (!actionBar) return;
+  
+  actionBar.innerHTML = content;
+  actionBar.classList.add('visible');
+  
+  // Adjust page margin based on toolbar height
+  const toolbar = document.getElementById('drift-toolbar');
+  if (toolbar) {
+    const height = toolbar.offsetHeight;
+    document.body.style.marginTop = `${height}px`;
+  }
+}
+
+// Hide action bar
+function hideActionBar() {
+  const actionBar = document.getElementById('drift-action-bar');
+  if (!actionBar) return;
+  
+  actionBar.classList.remove('visible');
+  actionBar.innerHTML = '';
+  
+  // Reset page margin to just toolbar main row
+  document.body.style.marginTop = '48px';
+}
+
 function showApprovalOverlay(urlData) {
-  // Don't open if already open
-  if (document.getElementById('drift-approval-overlay')) return;
-  const overlay = document.createElement('div');
-  overlay.id = 'drift-approval-overlay';
-  // Initial HTML with loading states
-  overlay.innerHTML = `
+  // HTML content for action bar
+  const content = `
     <div class="drift-approval-content">
       <h3>Pending Submission</h3>
       <div class="drift-approval-info">
@@ -897,10 +932,8 @@ function showApprovalOverlay(urlData) {
       </button>
     </div>
   `;
-  document.body.appendChild(overlay);
   
-  // Adjust page content margin to accommodate both bars
-  document.body.style.marginTop = '96px'; // 48px toolbar + 48px approval bar
+  showActionBar(content);
   
   // Fetch submitter username
   if (urlData.submitter_username) {
@@ -964,9 +997,7 @@ function handleApproveUrl(urlId, tagIds = []) {
     { action: 'approveUrl', urlId, tagIds },
     (response) => {
       if (response.success) {
-        document.getElementById('drift-approval-overlay').remove();
-        // Restore page margin
-        document.body.style.marginTop = '48px';
+        hideActionBar();
         // Clear the pending URL from storage
         chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL approved!');
@@ -982,9 +1013,7 @@ function handleRejectUrl(urlId) {
     { action: 'rejectUrl', urlId },
     (response) => {
       if (response.success) {
-        document.getElementById('drift-approval-overlay').remove();
-        // Restore page margin
-        document.body.style.marginTop = '48px';
+        hideActionBar();
         // Clear the pending URL from storage
         chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL rejected');
