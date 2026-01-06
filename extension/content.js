@@ -437,51 +437,134 @@ function openSettingsPopup() {
   setTimeout(() => tooltip.remove(), 3000);
 }
 
-// Show auth modal
+// Global Dropdown Utilities
+let activeDropdown = null;
+
+function createDropdown(triggerBtn, content, options = {}) {
+  // Close any existing dropdown
+  closeAllDropdowns();
+
+  // Create backdrop
+  const backdrop = document.createElement('div');
+  backdrop.className = 'drift-dropdown-backdrop';
+  
+  // Create dropdown
+  const dropdown = document.createElement('div');
+  dropdown.className = 'drift-dropdown';
+  dropdown.innerHTML = content;
+  
+  // Position dropdown
+  document.body.appendChild(backdrop);
+  document.body.appendChild(dropdown);
+  
+  // Calculate position after DOM insertion so dimensions are available
+  requestAnimationFrame(() => {
+    positionDropdown(dropdown, triggerBtn, options);
+  });
+  
+  // Store reference
+  activeDropdown = { dropdown, backdrop };
+  
+  // Close on backdrop click
+  backdrop.addEventListener('click', closeAllDropdowns);
+  
+  // Close on Escape
+  const escapeHandler = (e) => {
+    if (e.key === 'Escape') {
+      closeAllDropdowns();
+      document.removeEventListener('keydown', escapeHandler);
+    }
+  };
+  document.addEventListener('keydown', escapeHandler);
+  
+  return dropdown;
+}
+
+function positionDropdown(dropdown, triggerBtn, options = {}) {
+  const btnRect = triggerBtn.getBoundingClientRect();
+  const dropdownRect = dropdown.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const viewportWidth = window.innerWidth;
+  
+  let top = btnRect.bottom + 8; // 8px gap below button
+  let left = btnRect.left;
+  
+  // Only flip to above if:
+  // 1. Not enough space below
+  // 2. AND there IS enough space above
+  // 3. AND button is not at the very top (prevents negative positioning)
+  const spaceBelow = viewportHeight - btnRect.bottom;
+  const spaceAbove = btnRect.top;
+  
+  if (spaceBelow < dropdownRect.height + 20 && spaceAbove > dropdownRect.height + 20) {
+    top = btnRect.top - dropdownRect.height - 8;
+  }
+  
+  // Ensure dropdown never goes above viewport
+  if (top < 0) {
+    top = btnRect.bottom + 8; // Force it below
+  }
+  
+  // Adjust horizontal if would overflow
+  if (left + dropdownRect.width > viewportWidth - 20) {
+    left = viewportWidth - dropdownRect.width - 20;
+  }
+  
+  // Ensure doesn't go off left edge
+  if (left < 20) {
+    left = 20;
+  }
+  
+
+  dropdown.style.setProperty('top', `${top}px`, 'important');
+  dropdown.style.setProperty('left', `${left}px`, 'important');
+}
+
+function closeAllDropdowns() {
+  if (activeDropdown) {
+    activeDropdown.dropdown.remove();
+    activeDropdown.backdrop.remove();
+    activeDropdown = null;
+  }
+}
+
+// Show auth dropdown
 function showAuthModal() {
-  // Create modal
-  const modal = document.createElement('div');
-  modal.id = 'drift-auth-modal';
-  modal.className = 'drift-modal';
-  modal.innerHTML = `
-    <div class="drift-modal-content">
-      <div class="drift-modal-header">
-        <h2>Welcome to Drift</h2>
-        <button id="drift-auth-close" class="drift-close-btn">${icons.x}</button>
-      </div>
-      <div class="drift-tabs">
-        <button id="drift-tab-login" class="drift-tab active">Login</button>
-        <button id="drift-tab-register" class="drift-tab">Register</button>
-      </div>
-      <div id="drift-login-form" class="drift-auth-form">
-        <input type="email" id="drift-login-email" placeholder="Email" />
-        <input type="password" id="drift-login-password" placeholder="Password" />
-        <div id="drift-login-error" class="drift-error"></div>
-        <button id="drift-login-submit" class="drift-primary-btn">Login</button>
-      </div>
-      <div id="drift-register-form" class="drift-auth-form" style="display: none;">
-        <input type="email" id="drift-register-email" placeholder="Email" />
-        <input type="text" id="drift-register-username" placeholder="Username" />
-        <input type="password" id="drift-register-password" placeholder="Password (8+ chars)" />
-        <div id="drift-register-error" class="drift-error"></div>
-        <button id="drift-register-submit" class="drift-primary-btn">Register</button>
-      </div>
+  const triggerBtn = document.getElementById('drift-login-btn');
+  if (!triggerBtn) return;
+  
+  const content = `
+    <div class="drift-dropdown-header">
+      <h2>Welcome to Drift</h2>
+      <button id="drift-auth-close" class="drift-close-btn">${icons.x}</button>
+    </div>
+    <div class="drift-tabs">
+      <button id="drift-tab-login" class="drift-tab active">Login</button>
+      <button id="drift-tab-register" class="drift-tab">Register</button>
+    </div>
+    <div id="drift-login-form" class="drift-auth-form">
+      <input type="email" id="drift-login-email" placeholder="Email" />
+      <input type="password" id="drift-login-password" placeholder="Password" />
+      <div id="drift-login-error" class="drift-error"></div>
+      <button id="drift-login-submit" class="drift-primary-btn">Login</button>
+    </div>
+    <div id="drift-register-form" class="drift-auth-form" style="display: none;">
+      <input type="email" id="drift-register-email" placeholder="Email" />
+      <input type="text" id="drift-register-username" placeholder="Username" />
+      <input type="password" id="drift-register-password" placeholder="Password (8+ chars)" />
+      <div id="drift-register-error" class="drift-error"></div>
+      <button id="drift-register-submit" class="drift-primary-btn">Register</button>
     </div>
   `;
-
-  document.body.appendChild(modal);
-
+  
+  const dropdown = createDropdown(triggerBtn, content);
+  
   // Add event listeners
-  document.getElementById('drift-auth-close').addEventListener('click', () => modal.remove());
+  document.getElementById('drift-auth-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-tab-login').addEventListener('click', () => switchAuthTab('login'));
   document.getElementById('drift-tab-register').addEventListener('click', () => switchAuthTab('register'));
   document.getElementById('drift-login-submit').addEventListener('click', handleLogin);
   document.getElementById('drift-register-submit').addEventListener('click', handleRegister);
-
-  // Close on outside click
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.remove();
-  });
 }
 
 function switchAuthTab(tab) {
@@ -514,7 +597,7 @@ async function handleLogin() {
     (response) => {
       if (response.success) {
         currentUser = response.user;
-        document.getElementById('drift-auth-modal').remove();
+        closeAllDropdowns();
         location.reload(); // Reload to update toolbar
       } else {
         errorEl.textContent = response.error;
@@ -543,7 +626,7 @@ async function handleRegister() {
       console.log('[Drift] Register response:', response);
       if (response && response.success) {
         currentUser = response.user;
-        document.getElementById('drift-auth-modal').remove();
+        closeAllDropdowns();
         location.reload();
       } else {
         errorEl.textContent = response ? response.error : 'No response from background script';
@@ -552,37 +635,28 @@ async function handleRegister() {
   );
 }
 
-// Show submit modal
+// Show submit dropdown
 function showSubmitModal() {
-  const modal = document.createElement('div');
-  modal.id = 'drift-submit-modal';
-  modal.className = 'drift-modal';
-  modal.innerHTML = `
-    <div class="drift-modal-content">
-      <div class="drift-modal-header">
-        <h2>Submit URL</h2>
-        <button id="drift-submit-close" class="drift-close-btn">${icons.x}</button>
-      </div>
-      <div class="drift-submit-form">
-        <label>URL</label>
-        <input type="url" id="drift-submit-url" value="${window.location.href}" />
-        <label>Title</label>
-        <input type="text" id="drift-submit-title" value="${document.title}" />
-        <label>Tags (comma-separated)</label>
-        <input type="text" id="drift-submit-tags" placeholder="e.g., technology, ai, tools" />
-        <div id="drift-submit-error" class="drift-error"></div>
-        <button id="drift-submit-submit" class="drift-primary-btn">Submit for Review</button>
-      </div>
+  const triggerBtn = document.getElementById('drift-submit-btn');
+  if (!triggerBtn) return;
+  
+  const content = `
+    <div class="drift-submit-form">
+      <label>URL</label>
+      <input type="url" id="drift-submit-url" value="${window.location.href}" />
+      <label>Title</label>
+      <input type="text" id="drift-submit-title" value="${document.title}" />
+      <label>Tags (comma-separated)</label>
+      <input type="text" id="drift-submit-tags" placeholder="e.g., technology, ai, tools" />
+      <div id="drift-submit-error" class="drift-error"></div>
+      <button id="drift-submit-submit" class="drift-primary-btn">Submit for Review</button>
     </div>
   `;
-
-  document.body.appendChild(modal);
-
-  document.getElementById('drift-submit-close').addEventListener('click', () => modal.remove());
+  
+  const dropdown = createDropdown(triggerBtn, content);
+  
+  document.getElementById('drift-submit-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-submit-submit').addEventListener('click', handleSubmitUrl);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.remove();
-  });
 }
 
 async function handleSubmitUrl() {
@@ -605,7 +679,7 @@ async function handleSubmitUrl() {
     },
     (response) => {
       if (response.success) {
-        document.getElementById('drift-submit-modal').remove();
+        closeAllDropdowns();
         showNotification('✅ URL submitted! Waiting for moderator approval.');
       } else {
         errorEl.textContent = response.error;
@@ -614,32 +688,27 @@ async function handleSubmitUrl() {
   );
 }
 
-// Show user menu
+// Show user menu dropdown
 function showUserMenu() {
-  const modal = document.createElement('div');
-  modal.id = 'drift-user-modal';
-  modal.className = 'drift-modal';
-  modal.innerHTML = `
-    <div class="drift-modal-content">
-      <div class="drift-modal-header">
-        <h2>${currentUser.username}</h2>
-        <button id="drift-user-close" class="drift-close-btn">${icons.x}</button>
-      </div>
-      <div class="drift-user-info">
-        <p><strong>Role:</strong> ${currentUser.role}</p>
-        ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `<p><strong>Pending URLs:</strong> ${pendingCount}</p>` : ''}
-        <button id="drift-logout-btn" class="drift-secondary-btn">Logout</button>
-      </div>
+  const triggerBtn = document.getElementById('drift-user-btn');
+  if (!triggerBtn) return;
+  
+  const content = `
+    <div class="drift-dropdown-header">
+      <h2>${currentUser.username}</h2>
+      <button id="drift-user-close" class="drift-close-btn">${icons.x}</button>
+    </div>
+    <div class="drift-user-info">
+      <p><strong>Role:</strong> ${currentUser.role}</p>
+      ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `<p><strong>Pending URLs:</strong> ${pendingCount}</p>` : ''}
+      <button id="drift-logout-btn" class="drift-secondary-btn">Logout</button>
     </div>
   `;
-
-  document.body.appendChild(modal);
-
-  document.getElementById('drift-user-close').addEventListener('click', () => modal.remove());
+  
+  const dropdown = createDropdown(triggerBtn, content);
+  
+  document.getElementById('drift-user-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-logout-btn').addEventListener('click', handleLogout);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.remove();
-  });
 }
 
 async function handleLogout() {

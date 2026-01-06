@@ -328,54 +328,63 @@ body[data-theme="dark"] #drift-category-select {
   }
 }
 
-/* Modal Styles */
-.drift-modal {
+/* Dropdown Styles - Replaces Modal System */
+.drift-dropdown-backdrop {
   all: initial !important;
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  background: rgba(0, 0, 0, 0.7) !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  z-index: 2147483646 !important;
-  padding-top: 100px !important;
-  overflow-y: auto !important;
-  box-sizing: border-box !important;
-  font-family: 'Karla', sans-serif !important;
+  background: transparent !important;
+  z-index: 2147483645 !important;
+  display: block !important;
 }
 
-.drift-modal-content {
+.drift-dropdown {
   all: initial !important;
+  position: fixed !important;
   background: var(--drift-bg) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  max-width: 450px !important;
-  width: 90% !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
+  border: 1px solid var(--drift-border) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  min-width: 280px !important;
+  max-width: 420px !important;
+  z-index: 2147483646 !important;
   font-family: 'Karla', sans-serif !important;
   color: var(--drift-text) !important;
   box-sizing: border-box !important;
+  opacity: 1 !important;
+  transform: translateY(-8px) !important;
+  animation: drift-dropdown-enter 0.18s ease-out forwards !important;
+  overflow: hidden !important;
 }
 
-.drift-modal-header {
+@keyframes drift-dropdown-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drift-dropdown-header {
   all: initial !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 20px 24px !important;
+  padding: 16px 20px !important;
   border-bottom: 1px solid var(--drift-border) !important;
   font-family: 'Karla', sans-serif !important;
   box-sizing: border-box !important;
 }
 
-.drift-modal-header h2 {
+.drift-dropdown-header h2 {
   all: initial !important;
   font-family: 'Karla', sans-serif !important;
-  font-size: 20px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
   color: var(--drift-text) !important;
   margin: 0 !important;
@@ -444,7 +453,7 @@ body[data-theme="dark"] #drift-category-select {
 .drift-user-info {
   all: initial !important;
   display: block !important;
-  padding: 24px !important;
+  padding: 16px !important;
   font-family: 'Karla', sans-serif !important;
   box-sizing: border-box !important;
 }
