@@ -792,15 +792,64 @@ function showUserMenu() {
   const triggerBtn = document.getElementById('drift-user-btn');
   if (!triggerBtn) return;
   
+  // Get role badge styling
+  const roleBadgeClass = currentUser.role === 'admin' ? 'drift-role-badge-admin' : 
+                         currentUser.role === 'mod' ? 'drift-role-badge-mod' : 
+                         'drift-role-badge-user';
+  
   const content = `
     <div class="drift-dropdown-header">
-      <h2>${currentUser.username}</h2>
+      <div class="drift-user-header-content">
+        <div class="drift-user-title">
+          <h2>${currentUser.username}</h2>
+          <span class="drift-role-badge ${roleBadgeClass}">${currentUser.role}</span>
+        </div>
+      </div>
       <button id="drift-user-close" class="drift-close-btn">${icons.x}</button>
     </div>
+    
     <div class="drift-user-info">
-      <p><strong>Role:</strong> ${currentUser.role}</p>
-      ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `<p><strong>Pending URLs:</strong> ${pendingCount}</p>` : ''}
-      <button id="drift-logout-btn" class="drift-secondary-btn">Sign out</button>
+      ${stats.totalDrifts > 0 || stats.totalLikes > 0 || stats.totalDislikes > 0 ? `
+        <div class="drift-user-section">
+          <div class="drift-stats-grid">
+            <div class="drift-stat-item">
+              <div class="drift-stat-icon">${icons.shuffle}</div>
+              <div class="drift-stat-content">
+                <div class="drift-stat-value">${stats.totalDrifts || 0}</div>
+                <div class="drift-stat-label">Drifts</div>
+              </div>
+            </div>
+            <div class="drift-stat-item">
+              <div class="drift-stat-icon drift-stat-icon-like">${icons.thumbsUp}</div>
+              <div class="drift-stat-content">
+                <div class="drift-stat-value">${stats.totalLikes || 0}</div>
+                <div class="drift-stat-label">Likes</div>
+              </div>
+            </div>
+            <div class="drift-stat-item">
+              <div class="drift-stat-icon drift-stat-icon-dislike">${icons.thumbsDown}</div>
+              <div class="drift-stat-content">
+                <div class="drift-stat-value">${stats.totalDislikes || 0}</div>
+                <div class="drift-stat-label">Dislikes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ` : ''}
+      
+      ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `
+        <div class="drift-user-section">
+          <h3 class="drift-section-title">Moderation</h3>
+          <div class="drift-pending-info">
+            <span class="drift-pending-icon">⏳</span>
+            <span><strong>${pendingCount}</strong> URL${pendingCount !== 1 ? 's' : ''} pending review</span>
+          </div>
+        </div>
+      ` : ''}
+      
+      <div class="drift-user-actions">
+        <button id="drift-logout-btn" class="drift-secondary-btn">Sign out</button>
+      </div>
     </div>
   `;
   

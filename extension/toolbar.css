@@ -389,7 +389,7 @@ body[data-theme="dark"] #drift-category-select {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 16px 20px !important;
+  padding: 0 !important;
   border-bottom: 1px solid var(--drift-border) !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
@@ -811,4 +811,228 @@ body[data-theme="dark"] #drift-category-select {
   width: 14px !important;
   height: 14px !important;
   display: block !important;
+}
+/* Approval Mode Button */
+#drift-approval-mode-btn {
+  background-color: transparent !important;
+  color: var(--drift-text) !important;
+  border-color: var(--drift-border) !important;
+}
+
+#drift-approval-mode-btn.active {
+  background-color: var(--drift-accent) !important;
+  color: var(--drift-bg) !important;
+  border-color: var(--drift-accent) !important;
+}
+
+/* Enhanced User Panel Styles */
+.drift-user-header-content {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex: 1 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-user-avatar {
+  all: initial !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: var(--drift-bg-elevated) !important;
+  border: 1.5px solid var(--drift-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  color: var(--drift-primary) !important;
+}
+
+.drift-user-avatar .drift-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.drift-user-title {
+  all: initial !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+}
+
+.drift-user-title h2 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Role Badges */
+.drift-role-badge {
+  all: initial !important;
+  display: inline-block !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 600 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  box-sizing: border-box !important;
+}
+
+.drift-role-badge-user {
+  background: var(--drift-bg-elevated) !important;
+  color: var(--drift-text-secondary) !important;
+  border: 1px solid var(--drift-border) !important;
+}
+
+.drift-role-badge-mod {
+  background: var(--drift-primary) !important;
+  color: var(--drift-bg) !important;
+}
+
+.drift-role-badge-admin {
+  background: var(--drift-accent) !important;
+  color: var(--drift-bg) !important;
+}
+
+/* User Panel Sections */
+.drift-user-section {
+  all: initial !important;
+  display: block !important;
+  padding: 16px 0 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-user-section:last-of-type {
+  border-bottom: none !important;
+}
+
+.drift-section-title {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 600 !important;
+  color: var(--drift-text-secondary) !important;
+  margin: 0 0 12px 0 !important;
+  display: block !important;
+}
+
+/* Stats Grid */
+.drift-stats-grid {
+  all: initial !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-stat-item {
+  all: initial !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 12px 8px !important;
+  background: var(--drift-bg-elevated) !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--drift-border) !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.drift-stat-item:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.drift-stat-icon {
+  all: initial !important;
+  color: var(--drift-primary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.drift-stat-icon svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.drift-stat-icon-like {
+  color: var(--drift-success) !important;
+}
+
+.drift-stat-icon-dislike {
+  color: var(--drift-danger) !important;
+}
+
+.drift-stat-content {
+  all: initial !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 2px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+}
+
+.drift-stat-value {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: var(--drift-text) !important;
+  line-height: 1 !important;
+  display: block !important;
+}
+
+.drift-stat-label {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 11px !important;
+  color: var(--drift-text-secondary) !important;
+  letter-spacing: 0.05em !important;
+  display: block !important;
+}
+
+/* Pending Info */
+.drift-pending-info {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  background: var(--drift-bg-elevated) !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--drift-border) !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text) !important;
+  box-sizing: border-box !important;
+}
+
+.drift-pending-icon {
+  all: initial !important;
+  font-size: 18px !important;
+  display: inline-block !important;
+}
+
+.drift-pending-info strong {
+  font-weight: 600 !important;
+  color: var(--drift-accent) !important;
+}
+
+/* User Actions */
+.drift-user-actions {
+  all: initial !important;
+  display: block !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
 }
