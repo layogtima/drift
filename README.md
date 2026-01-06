@@ -101,10 +101,6 @@ Created with ❤️ for the indie web by [Amit](https://layogtima.com)
 
 Inspired by the original StumbleUpon (RIP, killed by eBay)
 
-## License
-
-MIT - feel free to fork, modify, and share!
-
 ---
 
 **Visit [drift.surf](https://drift.surf) for more!**
