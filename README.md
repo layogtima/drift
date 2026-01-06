@@ -97,13 +97,9 @@ Want to add sites to the database?
 
 ## Credits
 
-Created with ❤️ for the indie web by [Amit](https://layogtima.com)
+Created with ❤️ for the indie web by [codeuncode.com](https://codeuncode.com)
 
-Inspired by the original StumbleUpon (RIP, killed by eBay)
-
-## License
-
-MIT - feel free to fork, modify, and share!
+Inspired by the original StumbleUpon (RIP)
 
 ---
 
