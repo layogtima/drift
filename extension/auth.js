@@ -77,6 +77,9 @@ export async function register(email, username, password) {
     await setAuthToken(data.token);
     await chrome.storage.local.set({ currentUser: data.user });
 
+    // Clear URL cache so it gets refreshed with the new auth token
+    await chrome.storage.local.remove(['urlCache', 'cacheTimestamp']);
+
     console.log('[Auth] Registration successful, user:', data.user);
     return { success: true, user: data.user };
   } catch (error) {
@@ -105,6 +108,9 @@ export async function login(email, password) {
     // Store token and user info
     await setAuthToken(data.token);
     await chrome.storage.local.set({ currentUser: data.user });
+
+    // Clear URL cache so it gets refreshed with the new auth token
+    await chrome.storage.local.remove(['urlCache', 'cacheTimestamp']);
 
     return { success: true, user: data.user };
   } catch (error) {

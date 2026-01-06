@@ -21,7 +21,8 @@ async function init() {
     'preferences',
     'firstRun',
     'toolbarVisible',
-    'currentUser'
+    'currentUser',
+    'approvalMode'
   ]);
 
   driftHistory = data.driftHistory || [];
@@ -30,6 +31,7 @@ async function init() {
   isFirstRun = data.firstRun || false;
   toolbarVisible = data.toolbarVisible !== undefined ? data.toolbarVisible : true;
   currentUser = data.currentUser || null;
+  approvalMode = data.approvalMode || false;
 
   // Apply theme
   document.body.setAttribute('data-theme', preferences.theme || 'light');
@@ -198,6 +200,9 @@ function adjustPageContent() {
 async function handleDrift() {
   console.log('[Drift] Drift button clicked, approval mode:', approvalMode);
   const excludeUrls = driftHistory.map(item => item.url);
+  
+  // Also exclude the current page URL to prevent drifting to the same page
+  excludeUrls.push(window.location.href);
 
   // Get random URL from background script
   chrome.runtime.sendMessage(
@@ -234,6 +239,11 @@ async function handleDrift() {
           updateStats();
         }
 
+        // Save pending URL data for review on next page (persists across navigation)
+        if (urlData.status === 'pending') {
+          chrome.storage.local.set({ pendingUrlForReview: urlData });
+        }
+
         // Navigate
         window.location.href = urlData.url;
       } else {
@@ -252,6 +262,9 @@ async function handleDrift() {
 function toggleApprovalMode() {
   approvalMode = !approvalMode;
   console.log('[Drift] Approval mode toggled:', approvalMode);
+
+  // Persist approval mode to storage so it survives navigation
+  chrome.storage.local.set({ approvalMode });
 
   // Update button appearance
   const btn = document.getElementById('drift-approval-mode-btn');
@@ -664,18 +677,24 @@ function showNotification(message) {
 // Check if current URL is pending and show approval overlay
 async function checkPendingUrl() {
   // Wait a bit for navigation to complete
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-  if (!currentUrl || currentUrl.url !== window.location.href) return;
+  // Retrieve pending URL data from storage (persisted across navigation)
+  const data = await chrome.storage.local.get(['pendingUrlForReview', 'currentUser']);
+  const pendingUrl = data.pendingUrlForReview;
+  const user = data.currentUser || currentUser;
 
-  if (currentUrl.status === 'pending') {
+  // Check if this page matches the pending URL we navigated to
+  if (!pendingUrl || pendingUrl.url !== window.location.href) return;
+
+  if (pendingUrl.status === 'pending') {
     // Show pending banner for regular users who submitted this
-    if (!currentUser || (currentUser.id === currentUrl.submitter_id && currentUser.role === 'user')) {
+    if (!user || (user.id === pendingUrl.submitter_id && user.role === 'user')) {
       showPendingBanner();
     }
     // Show approval overlay for mods/admins
-    else if (currentUser && (currentUser.role === 'mod' || currentUser.role === 'admin')) {
-      showApprovalOverlay(currentUrl);
+    else if (user && (user.role === 'mod' || user.role === 'admin')) {
+      showApprovalOverlay(pendingUrl);
     }
   }
 }
@@ -744,6 +763,8 @@ function handleApproveUrl(urlId) {
     (response) => {
       if (response.success) {
         document.getElementById('drift-approval-overlay').remove();
+        // Clear the pending URL from storage
+        chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL approved!');
       } else {
         showNotification('❌ ' + response.error);
@@ -758,6 +779,8 @@ function handleRejectUrl(urlId) {
     (response) => {
       if (response.success) {
         document.getElementById('drift-approval-overlay').remove();
+        // Clear the pending URL from storage
+        chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL rejected');
       } else {
         showNotification('❌ ' + response.error);
