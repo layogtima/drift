@@ -688,14 +688,17 @@ function showSubmitModal() {
   const triggerBtn = document.getElementById('drift-submit-btn');
   if (!triggerBtn) return;
   
+  // Initial content with loading state for tags
   const content = `
     <div class="drift-submit-form">
       <label>URL</label>
       <input type="url" id="drift-submit-url" value="${window.location.href}" />
       <label>Title</label>
       <input type="text" id="drift-submit-title" value="${document.title}" />
-      <label>Tags (comma-separated)</label>
-      <input type="text" id="drift-submit-tags" placeholder="e.g., technology, ai, tools" />
+      <label>Tags (select up to 3)</label>
+      <div id="drift-tags-container" class="drift-tags-checkboxes">
+        <span class="drift-loading">Loading tags...</span>
+      </div>
       <div id="drift-submit-error" class="drift-error"></div>
       <button id="drift-submit-submit" class="drift-primary-btn">Submit for Review</button>
     </div>
@@ -703,15 +706,47 @@ function showSubmitModal() {
   
   const dropdown = createDropdown(triggerBtn, content);
   
-  document.getElementById('drift-submit-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-submit-submit').addEventListener('click', handleSubmitUrl);
+  
+  // Fetch tags from API
+  chrome.runtime.sendMessage({ action: 'getTags' }, (response) => {
+    const container = document.getElementById('drift-tags-container');
+    if (!container) return;
+    
+    if (response.success && response.tags.length > 0) {
+      container.innerHTML = response.tags.map(tag => `
+        <label class="drift-tag-checkbox">
+          <input type="checkbox" name="drift-tag" value="${tag.id}" data-name="${tag.display_name}" />
+          <span>${tag.display_name}</span>
+        </label>
+      `).join('');
+      
+      // Add max 3 selection limit
+      container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          const checked = container.querySelectorAll('input[type="checkbox"]:checked');
+          if (checked.length > 3) {
+            checkbox.checked = false;
+            showNotification('⚠️ Maximum 3 tags allowed');
+          }
+        });
+      });
+    } else if (response.success && response.tags.length === 0) {
+      container.innerHTML = '<span class="drift-no-tags">No tags available yet</span>';
+    } else {
+      container.innerHTML = '<span class="drift-error">Failed to load tags</span>';
+    }
+  });
 }
 
 async function handleSubmitUrl() {
   const url = document.getElementById('drift-submit-url').value;
   const title = document.getElementById('drift-submit-title').value;
-  const tags = document.getElementById('drift-submit-tags').value;
   const errorEl = document.getElementById('drift-submit-error');
+  
+  // Get selected tag IDs from checkboxes
+  const tagCheckboxes = document.querySelectorAll('#drift-tags-container input[type="checkbox"]:checked');
+  const tagIds = Array.from(tagCheckboxes).map(cb => parseInt(cb.value));
 
   if (!url || !title) {
     errorEl.textContent = 'URL and title are required';
@@ -723,7 +758,7 @@ async function handleSubmitUrl() {
       action: 'submitUrl',
       url,
       title,
-      tags
+      tagIds
     },
     (response) => {
       if (response.success) {

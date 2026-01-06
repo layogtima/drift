@@ -576,3 +576,58 @@ body[data-theme="dark"] #drift-category-select {
   margin-left: 6px !important;
   vertical-align: middle !important;
 }
+
+/* Tag Checkboxes */
+.drift-tags-checkboxes {
+  all: initial !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+}
+
+.drift-tag-checkbox {
+  all: initial !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  background: var(--drift-bg-elevated) !important;
+  border: 1px solid var(--drift-border) !important;
+  border-radius: 16px !important;
+  cursor: pointer !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text) !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+}
+
+.drift-tag-checkbox:hover {
+  border-color: var(--drift-primary) !important;
+  background: var(--drift-bg) !important;
+}
+
+.drift-tag-checkbox input[type="checkbox"] {
+  all: initial !important;
+  width: 14px !important;
+  height: 14px !important;
+  cursor: pointer !important;
+  accent-color: var(--drift-primary) !important;
+}
+
+.drift-tag-checkbox:has(input:checked) {
+  background: var(--drift-primary) !important;
+  border-color: var(--drift-primary) !important;
+  color: white !important;
+}
+
+.drift-loading,
+.drift-no-tags {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text-secondary) !important;
+  font-style: italic !important;
+}

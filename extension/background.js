@@ -207,6 +207,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'getTags') {
+    (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/tags`);
+        const data = await response.json();
+        sendResponse({ success: true, tags: data.tags || [] });
+      } catch (error) {
+        console.error('[Drift BG] Get tags error:', error);
+        sendResponse({ success: false, error: 'Failed to fetch tags' });
+      }
+    })();
+    return true;
+  }
+
   if (request.action === 'submitUrl') {
     (async () => {
       try {
@@ -216,7 +230,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           return;
         }
 
-        const { url, title, tags } = request;
+        const { url, title, tagIds } = request;
 
         const response = await fetch(`${API_BASE_URL}/urls`, {
           method: 'POST',
@@ -224,7 +238,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ url, title, tags })
+          body: JSON.stringify({ url, title, tagIds })
         });
 
         const data = await response.json();

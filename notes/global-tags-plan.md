@@ -213,3 +213,11 @@ CREATE INDEX idx_tags_name ON tags(name);
 | Extension UI | 2 hours |
 | Testing | 1 hour |
 | **Total** | ~5.5 hours |
+
+
+## Add tags
+
+curl -X POST https://api.drift.surf/tags \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"technology","display_name":"Technology"}'
