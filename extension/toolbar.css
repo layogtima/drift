@@ -1,6 +1,6 @@
 /* Drift Toolbar - Solarized Light/Dark */
 
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swapp');
 
 :root {
   /* Solarized Light Palette */
@@ -45,6 +45,10 @@ body[data-theme="dark"] {
   /* Keep accent colors the same - they work in both themes */
 }
 
+#drift-toolbar .hidden {
+  display: none !important;
+}
+
 /* Toolbar Container - Full Width Bar */
 #drift-toolbar {
   all: initial !important;
@@ -52,7 +56,7 @@ body[data-theme="dark"] {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  height: 48px !important;
+  height: auto !important;
   background-color: var(--drift-bg) !important;
   border-bottom: 1px solid var(--drift-border) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
@@ -60,9 +64,9 @@ body[data-theme="dark"] {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
-  padding: 0 20px !important;
-  font-family: 'Karla', sans-serif !important;
+  gap: 0 !important;
+  padding: 0 0px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 14px !important;
   color: var(--drift-text) !important;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -97,7 +101,7 @@ body[data-theme="dark"] {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 12px !important;
   color: var(--drift-text-secondary) !important;
   cursor: pointer !important;
@@ -120,14 +124,15 @@ body[data-theme="dark"] {
 /* Buttons Base Style */
 #drift-toolbar button {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
-  padding: 7px 14px !important;
-  border: 1px solid transparent !important;
-  border-radius: 4px !important;
-  background-color: transparent !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  padding: 12.5px 15px !important;
+  border: 1px solid var(--drift-bg-elevated) !important;
+  border-radius: 0 !important;
+  background-color: transparent!important;
   color: var(--drift-text) !important;
   cursor: pointer !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
+  letter-spacing: 0.05rem !important;
   font-weight: 500 !important;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
   display: inline-flex !important;
@@ -144,7 +149,6 @@ body[data-theme="dark"] {
 
 #drift-toolbar button:hover {
   background-color: var(--drift-bg-elevated) !important;
-  border-color: var(--drift-border) !important;
 }
 
 #drift-toolbar button:active {
@@ -155,14 +159,12 @@ body[data-theme="dark"] {
 #drift-btn {
   background-color: var(--drift-primary) !important;
   color: var(--drift-bg) !important;
-  border-color: var(--drift-primary) !important;
   font-weight: 600 !important;
   padding: 7px 18px !important;
 }
 
 #drift-btn:hover {
   background-color: var(--drift-primary-hover) !important;
-  border-color: var(--drift-primary-hover) !important;
 }
 
 /* Icon spacing inside buttons */
@@ -185,44 +187,42 @@ body[data-theme="dark"] {
 /* Page Title Display */
 #drift-page-title {
   color: var(--drift-text) !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
   max-width: 200px !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   opacity: 0.7 !important;
-  margin-left: auto !important;
-  margin-right: 12px !important;
+  margin-left: 10px !important;
+  margin-right: auto !important;
   text-align: center !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
 
 /* Like/Dislike Buttons */
 #drift-like-btn:hover {
   background-color: var(--drift-success) !important;
-  border-color: var(--drift-success) !important;
 }
 
 #drift-dislike-btn:hover {
   background-color: var(--drift-danger) !important;
-  border-color: var(--drift-danger) !important;
 }
 
-#drift-like-btn.active {
+#drift-like-btn.active, #drift-like-btn.active:hover {
   background-color: var(--drift-success) !important;
-  border-color: var(--drift-success) !important;
+  color: var(--sol-base3) !important;
 }
 
-#drift-dislike-btn.active {
+#drift-dislike-btn.active, #drift-dislike-btn.active:hover {
   background-color: var(--drift-danger) !important;
-  border-color: var(--drift-danger) !important;
+  color: var(--sol-base3) !important;
 }
 
 /* Category Dropdown */
 #drift-category-select {
   all: initial !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   padding: 7px 30px 7px 12px !important;
   border: 1px solid transparent !important;
   border-radius: 4px !important;
@@ -259,11 +259,11 @@ body[data-theme="dark"] #drift-category-select {
   border-radius: 4px !important;
   border: 1px solid transparent !important;
   white-space: nowrap !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
 
-/* Share Button */
-#drift-share-btn.copied {
+/* Copy Button */
+#drift-copy-btn.copied, #drift-copy-btn:hover.copied {
   background-color: var(--drift-success) !important;
   border-color: var(--drift-success) !important;
   color: var(--drift-bg) !important;
@@ -298,7 +298,7 @@ body[data-theme="dark"] #drift-category-select {
   color: var(--drift-bg) !important;
   padding: 10px 16px !important;
   border-radius: 4px !important;
-  font-family: 'Karla', sans-serif !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
   font-weight: 500 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
@@ -329,5 +329,334 @@ body[data-theme="dark"] #drift-category-select {
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Dropdown Styles - Replaces Modal System */
+.drift-dropdown-backdrop {
+  all: initial !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: transparent !important;
+  z-index: 2147483645 !important;
+  display: block !important;
+}
+
+.drift-dropdown {
+  all: initial !important;
+  position: fixed !important;
+  background: var(--drift-bg) !important;
+  border: 1px solid var(--drift-border) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  min-width: 280px !important;
+  max-width: 420px !important;
+  z-index: 2147483646 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  color: var(--drift-text) !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+  transform: translateY(-8px) !important;
+  animation: drift-dropdown-enter 0.18s ease-out forwards !important;
+  overflow: hidden !important;
+}
+
+@keyframes drift-dropdown-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drift-dropdown-header {
+  all: initial !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 16px 20px !important;
+  border-bottom: 1px solid var(--drift-border) !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-dropdown-header h2 {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: var(--drift-text) !important;
+  margin: 0 !important;
+}
+
+.drift-close-btn {
+  all: initial !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  color: var(--drift-text-secondary) !important;
+  transition: color 0.2s !important;
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.drift-close-btn:hover {
+  color: var(--drift-danger) !important;
+}
+
+.drift-close-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Tabs */
+.drift-tabs {
+  all: initial !important;
+  display: flex !important;
+  gap: 0 !important;
+  padding: 0 24px !important;
+  border-bottom: 1px solid var(--drift-border) !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-tab {
+  all: initial !important;
+  background: none !important;
+  border: none !important;
+  padding: 12px 16px !important;
+  cursor: pointer !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--drift-text-secondary) !important;
+  border-bottom: 2px solid transparent !important;
+  transition: all 0.2s !important;
+  box-sizing: border-box !important;
+}
+
+.drift-tab:hover {
+  color: var(--drift-text) !important;
+}
+
+.drift-tab.active {
+  color: var(--drift-primary) !important;
+  border-bottom-color: var(--drift-primary) !important;
+}
+
+/* Forms */
+.drift-auth-form,
+.drift-submit-form,
+.drift-user-info {
+  all: initial !important;
+  display: block;
+  padding: 16px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-auth-form input,
+.drift-submit-form input {
+  all: initial !important;
+  display: block !important;
+  width: 100% !important;
+  padding: 10px 12px !important;
+  margin-bottom: 12px !important;
+  border: 1px solid var(--drift-border) !important;
+  border-radius: 4px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  color: var(--drift-text) !important;
+  background: var(--drift-bg-elevated) !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s !important;
+}
+
+.drift-auth-form input:focus,
+.drift-submit-form input:focus {
+  outline: none !important;
+  border-color: var(--drift-primary) !important;
+}
+
+.drift-submit-form label {
+  all: initial !important;
+  display: block !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--drift-text) !important;
+  margin-bottom: 6px !important;
+  margin-top: 8px !important;
+}
+
+.drift-submit-form label:first-child {
+  margin-top: 0 !important;
+}
+
+.drift-error {
+  all: initial !important;
+  display: block !important;
+  color: var(--drift-danger) !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  margin-bottom: 12px !important;
+  min-height: 0 !important;
+}
+
+.drift-primary-btn,
+.drift-secondary-btn {
+  all: initial !important;
+  display: block !important;
+  width: 100% !important;
+  padding: 10px 16px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  margin-top: 8px !important;
+}
+
+.drift-primary-btn {
+  background: var(--drift-primary) !important;
+  color: white !important;
+}
+
+.drift-primary-btn:hover {
+  background: var(--drift-primary-hover) !important;
+}
+
+.drift-secondary-btn {
+  background: var(--drift-bg-elevated) !important;
+  color: var(--drift-text) !important;
+  border: 1px solid var(--drift-border) !important;
+}
+
+.drift-secondary-btn:hover {
+  background: var(--drift-border) !important;
+}
+
+.drift-user-info p {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  color: var(--drift-text) !important;
+  margin-bottom: 12px !important;
+  display: block !important;
+}
+
+.drift-user-info strong {
+  font-weight: 600 !important;
+  color: var(--drift-text) !important;
+}
+
+/* Badge for pending count */
+.drift-badge {
+  all: initial !important;
+  display: inline-block !important;
+  background: var(--drift-danger) !important;
+  color: white !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 2px 6px !important;
+  border-radius: 10px !important;
+  margin-left: 6px !important;
+  vertical-align: middle !important;
+}
+
+/* Tag Checkboxes */
+.drift-tags-checkboxes {
+  all: initial !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+}
+
+.drift-tag-checkbox {
+  all: initial !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  background: var(--drift-bg-elevated) !important;
+  border: 1px solid var(--drift-border) !important;
+  border-radius: 16px !important;
+  cursor: pointer !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text) !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+}
+
+.drift-tag-checkbox:hover {
+  border-color: var(--drift-primary) !important;
+  background: var(--drift-bg) !important;
+}
+
+.drift-tag-checkbox input[type="checkbox"] {
+  all: initial !important;
+  width: 14px !important;
+  height: 14px !important;
+  cursor: pointer !important;
+  accent-color: var(--drift-primary) !important;
+}
+
+.drift-tag-checkbox:has(input:checked) {
+  background: var(--drift-primary) !important;
+  border-color: var(--drift-primary) !important;
+  color: white !important;
+}
+
+.drift-loading,
+.drift-no-tags {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text-secondary) !important;
+  font-style: italic !important;
+}
+/* Notification Toast */
+.drift-notification {
+  all: initial !important;
+  position: fixed !important;
+  top: 60px !important;
+  right: 20px !important;
+  background: var(--drift-success) !important;
+  color: var(--drift-bg) !important;
+  padding: 12px 20px !important;
+  border-radius: 4px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  z-index: 2147483647 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  animation: drift-notification-slide 0.3s ease-out !important;
+  box-sizing: border-box !important;
+}
+
+@keyframes drift-notification-slide {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

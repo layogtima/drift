@@ -1,0 +1,16 @@
+{
+  "name": "drift-api",
+  "version": "1.0.0",
+  "description": "Drift API - Cloudflare Workers backend",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create drift-db",
+    "db:migrate": "wrangler d1 execute drift-db --file=migrations/0001_initial.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^4.54.0"
+  },
+  "type": "module"
+}
