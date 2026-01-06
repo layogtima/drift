@@ -134,7 +134,6 @@ body[data-theme="dark"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  text-transform: uppercase !important;
   gap: 6px !important;
   white-space: nowrap !important;
   line-height: 1 !important;
