@@ -205,12 +205,14 @@ body[data-theme="dark"] {
   background-color: var(--drift-danger) !important;
 }
 
-#drift-like-btn.active {
+#drift-like-btn.active, #drift-like-btn.active:hover {
   background-color: var(--drift-success) !important;
+  color: var(--sol-base3) !important;
 }
 
-#drift-dislike-btn.active {
+#drift-dislike-btn.active, #drift-dislike-btn.active:hover {
   background-color: var(--drift-danger) !important;
+  color: var(--sol-base3) !important;
 }
 
 /* Category Dropdown */
