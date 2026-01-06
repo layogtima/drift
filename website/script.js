@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chromeWebStoreUrl = 'https://chrome.google.com/webstore/detail/drift/YOUR_EXTENSION_ID';
     
     // For now, show a friendly message
-    alert('🌊 Drift will be available on the Chrome Web Store soon!\n\nFor now, you can install it manually:\n1. Download from GitHub\n2. Go to chrome://extensions/\n3. Enable Developer mode\n4. Click "Load unpacked"\n5. Select the extension folder');
+    alert('Drift will be available on the Chrome Web Store soon!\n\nFor now, you can install it manually:\n1. Download from GitHub\n2. Go to chrome://extensions/\n3. Enable Developer mode\n4. Click "Load unpacked"\n5. Select the extension folder');
     
     // Uncomment when published:
     // window.open(chromeWebStoreUrl, '_blank');
