@@ -11,6 +11,7 @@ let currentUser = null;
 let pendingCount = 0;
 let currentUrl = null; // Currently displayed URL data
 let approvalMode = false; // Approval mode for mods/admins
+let urlExistsInDb = false; // Whether current page URL exists in database
 
 // Initialize
 async function init() {
@@ -22,7 +23,8 @@ async function init() {
     'firstRun',
     'toolbarVisible',
     'currentUser',
-    'approvalMode'
+    'approvalMode',
+    'urlCache'
   ]);
 
   driftHistory = data.driftHistory || [];
@@ -32,6 +34,12 @@ async function init() {
   toolbarVisible = data.toolbarVisible !== undefined ? data.toolbarVisible : true;
   currentUser = data.currentUser || null;
   approvalMode = data.approvalMode || false;
+
+  // Check if current URL exists in database
+  if (data.urlCache && data.urlCache.urls) {
+    const currentPageUrl = window.location.href;
+    urlExistsInDb = data.urlCache.urls.some(item => item.url === currentPageUrl);
+  }
 
   // Apply theme
   document.body.setAttribute('data-theme', preferences.theme || 'light');
@@ -143,7 +151,8 @@ function createToolbar() {
 
   // Add event listeners
   document.getElementById('drift-btn').addEventListener('click', handleDrift);
-  document.getElementById('drift-submit-btn').addEventListener('click', handleSubmitClick);
+  const submitBtn = document.getElementById('drift-submit-btn');
+  if (submitBtn) submitBtn.addEventListener('click', handleSubmitClick);
   document.getElementById('drift-like-btn').addEventListener('click', handleLike);
   document.getElementById('drift-dislike-btn').addEventListener('click', handleDislike);
   document.getElementById('drift-share-btn').addEventListener('click', handleShare);
@@ -248,8 +257,12 @@ async function handleDrift() {
         window.location.href = urlData.url;
       } else {
         console.error('[Drift] No URL received from background');
-        if (approvalMode && pendingCount === 0) {
+        // Check response pendingCount (not stale local variable) to show correct message
+        const actualPendingCount = response?.pendingCount || 0;
+        if (approvalMode && actualPendingCount === 0) {
           showNotification('✅ No pending URLs to review!');
+        } else if (approvalMode && actualPendingCount > 0) {
+          showNotification('⚠️ Could not load pending URLs. Try refreshing the page.');
         } else if (response && response.error) {
           console.error('[Drift] Error:', response.error);
         }
@@ -790,6 +803,8 @@ function showPendingBanner() {
 }
 
 function showApprovalOverlay(urlData) {
+  // Don't open if already open
+  if (document.getElementById('drift-approval-overlay')) return;
   const overlay = document.createElement('div');
   overlay.id = 'drift-approval-overlay';
   overlay.innerHTML = `

@@ -135,10 +135,10 @@ function getRandomUrl(excludeUrls = [], approvalMode = false) {
 
   // If in approval mode, only show pending URLs
   if (approvalMode) {
-    const pendingUrls = urlDatabase.urls.filter(item => {
-      if (excludeUrls.includes(item.url)) return false;
-      return item.status === 'pending';
-    });
+    // In approval mode, show ALL pending URLs (don't exclude based on history)
+    // Mods need to see all pending URLs to approve them
+    const pendingUrls = urlDatabase.urls.filter(item => item.status === 'pending');
+    console.log('[Drift BG] Approval mode - total pending URLs:', pendingUrls.length);
 
     if (pendingUrls.length === 0) return null;
 
@@ -180,8 +180,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getDriftUrl') {
     (async () => {
       console.log('[Drift BG] getDriftUrl request received');
+      
+      // Force refresh if in approval mode to get latest pending URLs
+      if (request.approvalMode) {
+        console.log('[Drift BG] Approval mode - forcing cache refresh');
+        cacheTimestamp = null;
+      }
+      
       await getUrls(); // Ensure URLs are loaded
-      console.log('[Drift BG] URL database loaded:', urlDatabase ? `${urlDatabase.urls?.length} URLs` : 'null');
+      console.log('[Drift BG] URL database loaded:', urlDatabase ? `${urlDatabase.urls?.length} URLs, pendingCount: ${urlDatabase.pendingCount}` : 'null');
       const { excludeUrls, approvalMode } = request;
       console.log('[Drift BG] Approval mode:', approvalMode);
       const url = getRandomUrl(excludeUrls, approvalMode);
