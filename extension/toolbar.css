@@ -631,3 +631,32 @@ body[data-theme="dark"] #drift-category-select {
   color: var(--drift-text-secondary) !important;
   font-style: italic !important;
 }
+/* Notification Toast */
+.drift-notification {
+  all: initial !important;
+  position: fixed !important;
+  top: 60px !important;
+  right: 20px !important;
+  background: var(--drift-success) !important;
+  color: var(--drift-bg) !important;
+  padding: 12px 20px !important;
+  border-radius: 4px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  z-index: 2147483647 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  animation: drift-notification-slide 0.3s ease-out !important;
+  box-sizing: border-box !important;
+}
+
+@keyframes drift-notification-slide {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
