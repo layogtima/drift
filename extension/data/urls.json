@@ -88,7 +88,7 @@
                 "description": "Museum of internet history"
             },
             {
-                "url": "http://www.timecube.com/",
+                "url": "http://www.timecube.net/",
                 "title": "Time Cube",
                 "description": "The legendary 4-day time cube theory"
             },
@@ -140,16 +140,6 @@
                 "url": "https://meaningness.com",
                 "title": "Meaningness",
                 "description": "How to think better about meaning"
-            },
-            {
-                "url": "https://neustadt.fr/essays/the-small-web/",
-                "title": "The Small Web",
-                "description": "Essay on the beautiful small web"
-            },
-            {
-                "url": "https://www.lesswrong.com/",
-                "title": "LessWrong",
-                "description": "Rationality community"
             },
             {
                 "url": "https://aeon.co/",

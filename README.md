@@ -2,7 +2,7 @@
 
 **Drift through the best parts of the internet!**
 
-A Chrome extension that recreates the serendipitous discovery experience of classic StumbleUpon. No login required, transparent algorithm, indie web focused.
+A Chrome extension that recreates the serendipitous discovery experience of the classic web. No login required, transparent algorithm, indie web focused.
 
 ## Features
 
@@ -34,7 +34,7 @@ A Chrome extension that recreates the serendipitous discovery experience of clas
 ## Project Structure
 
 ```
-stumble/
+drift/
 ├── manifest.json       # Extension configuration (Manifest V3)
 ├── background.js       # Service worker for URL management
 ├── content.js          # Toolbar injection and interaction logic
