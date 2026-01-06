@@ -108,6 +108,51 @@ Tables:
 - `url_tags` - Tags for URLs (many-to-many)
 - `sessions` - Authentication sessions
 
+## Importing Legacy URLs
+
+**Option 1: Using the import script (recommended)**
+
+```bash
+node import-urls.js <admin-email> <admin-password>
+```
+
+This will:
+1. Login as admin to get auth token
+2. Read the `extension/data/urls.json` file
+3. Transform it to match the API format (categories → tags)
+4. POST to `/admin/import-legacy`
+5. Show import results (imported vs skipped duplicates)
+
+By default, the script imports to production (`https://api.drift.surf`). To import to local dev server, edit `import-urls.js` and uncomment line 6.
+
+**Option 2: Using curl directly**
+
+```bash
+# First, login to get admin token
+TOKEN=$(curl -s -X POST https://api.drift.surf/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-admin@email.com","password":"your-password"}' \
+  | jq -r '.token')
+
+# Then import (requires Node.js for JSON transformation)
+curl -X POST https://api.drift.surf/admin/import-legacy \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d @<(node -e "
+    const fs = require('fs');
+    const data = JSON.parse(fs.readFileSync('./extension/data/urls.json'));
+    const urls = [];
+    Object.entries(data.categories).forEach(([cat, items]) => {
+      if (cat !== 'all') {
+        items.forEach(item => urls.push({...item, category: cat, tags: cat}));
+      }
+    });
+    console.log(JSON.stringify({urls}));
+  ")
+```
+
+For local dev server, replace `https://api.drift.surf` with `http://localhost:8787`.
+
 ## Testing Locally
 
 You can test the API with curl:

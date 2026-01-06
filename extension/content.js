@@ -87,10 +87,12 @@ function createToolbar() {
     <button id="drift-dislike-btn" title="Dislike this site">
       <span class="drift-icon">${icons.thumbsDown}</span>
     </button>
+    ${!urlExistsInDb ? `
     <button id="drift-submit-btn" title="Submit current page">
       <span class="drift-icon">${icons.plus}</span>
       <span>Submit</span>
     </button>
+    ` : ''}
     <span id="drift-page-title" title="${document.title}">${pageTitle}</span>
   `;
 
