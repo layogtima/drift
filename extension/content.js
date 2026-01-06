@@ -118,7 +118,7 @@ function createToolbar() {
     <button id="drift-share-btn" title="Share this page">
       <span class="drift-icon">${icons.share}</span>
     </button>
-    <span id="drift-stats">Sites: ${stats.totalDrifts}</span>
+    <span class="hidden" id="drift-stats">Sites: ${stats.totalDrifts}</span>
     <button id="drift-settings-btn" title="Open settings popup">
       <span class="drift-icon">${icons.settings}</span>
     </button>
