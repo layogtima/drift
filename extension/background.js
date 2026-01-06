@@ -270,13 +270,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           return;
         }
 
-        const { urlId } = request;
+        const { urlId, tagIds } = request;
+        
+        // Build request body - include tagIds if provided
+        const body = tagIds && tagIds.length > 0 ? { tagIds } : {};
 
         const response = await fetch(`${API_BASE_URL}/urls/${urlId}/approve`, {
           method: 'POST',
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify(body)
         });
 
         const data = await response.json();

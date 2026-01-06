@@ -719,12 +719,26 @@ function showSubmitModal() {
       `).join('');
       
       // Add max 3 selection limit
+      const errorEl = document.getElementById('drift-submit-error');
       container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', () => {
           const checked = container.querySelectorAll('input[type="checkbox"]:checked');
           if (checked.length > 3) {
             checkbox.checked = false;
-            showNotification('⚠️ Maximum 3 tags allowed');
+            if (errorEl) {
+              errorEl.textContent = '⚠️ Maximum 3 tags allowed';
+              // Clear error after 3 seconds
+              setTimeout(() => {
+                if (errorEl.textContent === '⚠️ Maximum 3 tags allowed') {
+                  errorEl.textContent = '';
+                }
+              }, 3000);
+            }
+          } else {
+            // Clear error when valid selection
+            if (errorEl && errorEl.textContent === '⚠️ Maximum 3 tags allowed') {
+              errorEl.textContent = '';
+            }
           }
         });
       });
@@ -861,46 +875,98 @@ function showApprovalOverlay(urlData) {
   if (document.getElementById('drift-approval-overlay')) return;
   const overlay = document.createElement('div');
   overlay.id = 'drift-approval-overlay';
+  // Initial HTML with loading states
   overlay.innerHTML = `
     <div class="drift-approval-content">
-      <h3>PENDING SUBMISSION</h3>
-      <p><strong>Submitted by ID:</strong> ${urlData.submitter_id}</p>
-      <p><strong>Tags:</strong> ${urlData.tags ? urlData.tags.join(', ') : 'None'}</p>
-      <div class="drift-approval-actions">
-        <button id="drift-approve-btn" class="drift-approve-btn">
-          <span class="drift-icon">${icons.check}</span> Approve
-        </button>
-        <button id="drift-reject-btn" class="drift-reject-btn">
-          <span class="drift-icon">${icons.x}</span> Reject
-        </button>
+      <h3>Pending Submission</h3>
+      <div class="drift-approval-info">
+        <p>Submitted by <span id="drift-approval-submitter">Loading...</span></p>
+        <div>
+          <div id="drift-approval-tags" class="drift-tags-checkboxes" style="margin-bottom: 0 !important;">
+            <span class="drift-loading">Loading tags...</span>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="drift-approval-actions">
+      <button id="drift-approve-btn" class="drift-approve-btn">
+        <span class="drift-icon">${icons.check}</span> Approve
+      </button>
+      <button id="drift-reject-btn" class="drift-reject-btn">
+        <span class="drift-icon">${icons.x}</span> Reject
+      </button>
+    </div>
   `;
-  overlay.style.cssText = `
-    position: fixed;
-    top: 48px;
-    left: 0;
-    right: 0;
-    background: rgba(0,0,0,0.9);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-family: 'Karla', sans-serif;
-    z-index: 2147483645;
-  `;
-
   document.body.appendChild(overlay);
+  
+  // Adjust page content margin to accommodate both bars
+  document.body.style.marginTop = '96px'; // 48px toolbar + 48px approval bar
+  
+  // Fetch submitter username
+  if (urlData.submitter_username) {
+    document.getElementById('drift-approval-submitter').textContent = urlData.submitter_username;
+  } else {
+    // Fallback to ID if username not available
+    document.getElementById('drift-approval-submitter').textContent = `User #${urlData.submitter_id}`;
+  }
+  
+  // Fetch and display tags as checkboxes
+  chrome.runtime.sendMessage({ action: 'getTags' }, (response) => {
+    const container = document.getElementById('drift-approval-tags');
+    if (!container) return;
+    
+    if (response.success && response.tags.length > 0) {
+      // Get current tag IDs - handle both array of objects and array of IDs
+      let currentTagIds = [];
+      if (urlData.tags && urlData.tags.length > 0) {
+        currentTagIds = urlData.tags.map(tag => {
+          // If tag is an object with id property
+          if (typeof tag === 'object' && tag.id) return tag.id;
+          // If tag is just an ID
+          if (typeof tag === 'number') return tag;
+          // If tag is a string ID
+          if (typeof tag === 'string') return parseInt(tag);
+          return null;
+        }).filter(id => id !== null);
+      }
+      
+      container.innerHTML = response.tags.map(tag => {
+        const isChecked = currentTagIds.includes(tag.id);
+        return `
+          <label class="drift-tag-checkbox">
+            <input type="checkbox" name="drift-approval-tag" value="${tag.id}" 
+                   data-name="${tag.display_name}" ${isChecked ? 'checked' : ''} />
+            <span>${tag.display_name}</span>
+          </label>
+        `;
+      }).join('');
+    } else if (response.success && response.tags.length === 0) {
+      container.innerHTML = '<span class="drift-no-tags">No tags available</span>';
+    } else {
+      container.innerHTML = '<span class="drift-error">Failed to load tags</span>';
+    }
+  });
 
-  document.getElementById('drift-approve-btn').addEventListener('click', () => handleApproveUrl(urlData.id));
+  document.getElementById('drift-approve-btn').addEventListener('click', () => {
+    // Get selected tag IDs from checkboxes
+    const selectedTags = Array.from(
+      document.querySelectorAll('#drift-approval-tags input[type="checkbox"]:checked')
+    ).map(cb => parseInt(cb.value));
+    
+    handleApproveUrl(urlData.id, selectedTags);
+  });
+  
   document.getElementById('drift-reject-btn').addEventListener('click', () => handleRejectUrl(urlData.id));
 }
 
-function handleApproveUrl(urlId) {
+function handleApproveUrl(urlId, tagIds = []) {
   chrome.runtime.sendMessage(
-    { action: 'approveUrl', urlId },
+    { action: 'approveUrl', urlId, tagIds },
     (response) => {
       if (response.success) {
         document.getElementById('drift-approval-overlay').remove();
+        // Restore page margin
+        document.body.style.marginTop = '48px';
         // Clear the pending URL from storage
         chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL approved!');
@@ -917,6 +983,8 @@ function handleRejectUrl(urlId) {
     (response) => {
       if (response.success) {
         document.getElementById('drift-approval-overlay').remove();
+        // Restore page margin
+        document.body.style.marginTop = '48px';
         // Clear the pending URL from storage
         chrome.storage.local.remove('pendingUrlForReview');
         showNotification('✅ URL rejected');

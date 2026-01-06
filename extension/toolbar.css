@@ -23,8 +23,8 @@
   --drift-border: var(--sol-base2);
   --drift-text: var(--sol-base01);
   --drift-text-secondary: var(--sol-base1);
-  --drift-primary: var(--sol-blue);
-  --drift-primary-hover: var(--sol-cyan);
+  --drift-primary: var(--sol-cyan);
+  --drift-primary-hover: var(--sol-blue);
   --drift-success: var(--sol-green);
   --drift-danger: var(--sol-red);
   --drift-accent: var(--sol-yellow);
@@ -361,6 +361,7 @@ body[data-theme="dark"] #drift-category-select {
   transform: translateY(-8px) !important;
   animation: drift-dropdown-enter 0.18s ease-out forwards !important;
   overflow: hidden !important;
+  padding: 16px !important;
 }
 
 @keyframes drift-dropdown-enter {
@@ -458,7 +459,6 @@ body[data-theme="dark"] #drift-category-select {
 .drift-user-info {
   all: initial !important;
   display: block;
-  padding: 16px !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   box-sizing: border-box !important;
 }
@@ -486,15 +486,17 @@ body[data-theme="dark"] #drift-category-select {
   border-color: var(--drift-primary) !important;
 }
 
-.drift-submit-form label {
+.drift-submit-form > label {
   all: initial !important;
   display: block !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
+  font-size: 11.5px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  font-weight: 400 !important;
   color: var(--drift-text) !important;
+  margin-top: 16px !important;
   margin-bottom: 6px !important;
-  margin-top: 8px !important;
 }
 
 .drift-submit-form label:first-child {
@@ -507,8 +509,8 @@ body[data-theme="dark"] #drift-category-select {
   color: var(--drift-danger) !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
+  line-height: 2rem !important;
   margin-bottom: 12px !important;
-  min-height: 0 !important;
 }
 
 .drift-primary-btn,
@@ -535,7 +537,7 @@ body[data-theme="dark"] #drift-category-select {
 }
 
 .drift-primary-btn:hover {
-  background: var(--drift-primary-hover) !important;
+  transform: scale(1.05) !important;
 }
 
 .drift-secondary-btn {
@@ -572,7 +574,7 @@ body[data-theme="dark"] #drift-category-select {
   font-size: 11px !important;
   font-weight: 600 !important;
   padding: 2px 6px !important;
-  border-radius: 10px !important;
+  border-radius: 4px !important;
   margin-left: 6px !important;
   vertical-align: middle !important;
 }
@@ -582,7 +584,7 @@ body[data-theme="dark"] #drift-category-select {
   all: initial !important;
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 8px !important;
+  gap: 0px !important;
   margin-bottom: 12px !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
 }
@@ -591,36 +593,44 @@ body[data-theme="dark"] #drift-category-select {
   all: initial !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  padding: 6px 12px !important;
-  background: var(--drift-bg-elevated) !important;
-  border: 1px solid var(--drift-border) !important;
-  border-radius: 16px !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 8px 12px !important;
+  background: transparent !important;
+  border: 1.5px solid var(--drift-border) !important;
+  border-radius: 0 !important;
   cursor: pointer !important;
   font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
   font-size: 13px !important;
+  font-weight: 500 !important;
   color: var(--drift-text) !important;
-  transition: all 0.15s ease !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   user-select: none !important;
+  letter-spacing: 0.02em !important;
 }
 
 .drift-tag-checkbox:hover {
   border-color: var(--drift-primary) !important;
   background: var(--drift-bg) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 .drift-tag-checkbox input[type="checkbox"] {
   all: initial !important;
-  width: 14px !important;
-  height: 14px !important;
-  cursor: pointer !important;
-  accent-color: var(--drift-primary) !important;
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
 }
 
 .drift-tag-checkbox:has(input:checked) {
   background: var(--drift-primary) !important;
   border-color: var(--drift-primary) !important;
-  color: white !important;
+  color: var(--drift-bg) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(42, 161, 152, 0.3) !important;
 }
 
 .drift-loading,
@@ -659,4 +669,151 @@ body[data-theme="dark"] #drift-category-select {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+/* Approval Action Bar */
+#drift-approval-overlay {
+  all: initial !important;
+  position: fixed !important;
+  top: 42px !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: auto !important;
+  background-color: var(--drift-bg-elevated) !important;
+  border-bottom: 1px solid var(--drift-border) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 12px 20px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  color: var(--drift-text) !important;
+  box-sizing: border-box !important;
+  animation: drift-approval-slide 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes drift-approval-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drift-approval-content {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+  flex: 1 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-approval-content h3 {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 600 !important;
+  color: var(--drift-text-secondary) !important;
+  margin: 0 !important;
+  display: inline-block !important;
+}
+
+.drift-approval-content p {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  font-size: 13px !important;
+  color: var(--drift-text) !important;
+  margin: 0 !important;
+  display: inline-block !important;
+}
+
+.drift-approval-content strong {
+  font-weight: 600 !important;
+  color: var(--drift-text) !important;
+  margin-right: 4px !important;
+}
+
+.drift-approval-info {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  flex: 1 !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-approval-actions {
+  all: initial !important;
+  display: flex !important;
+  gap: 8px !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  box-sizing: border-box !important;
+}
+
+.drift-approve-btn,
+.drift-reject-btn {
+  all: initial !important;
+  font-family: 'EB Garamond', 'Lora', 'Merriweather', 'Georgia', serif !important;
+  padding: 7px 16px !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.drift-approve-btn {
+  background-color: var(--drift-success) !important;
+  color: var(--drift-bg) !important;
+}
+
+.drift-approve-btn:hover {
+  background-color: var(--sol-green) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(133, 153, 0, 0.3) !important;
+}
+
+.drift-reject-btn {
+  background-color: transparent !important;
+  color: var(--drift-text) !important;
+  border-color: var(--drift-border) !important;
+}
+
+.drift-reject-btn:hover {
+  background-color: var(--drift-danger) !important;
+  color: var(--drift-bg) !important;
+  border-color: var(--drift-danger) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(220, 50, 47, 0.25) !important;
+}
+
+.drift-approve-btn .drift-icon,
+.drift-reject-btn .drift-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.drift-approve-btn .drift-icon svg,
+.drift-reject-btn .drift-icon svg {
+  width: 14px !important;
+  height: 14px !important;
+  display: block !important;
 }
