@@ -192,19 +192,72 @@ function setupIframeErrorDetection(iframe, url) {
     }
   }, 5000); // 5 second timeout
   
-  // Success handler
+  // Success handler - but verify it actually loaded
   const onLoad = () => {
-    hasLoaded = true;
     clearTimeout(loadTimeout);
-    console.log('[Drift] Iframe loaded successfully');
     
-    // Update address bar to match iframe URL
-    try {
-      const urlObj = new URL(url);
-      window.history.pushState({ driftUrl: url }, '', `?url=${encodeURIComponent(url)}`);
-    } catch (e) {
-      console.error('Failed to update address bar:', e);
-    }
+    // Wait a bit for content to render, then check if it's blocked
+    setTimeout(() => {
+      try {
+        // Try to access iframe content
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+        
+        if (!iframeDoc) {
+          console.log('[Drift] Cannot access iframe document');
+          if (!retryAttempted) {
+            retryAttempted = true;
+            showNotification('⚠️ Site blocked iframe embedding, loading next...');
+            setTimeout(() => handleDrift(), 800);
+          }
+          return;
+        }
+        
+        // Check for error messages in the body
+        const body = iframeDoc.body;
+        if (body) {
+          const text = (body.innerText || body.textContent || '').toLowerCase();
+          if (text.includes('refused to connect') || 
+              text.includes('err_blocked') ||
+              text.includes('csp') ||
+              (text.trim() === '' && body.children.length === 0)) {
+            console.log('[Drift] Iframe contains error message or is empty');
+            if (!retryAttempted) {
+              retryAttempted = true;
+              showNotification('⚠️ Site blocked iframe embedding, loading next...');
+              setTimeout(() => handleDrift(), 800);
+            }
+            return;
+          }
+        }
+        
+        // Success! Content loaded properly
+        hasLoaded = true;
+        console.log('[Drift] Content verified as loaded');
+        
+        // Update address bar
+        try {
+          window.history.pushState({ driftUrl: url }, '', `?url=${encodeURIComponent(url)}`);
+        } catch (e) {
+          console.error('Failed to update address bar:', e);
+        }
+      } catch (e) {
+        // Cross-origin - can't read content but that's OK (means it loaded)
+        if (e.name === 'SecurityError' && e.message.includes('cross-origin')) {
+          hasLoaded = true;
+          console.log('[Drift] Cross-origin content (that\'s OK, means it loaded)');
+          try {
+            window.history.pushState({ driftUrl: url }, '', `?url=${encodeURIComponent(url)}`);
+          } catch (err) {}
+        } else {
+          console.log('[Drift] Unexpected error:', e);
+          if (!retryAttempted) {
+            retryAttempted = true;
+            showNotification('⚠️ Failed to load, trying next...');
+            setTimeout(() => handleDrift(), 800);
+          }
+        }
+      }
+    }, 200); // Wait 200ms for error messages to render
     
     iframe.removeEventListener('load', onLoad);
     iframe.removeEventListener('error', onError);
