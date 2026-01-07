@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Contact - Drift</title>
+    <meta name="title" content="Contact - Drift" />
+    <meta name="description" content="Get in touch with the Drift team" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="https://drift.surf/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="https://drift.surf/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="https://drift.surf/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://drift.surf/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Drift" />
+    <link rel="manifest" href="https://drift.surf/favicon/site.webmanifest" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sol: {
+                            base3: '#fdf6e3',
+                            base2: '#eee8d5',
+                            base1: '#93a1a1',
+                            base0: '#839496',
+                            base00: '#657b83',
+                            base01: '#586e75',
+                            blue: '#268bd2',
+                            cyan: '#2aa198',
+                            green: '#859900',
+                            orange: '#cb4b16',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['EB Garamond', 'Lora', 'Merriweather', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/b32739cc1c.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="font-serif bg-sol-base3 text-sol-base00 min-h-screen px-4 sm:px-8 py-12">
+    <div class="max-w-2xl mx-auto mt-10">
+        <div class="px-4 md:p-0">
+            <!-- Header -->
+            <div class="mb-10">
+                <a href="index.html" class="inline-block text-sol-base1 hover:text-sol-cyan transition-colors mb-6">
+                    <i class="fa-light fa-arrow-left mr-2"></i>
+                    Back to Drift
+                </a>
+                <i class="fa-light fa-envelope-open-text text-sol-base01 text-4xl mb-6"></i>
+                <h1 class="text-4xl md:text-5xl italic text-sol-base01 mb-4">Get in Touch</h1>
+            </div>
+
+            <!-- Intro -->
+            <p class="text-2xl md:text-3xl leading-relaxed mb-10">
+                Got ideas? Found a bug? Want to complain about that one weird site we sent you to? We're all ears! 👂
+            </p>
+
+            <!-- Email CTA -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-semibold text-sol-base01 mb-4 flex items-center gap-2">
+                    <i class="fa-light fa-at"></i>
+                    Email Us
+                </h2>
+                <a href="mailto:drift@codeuncode.com"
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-sol-cyan text-sol-base3 text-xl rounded-3xl border-2 border-sol-cyan hover:scale-105 transition-all duration-200 shadow-md">
+                    <i class="fa-light fa-envelope"></i>
+                    <span>drift@codeuncode.com</span>
+                </a>
+            </div>
+
+            <!-- What to Email About -->
+            <div class="hidden mb-10 p-6 md:p-7 bg-sol-cyan/10 rounded-xl border border-sol-cyan/20">
+                <h3 class="text-xl font-semibold text-sol-cyan mb-4">
+                    <i class="fa-light fa-sparkles mr-2"></i>
+                    Great for:
+                </h3>
+                <div class="space-y-3 text-lg">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-light fa-lightbulb text-sol-cyan mt-1 flex-shrink-0"></i>
+                        <div><strong>Ideas</strong> - Suggestions for new URLs to add to the collection</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-light fa-comment-dots text-sol-cyan mt-1 flex-shrink-0"></i>
+                        <div><strong>Feedback</strong> - What you love, what you hate, what could be better</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-light fa-flag text-sol-cyan mt-1 flex-shrink-0"></i>
+                        <div><strong>Complaints</strong> - Broken sites, bugs, or URLs that shouldn't be in the
+                            collection</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-light fa-handshake text-sol-cyan mt-1 flex-shrink-0"></i>
+                        <div><strong>Partnerships</strong> - Want to collaborate or integrate Drift somewhere?</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-light fa-wave text-sol-cyan mt-1 flex-shrink-0"></i>
+                        <div><strong>Just saying hi</strong> - We're friendly folk!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bug Reports -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-sol-base01 mb-4 flex items-center gap-2">
+                    <i class="fa-light fa-bug"></i>
+                    Bug Reports
+                </h2>
+                <p class="text-lg mb-3">If something's broken, tell us:</p>
+                <ul class="space-y-2 text-lg ml-6">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-light fa-chevron-right text-sol-base1 mt-1 text-sm flex-shrink-0"></i>
+                        <span>What happened vs. what you expected</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-light fa-chevron-right text-sol-base1 mt-1 text-sm flex-shrink-0"></i>
+                        <span>Browser version (Chrome, Edge, etc.)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-light fa-chevron-right text-sol-base1 mt-1 text-sm flex-shrink-0"></i>
+                        <span>Extension version (check the popup)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-light fa-chevron-right text-sol-base1 mt-1 text-sm flex-shrink-0"></i>
+                        <span>Screenshots if possible</span>
+                    </li>
+                </ul>
+                <p class="text-base text-sol-base1 italic mt-3">The more details, the faster we can fix it!</p>
+            </div>
+
+            <!-- URL Submissions -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-semibold text-sol-base01 mb-4 flex items-center gap-2">
+                    <i class="fa-light fa-globe-pointer"></i>
+                    URL Submissions
+                </h2>
+                <p class="text-lg leading-relaxed">
+                    Found an amazing corner of the internet? You can submit URLs directly through the extension (click
+                    the <span
+                        class="inline-block px-2 py-0.5 bg-sol-base2 text-sol-base01 rounded text-sm font-medium">Submit</span>
+                    button in the toolbar). But if you prefer email, send them our way with a quick description of why
+                    it's cool!
+                </p>
+            </div>
+
+            <!-- Response Time -->
+            <div class="mb-10 p-6 md:p-7 bg-sol-base2 rounded-xl">
+                <h2 class="text-xl font-semibold text-sol-base01 mb-3 flex items-center gap-2">
+                    <i class="fa-light fa-clock"></i>
+                    Response Time
+                </h2>
+                <p class="text-base leading-relaxed">
+                    We're a small team building this for the love of the weird web, so responses might take a few days.
+                    But we read every message!
+                </p>
+            </div>
+
+            <!-- Company Info -->
+            <div class="mb-10 p-6 md:p-7 bg-sol-base2 rounded-xl">
+                <h2 class="text-xl font-semibold text-sol-base01 mb-3">Legal / Company Information</h2>
+                <p class="text-base leading-relaxed">
+                    <strong>Code Uncode</strong><br>
+                    B207, Block B, Adithi Elite<br>
+                    Bhoganhalli, Bengaluru 560103<br>
+                    Karnataka, India<br><br>
+                    <strong>Email:</strong> <a href="mailto:drift@codeuncode.com"
+                        class="text-sol-cyan hover:underline">drift@codeuncode.com</a>
+                </p>
+            </div>
+
+            <!-- PS Note -->
+            <div class="mb-8 p-5 bg-sol-orange/10 rounded-xl border border-sol-orange/20">
+                <p class="text-base text-sol-base01 italic">
+                    <strong>PS:</strong> If you're a lawyer, accountant, or trying to sell us something, maybe don't.
+                    But if you're just a nice person with thoughts about the internet, please do! 💙
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-14 pt-8 border-t border-sol-base2">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 text-sol-base1 text-sm">
+                    <p>With <i class="fa-light fa-heart text-sol-orange"></i> from
+                        <a href="https://codeuncode.com" target="_blank" rel="noopener"
+                            class="hover:text-sol-cyan font-medium transition-colors">codeuncode.com</a>
+                    </p>
+                    <div>
+                        <a href="index.html" class="hover:text-sol-cyan font-medium transition-colors mr-4">Home</a>
+                        <a href="privacy.html" class="hover:text-sol-cyan font-medium transition-colors">Privacy</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>
