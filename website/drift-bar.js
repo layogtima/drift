@@ -161,9 +161,6 @@ function createToolbar() {
       <span class="drift-icon">${icons.share}</span>
     </button>
     <span class="hidden" id="drift-stats">Sites: ${stats.totalDrifts}</span>
-    <button id="drift-collapse-btn" title="Hide toolbar">
-      <span class="drift-icon">${icons.x}</span>
-    </button>
   `;
   
   toolbar.innerHTML = `
@@ -177,13 +174,57 @@ function createToolbar() {
   document.getElementById('drift-like-btn').addEventListener('click', handleLike);
   document.getElementById('drift-dislike-btn').addEventListener('click', handleDislike);
   document.getElementById('drift-copy-btn').addEventListener('click', handleCopy);
-  document.getElementById('drift-collapse-btn').addEventListener('click', toggleToolbar);
   
-  // Pull tab
-  const pullTab = document.getElementById('drift-pull-tab');
-  if (pullTab) {
-    pullTab.addEventListener('click', toggleToolbar);
-  }
+}
+
+// Setup iframe error detection
+function setupIframeErrorDetection(iframe, url) {
+  let hasLoaded = false;
+  let retryAttempted = false;
+  
+  // Timeout to detect if iframe doesn't load
+  const loadTimeout = setTimeout(() => {
+    if (!hasLoaded && !retryAttempted) {
+      console.log('[Drift] Iframe failed to load, trying next URL...');
+      retryAttempted = true;
+      showNotification('⚠️ Site blocked iframe embedding, loading next...');
+      setTimeout(() => handleDrift(), 500); // Try next URL
+    }
+  }, 5000); // 5 second timeout
+  
+  // Success handler
+  const onLoad = () => {
+    hasLoaded = true;
+    clearTimeout(loadTimeout);
+    console.log('[Drift] Iframe loaded successfully');
+    
+    // Update address bar to match iframe URL
+    try {
+      const urlObj = new URL(url);
+      window.history.pushState({ driftUrl: url }, '', `?url=${encodeURIComponent(url)}`);
+    } catch (e) {
+      console.error('Failed to update address bar:', e);
+    }
+    
+    iframe.removeEventListener('load', onLoad);
+    iframe.removeEventListener('error', onError);
+  };
+  
+  // Error handler
+  const onError = () => {
+    clearTimeout(loadTimeout);
+    if (!retryAttempted) {
+      console.log('[Drift] Iframe error detected, trying next URL...');
+      retryAttempted = true;
+      showNotification('⚠️ Site blocked iframe embedding, loading next...');
+      setTimeout(() => handleDrift(), 500);
+    }
+    iframe.removeEventListener('load', onLoad);
+    iframe.removeEventListener('error', onError);
+  };
+  
+  iframe.addEventListener('load', onLoad);
+  iframe.addEventListener('error', onError);
 }
 
 // Update toolbar (for refreshing after auth changes)
@@ -211,7 +252,11 @@ async function handleDrift() {
     
     // Update iframe
     const iframe = document.getElementById('drift-iframe');
-    if (iframe) iframe.src = url.url;
+    if (iframe) {
+      iframe.src = url.url;
+      // Setup error detection and auto-skip
+      setupIframeErrorDetection(iframe, url.url);
+    }
     
     // Save to history
     driftHistory.push({
@@ -286,27 +331,6 @@ async function handleCopy() {
     console.error('Copy failed:', error);
   }
 }
-
-// Toggle toolbar
-function toggleToolbar() {
-  const toolbar = document.getElementById('drift-toolbar');
-  const pullTab = document.getElementById('drift-pull-tab');
-  toolbarVisible = !toolbarVisible;
-  
-  if (toolbarVisible) {
-    toolbar.classList.remove('hidden');
-    pullTab.style.opacity = '0';
-    pullTab.style.pointerEvents = 'none';
-  } else {
-    toolbar.classList.add('hidden');
-    pullTab.style.opacity = '1';
-    pullTab.style.pointerEvents = 'all';
-  }
-  
-  localStorage.setItem('drift_toolbar_visible', toolbarVisible.toString());
-}
-
-
 
 // Show notifications
 function showNotification(message) {
