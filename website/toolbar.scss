@@ -1,0 +1,27 @@
+// ============================================================================
+// DRIFT TOOLBAR - MAIN SCSS FILE
+// ============================================================================
+// This file imports all partials in the correct order.
+// Compile this to generate toolbar.css for the extension.
+//
+// VSCode Live Sass Compiler settings recommended:
+// - Format: compressed
+// - Generate map: false
+// - Save path: ../
+// ============================================================================
+
+// 1. Variables & Design Tokens
+@import '../extension/scss/variables';
+
+// 2. Mixins & Utilities
+@import '../extension/scss/mixins';
+
+// 3. Base Styles & Theme
+@import '../extension/scss/base';
+
+// 4. Core Components
+@import '../extension/scss/toolbar';
+@import '../extension/scss/buttons';
+@import '../extension/scss/dropdowns';
+@import '../extension/scss/user-panel';
+@import '../extension/scss/action-bar';
