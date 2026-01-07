@@ -74,9 +74,61 @@
     <link
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
+
+    <!-- Drift Bar Styles (from extension) -->
+    <link rel="stylesheet" href="../extension/toolbar.css">
+
+    <!-- Drift Bar Scripts -->
+    <script type="module" src="drift-bar.js" defer></script>
+
+    <style>
+        /* Drift iframe container */
+        #drift-container {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #fdf6e3;
+            z-index: 1;
+        }
+
+        #drift-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        #drift-pull-tab {
+            z-index: 2147483647 !important;
+        }
+
+        /* Hide main content when drift bar is active */
+        body.drift-mode .max-w-2xl {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="font-serif bg-sol-base3 text-sol-base00 min-h-screen px-4 sm:px-8 py-12">
+    <!-- Drift Toolbar -->
+    <div id="drift-toolbar"></div>
+    <div id="drift-pull-tab">
+        <span class="drift-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+            </svg>
+        </span>
+    </div>
+
+    <!-- Drift iframe container -->
+    <div id="drift-container" style="display: none;">
+        <iframe id="drift-iframe" title="Drifted content"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </div>
+
     <div class="max-w-2xl mx-auto mt-10">
 
         <div class="px-4 md:p-0">
