@@ -18,6 +18,7 @@ CREATE TABLE url_tags (
 ```
 
 **Problems with current approach:**
+
 - Tags are just strings with no metadata
 - No way to list all available tags
 - No tag descriptions or categories
@@ -121,24 +122,25 @@ CREATE INDEX idx_tags_name ON tags(name);
 
 ### New Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/tags` | GET | List all global tags |
-| `/tags` | POST | Create new tag (mod/admin) |
-| `/tags/:id` | PATCH | Update tag (mod/admin) |
-| `/tags/:id` | DELETE | Delete tag (admin only) |
+| Endpoint    | Method | Description                |
+| ----------- | ------ | -------------------------- |
+| `/tags`     | GET    | List all global tags       |
+| `/tags`     | POST   | Create new tag (mod/admin) |
+| `/tags/:id` | PATCH  | Update tag (mod/admin)     |
+| `/tags/:id` | DELETE | Delete tag (admin only)    |
 
 ### Updated Endpoints
 
-| Endpoint | Change |
-|----------|--------|
-| `GET /urls` | Include tag objects with id, name, display_name |
-| `POST /urls` | Accept tag IDs or create new tags by name |
-| `PATCH /urls/:id` | Accept tag IDs for updating associations |
+| Endpoint          | Change                                          |
+| ----------------- | ----------------------------------------------- |
+| `GET /urls`       | Include tag objects with id, name, display_name |
+| `POST /urls`      | Accept tag IDs or create new tags by name       |
+| `PATCH /urls/:id` | Accept tag IDs for updating associations        |
 
 ### Response Format Changes
 
 **Before:**
+
 ```json
 {
   "url": "https://example.com",
@@ -147,6 +149,7 @@ CREATE INDEX idx_tags_name ON tags(name);
 ```
 
 **After:**
+
 ```json
 {
   "url": "https://example.com",
@@ -162,11 +165,13 @@ CREATE INDEX idx_tags_name ON tags(name);
 ## Extension Changes
 
 ### Submit Form
+
 - Fetch available tags from `/tags` endpoint
 - Show autocomplete/dropdown with existing tags (let's have tags be a list of checkboxes)
 - Allow creating new tags by typing (creates on submit)
 
 ### Tag Filtering (Future)
+
 - Add tag filter to Drift button
 - "Drift within tag" feature
 
@@ -175,10 +180,12 @@ CREATE INDEX idx_tags_name ON tags(name);
 ## Implementation Order
 
 1. **Database Migration**
+
    - Create `0002_global_tags.sql`
    - Run migration on local and production
 
 2. **API Updates**
+
    - Add `GET /tags` endpoint
    - Update `getUrls()` to return tag objects
    - Update `createUrl()` to handle tag IDs
@@ -194,6 +201,7 @@ CREATE INDEX idx_tags_name ON tags(name);
 ## Open Questions
 
 1. **Tag creation permissions:** Should regular users be able to create new tags, or only select from existing ones?
+
    - Option A: Anyone can create tags (more flexible)
    - Option B: Only mods/admins can create tags (more controlled): this
    - Option C: Users can suggest, mods approve
@@ -206,18 +214,17 @@ CREATE INDEX idx_tags_name ON tags(name);
 
 ## Estimated Effort
 
-| Task | Estimate |
-|------|----------|
-| Migration file | 30 min |
-| API endpoints | 2 hours |
-| Extension UI | 2 hours |
-| Testing | 1 hour |
-| **Total** | ~5.5 hours |
-
+| Task           | Estimate   |
+| -------------- | ---------- |
+| Migration file | 30 min     |
+| API endpoints  | 2 hours    |
+| Extension UI   | 2 hours    |
+| Testing        | 1 hour     |
+| **Total**      | ~5.5 hours |
 
 ## Add tags
 
 curl -X POST https://api.drift.surf/tags \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"name":"technology","display_name":"Technology"}'
+ -H "Content-Type: application/json" \
+ -H "Authorization: Bearer $TOKEN" \
+ -d '{"name":"technology","display_name":"Technology"}'
