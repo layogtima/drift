@@ -1,0 +1,911 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+:root {
+  --sol-base3: #fdf6e3;
+  --sol-base2: #eee8d5;
+  --sol-base1: #93a1a1;
+  --sol-base0: #839496;
+  --sol-base00: #657b83;
+  --sol-base01: #586e75;
+  --sol-blue: #268bd2;
+  --sol-cyan: #2aa198;
+  --sol-green: #859900;
+  --sol-red: #dc322f;
+  --sol-orange: #cb4b16;
+  --sol-yellow: #b58900;
+  --drift-bg: var(--sol-base3);
+  --drift-bg-elevated: var(--sol-base2);
+  --drift-border: var(--sol-base2);
+  --drift-text: var(--sol-base01);
+  --drift-text-secondary: var(--sol-base1);
+  --drift-primary: var(--sol-cyan);
+  --drift-primary-hover: var(--sol-blue);
+  --drift-success: var(--sol-green);
+  --drift-danger: var(--sol-red);
+  --drift-accent: var(--sol-yellow);
+}
+
+body[data-theme=dark] {
+  --sol-base03: #002b36;
+  --sol-base02: #073642;
+  --drift-bg: var(--sol-base03);
+  --drift-bg-elevated: var(--sol-base02);
+  --drift-border: var(--sol-base02);
+  --drift-text: var(--sol-base0);
+  --drift-text-secondary: var(--sol-base01);
+}
+
+@keyframes drift-dropdown-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes drift-tooltip-fade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes drift-notification-slide {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+html body #drift-toolbar .hidden {
+  display: none;
+}
+html body #drift-toolbar {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  background-color: var(--drift-bg);
+  border-bottom: 1px solid var(--drift-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  font-size: 14px;
+  color: var(--drift-text);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  contain: layout style;
+  isolation: isolate;
+}
+html body #drift-toolbar * {
+  box-sizing: border-box;
+}
+html body #drift-toolbar.hidden {
+  transform: translateY(-100%);
+}
+html body .drift-toolbar-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+}
+html body #drift-pull-tab {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  top: 0;
+  right: 10%;
+  width: 60px;
+  height: 20px;
+  background-color: var(--drift-bg);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid var(--drift-border);
+  border-top: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--drift-text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background-color 0.15s ease;
+}
+html body #drift-pull-tab:hover {
+  background-color: var(--drift-bg-elevated);
+  color: var(--drift-primary);
+}
+html body #drift-toolbar.hidden + #drift-pull-tab {
+  opacity: 1;
+  pointer-events: all;
+}
+html body #drift-page-title {
+  color: var(--drift-text);
+  font-size: 13px;
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.7;
+  margin-left: 8px;
+  margin-right: auto;
+  text-align: center;
+}
+html body #drift-stats {
+  color: var(--drift-text-secondary);
+  font-size: 12px;
+  padding: 6px 8px;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+html body #drift-tooltip {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--drift-primary);
+  color: var(--drift-bg);
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: drift-tooltip-fade 0.3s ease;
+  z-index: 2147483645;
+  white-space: nowrap;
+}
+html body #drift-tooltip::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--drift-primary);
+}
+
+html body #drift-toolbar button {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  padding: 12.5px 15px;
+  border: 1px solid var(--drift-bg-elevated);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--drift-text);
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.05rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  line-height: 1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+html body #drift-toolbar button:hover {
+  background-color: var(--drift-bg-elevated);
+}
+html body #drift-toolbar button:active {
+  transform: scale(0.98);
+}
+html body #drift-btn {
+  background-color: var(--drift-primary);
+  color: var(--drift-bg);
+  font-weight: 600;
+  padding: 7px 18px;
+}
+html body #drift-btn:hover {
+  background-color: var(--drift-primary-hover);
+}
+html body #drift-btn .drift-icon {
+  margin-right: 6px;
+}
+html body .drift-icon-btn,
+html body #drift-settings-btn,
+html body #drift-collapse-btn {
+  padding: 7px 8px;
+  min-width: 34px;
+}
+html body #drift-like-btn:hover {
+  background-color: var(--drift-success);
+}
+html body #drift-like-btn.active, html body #drift-like-btn.active:hover {
+  background-color: var(--drift-success);
+  color: #fdf6e3;
+}
+html body #drift-dislike-btn:hover {
+  background-color: var(--drift-danger);
+}
+html body #drift-dislike-btn.active, html body #drift-dislike-btn.active:hover {
+  background-color: var(--drift-danger);
+  color: #fdf6e3;
+}
+html body #drift-copy-btn.copied, html body #drift-copy-btn:hover.copied {
+  background-color: var(--drift-success);
+  border-color: var(--drift-success);
+  color: var(--drift-bg);
+}
+html body .drift-badge {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: inline-block;
+  background: var(--drift-danger);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+html body #drift-approval-mode-btn {
+  background-color: transparent;
+  color: var(--drift-text);
+  border-color: var(--drift-border);
+}
+html body #drift-category-select {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  padding: 7px 30px 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--drift-text);
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 140px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23586e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+html body #drift-category-select:hover {
+  background-color: var(--drift-bg-elevated);
+  border-color: var(--drift-border);
+}
+html body body[data-theme=dark] #drift-category-select {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%23839496" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+html body .drift-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+html body .drift-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+html body .drift-dropdown-backdrop {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 2147483645;
+  display: block;
+}
+html body .drift-dropdown {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  background: var(--drift-bg);
+  border: 1px solid var(--drift-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  max-width: 390px;
+  z-index: 2147483646;
+  color: var(--drift-text);
+  opacity: 1;
+  transform: translateY(-8px);
+  animation: drift-dropdown-enter 0.18s ease-out forwards;
+  overflow: hidden;
+  padding: 16px;
+}
+html body .drift-dropdown-header {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  border-bottom: 1px solid var(--drift-border);
+}
+html body .drift-dropdown-header h2 {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.8rem;
+  font-style: italic;
+  color: var(--drift-text);
+  margin: 0 0 0.75rem 0;
+}
+html body .drift-close-btn {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--drift-text-secondary);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+html body .drift-close-btn:hover {
+  color: var(--drift-danger);
+}
+html body .drift-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+html body .drift-tabs {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--drift-border);
+}
+html body .drift-tab {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--drift-text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+html body .drift-tab:hover {
+  color: var(--drift-text);
+}
+html body .drift-tab.active {
+  color: var(--drift-primary);
+  border-bottom-color: var(--drift-primary);
+}
+html body .drift-auth-form,
+html body .drift-submit-form,
+html body .drift-user-info {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+}
+html body .drift-auth-form input,
+html body .drift-submit-form input {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--drift-border);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--drift-text);
+  background: var(--drift-bg-elevated);
+  transition: border-color 0.2s;
+}
+html body .drift-auth-form input:focus,
+html body .drift-submit-form input:focus {
+  outline: none;
+  border-color: var(--drift-primary);
+}
+html body .drift-submit-form > label {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  color: var(--drift-text);
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+html body .drift-submit-form > label:first-child {
+  margin-top: 0;
+}
+html body .drift-error {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  color: var(--drift-danger);
+  font-size: 13px;
+  line-height: 2rem;
+  margin-bottom: 12px;
+}
+html body .drift-primary-btn,
+html body .drift-secondary-btn {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  margin-top: 8px;
+}
+html body .drift-primary-btn {
+  background: var(--drift-primary);
+  color: white;
+}
+html body .drift-primary-btn:hover {
+  transform: scale(1.05);
+}
+html body .drift-secondary-btn {
+  background: var(--drift-bg-elevated);
+  color: var(--drift-text);
+  border: 1px solid var(--drift-border);
+}
+html body .drift-secondary-btn:hover {
+  background: var(--drift-border);
+}
+html body .drift-user-info p {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 14px;
+  color: var(--drift-text);
+  margin-bottom: 12px;
+  display: block;
+}
+html body .drift-user-info p strong {
+  font-weight: 600;
+  color: var(--drift-text);
+}
+html body .drift-tags-checkboxes {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px;
+  margin-bottom: 12px;
+}
+html body .drift-tag-checkbox {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1.5px solid var(--drift-border);
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--drift-text);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  letter-spacing: 0.02em;
+}
+html body .drift-tag-checkbox:hover {
+  border-color: var(--drift-primary);
+  background: var(--drift-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+html body .drift-tag-checkbox input[type=checkbox] {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+html body .drift-tag-checkbox:has(input:checked) {
+  background: var(--drift-primary);
+  border-color: var(--drift-primary);
+  color: var(--drift-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(42, 161, 152, 0.3);
+}
+html body .drift-loading,
+html body .drift-no-tags {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 13px;
+  color: var(--drift-text-secondary);
+  font-style: italic;
+}
+
+html body .drift-user-header-content {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+html body .drift-user-avatar {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--drift-bg-elevated);
+  border: 1.5px solid var(--drift-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--drift-primary);
+}
+html body .drift-user-avatar .drift-icon svg {
+  width: 20px;
+  height: 20px;
+}
+html body .drift-user-title {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+html body .drift-user-title h2 {
+  margin: 0;
+  padding: 0;
+}
+html body .drift-role-badge {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+html body .drift-role-badge-user {
+  background: var(--drift-bg-elevated);
+  color: var(--drift-text-secondary);
+  border: 1px solid var(--drift-border);
+}
+html body .drift-role-badge-mod {
+  background: var(--drift-primary);
+  color: var(--drift-bg);
+}
+html body .drift-role-badge-admin {
+  background: var(--drift-accent);
+  color: var(--drift-bg);
+}
+html body .drift-user-section {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  padding: 16px 0;
+}
+html body .drift-user-section:last-of-type {
+  border-bottom: none;
+}
+html body .drift-section-title {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--drift-text-secondary);
+  margin: 0 0 12px 0;
+  display: block;
+}
+html body .drift-stats-grid {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+html body .drift-stat-item {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  background: var(--drift-bg-elevated);
+  border: 1px solid var(--drift-border);
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+html body .drift-stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+html body .drift-stat-icon {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  color: var(--drift-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+html body .drift-stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+html body .drift-stat-icon-like {
+  color: var(--drift-success);
+}
+html body .drift-stat-icon-dislike {
+  color: var(--drift-danger);
+}
+html body .drift-stat-content {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+html body .drift-stat-value {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--drift-text);
+  line-height: 1;
+  display: block;
+}
+html body .drift-stat-label {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 11px;
+  color: var(--drift-text-secondary);
+  letter-spacing: 0.05em;
+  display: block;
+}
+html body .drift-pending-info {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--drift-bg-elevated);
+  border: 1px solid var(--drift-border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--drift-text);
+}
+html body .drift-pending-info strong {
+  font-weight: 600;
+  color: var(--drift-accent);
+}
+html body .drift-pending-icon {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 18px;
+  display: inline-block;
+}
+html body .drift-user-actions {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+}
+
+html body .drift-action-bar {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background-color: var(--drift-bg-elevated);
+  border-top: 1px solid var(--drift-border);
+  color: var(--drift-text);
+  min-height: 42px;
+}
+html body .drift-action-bar.visible {
+  display: flex;
+}
+html body .drift-approval-content {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+}
+html body .drift-approval-content h3 {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--drift-text-secondary);
+  margin: 0;
+  display: inline-block;
+}
+html body .drift-approval-content p {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  font-size: 13px;
+  color: var(--drift-text);
+  margin: 0;
+  display: inline-block;
+}
+html body .drift-approval-content strong {
+  font-weight: 600;
+  color: var(--drift-text);
+  margin-right: 4px;
+}
+html body .drift-approval-info {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+html body .drift-approval-actions {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  gap: 8px;
+}
+html body .drift-approve-btn,
+html body .drift-reject-btn {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  padding: 7px 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+html body .drift-approve-btn .drift-icon,
+html body .drift-reject-btn .drift-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+html body .drift-approve-btn .drift-icon svg,
+html body .drift-reject-btn .drift-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+html body .drift-approve-btn {
+  background-color: var(--drift-success);
+  color: var(--drift-bg);
+}
+html body .drift-approve-btn:hover {
+  background-color: var(--sol-green);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(133, 153, 0, 0.3);
+}
+html body .drift-reject-btn {
+  background-color: transparent;
+  color: var(--drift-text);
+  border-color: var(--drift-border);
+}
+html body .drift-reject-btn:hover {
+  background-color: var(--drift-danger);
+  color: var(--drift-bg);
+  border-color: var(--drift-danger);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(220, 50, 47, 0.25);
+}
+html body .drift-notification {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background: var(--drift-success);
+  color: var(--drift-bg);
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 2147483647;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: drift-notification-slide 0.3s ease-out;
+}/*# sourceMappingURL=toolbar.css.map */
