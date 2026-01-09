@@ -141,15 +141,40 @@
                 An ode to the serendipity of the old internet ✨
             </p>
 
+            <!-- Mobile-only message -->
+            <div class="block md:hidden bg-sol-base2 border border-sol-base1 rounded-xl p-6 mb-6">
+                <p class="text-lg text-sol-base01 mb-3">
+                    <i class="fa-light fa-desktop text-sol-cyan mr-2"></i>
+                    <strong>Desktop browsers only</strong>
+                </p>
+                <p class="text-base text-sol-base00">
+                    Drift is currently available as a browser extension for desktop Chrome, Edge, and other
+                    Chromium-based browsers.
+                    Grab your laptop and come back to install!
+                </p>
+            </div>
+
             <!-- CTA Buttons -->
             <div class="flex flex-wrap gap-4 my-10">
+                <div class="hidden md:flex items-center gap-2">
+                    <a href="builds/latest-0254-9-Jan.zip" download id="sideload-btn"
+                        class="inline-flex items-center gap-3 px-7 py-2 bg-sol-cyan text-sol-base3 text-lg font-medium rounded-3xl border-2 border-sol-cyan hover:scale-105 transition-all duration-200">
+                        <i class="fa-light fa-download"></i>
+                        <span>Download Extension (Sideload)</span>
+                    </a>
+                    <button id="help-btn"
+                        class="w-7 h-7 flex items-center justify-center text-sol-cyan hover:text-sol-base3 hover:bg-sol-cyan border border-sol-cyan rounded-full transition-all duration-200"
+                        aria-label="Installation help" title="How to install">
+                        <i class="fa-light fa-question text-sm"></i>
+                    </button>
+                </div>
                 <a href="#" id="install-btn"
-                    class="inline-flex items-center gap-3 px-7 py-2 bg-sol-base0 text-sol-base3 text-lg rounded-3xl border-2 border-sol-bg-base hover:scale-105 bg-sol-cyan transition-all duration-200">
+                    class="hidden md:inline-flex items-center gap-3 px-7 py-2 bg-sol-base3 text-sol-base0 text-lg rounded-3xl border-2 border-sol-base1 hover:text-sol-cyan hover:border-sol-cyan transition-all duration-200 opacity-60">
                     <i class="fa-light fa-person-hiking"></i>
-                    <span>Install Drift for Chrome</span>
+                    <span>Install from Chrome Store (Coming Soon)</span>
                 </a>
                 <a href="https://github.com/layogtima/drift" target="_blank" rel="noopener"
-                    class="inline-flex items-center gap-3 px-7 py-2 bg-sol-base3 text-sol-base0 text-lg rounded-3xl border-2 border-sol-bg-base hover:text-sol-cyan hover:border-sol-cyan transition-all duration-200">
+                    class="inline-flex items-center gap-3 px-7 py-2 bg-sol-base3 text-sol-base0 text-lg rounded-3xl border-2 border-sol-base1 hover:text-sol-cyan hover:border-sol-cyan transition-all duration-200">
                     <i class="fa-light fa-code-branch"></i>
                     <span>Contribute</span>
                 </a>
@@ -203,6 +228,72 @@
             </ol>
         </div>
 
+    </div>
+
+    <!-- Generic Message Modal -->
+    <div id="message-modal"
+        class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+        <div class="bg-sol-base3 rounded-xl border-2 border-sol-cyan shadow-2xl max-w-md w-full mx-auto"
+            onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-sol-base2">
+                <h3 id="message-modal-title" class="text-xl font-semibold text-sol-base01">
+                    <!-- Title inserted dynamically -->
+                </h3>
+                <button id="message-modal-close"
+                    class="text-sol-base1 hover:text-sol-cyan transition-colors text-2xl leading-none"
+                    aria-label="Close">
+                    <i class="fa-light fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div id="message-modal-content" class="px-6 py-5 text-base text-sol-base00">
+                <!-- Content inserted dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Installation Modal -->
+    <div id="install-modal"
+        class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+        <div class="bg-sol-base3 rounded-xl border-2 border-sol-cyan shadow-2xl max-w-lg w-full mx-auto"
+            onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-sol-base2">
+                <h3 class="text-xl font-semibold text-sol-base01">
+                    <i class="fa-light fa-circle-info text-sol-cyan mr-2"></i>
+                    How to Install
+                </h3>
+                <button id="close-modal"
+                    class="text-sol-base1 hover:text-sol-cyan transition-colors text-2xl leading-none"
+                    aria-label="Close">
+                    <i class="fa-light fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="px-6 py-5">
+
+                <div class="ml-1">
+                    <ol class="list-decimal ml-5 space-y-3 text-base text-sol-base00">
+                        <li>Unzip the downloaded file</li>
+                        <li>Open Chrome and go to <code
+                                class="bg-sol-base2 px-2 py-0.5 rounded text-sm">chrome://extensions/</code></li>
+                        <li>Enable <strong>Developer mode</strong> (toggle in top-right corner)</li>
+                        <li>Click <strong>Load unpacked</strong></li>
+                        <li>Select the unzipped extension folder</li>
+                        <li>Start drifting! ✨</li>
+                    </ol>
+                </div>
+
+                <hr class="mt-5">
+
+                <p class="text-sm text-sol-base1 italic mt-4">
+                    <i class="fa-light fa-lightbulb mr-1"></i>
+                    Need help? <a href="contact.html" class="text-sol-cyan hover:underline">Contact us</a>
+                </p>
+            </div>
+        </div>
     </div>
 
     <script src="script.js?v4"></script>
