@@ -1,12 +1,10 @@
 {
     "manifest_version": 3,
     "name": "Drift",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Drift through the best parts of the internet! Recreating the serendipitous discovery of the web.",
     "permissions": [
-        "storage",
-        "activeTab",
-        "tabs"
+        "storage"
     ],
     "host_permissions": [
         "https://drift.surf/*",
