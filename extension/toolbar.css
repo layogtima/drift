@@ -278,6 +278,62 @@ html body #drift-approval-mode-btn {
   color: var(--drift-text);
   border-color: var(--drift-border);
 }
+html body #drift-filter-btn {
+  background-color: transparent;
+  color: var(--drift-text);
+  padding: 7px 12px;
+  position: relative;
+}
+html body #drift-filter-btn:hover {
+  background-color: var(--drift-bg-elevated);
+}
+html body #drift-filter-btn.active {
+  background-color: var(--drift-primary);
+  color: var(--drift-bg);
+}
+html body #drift-filter-btn.active:hover {
+  background-color: var(--drift-primary-hover);
+}
+html body #drift-filter-count {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--drift-bg);
+  color: var(--drift-primary);
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  margin-left: 4px;
+}
+html body #drift-filter-btn.active #drift-filter-count {
+  background: var(--drift-bg);
+  color: var(--drift-primary);
+}
+html body .drift-filter-actions {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--drift-border);
+}
+html body .drift-filter-actions .drift-secondary-btn,
+html body .drift-filter-actions .drift-primary-btn {
+  flex: 1;
+  margin-top: 0;
+}
+html body .drift-filter-actions .drift-secondary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 html body #drift-category-select {
   all: initial;
   box-sizing: border-box;

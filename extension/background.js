@@ -130,7 +130,7 @@ async function getUrls() {
 }
 
 // Get random URL
-function getRandomUrl(excludeUrls = [], approvalMode = false) {
+function getRandomUrl(excludeUrls = [], approvalMode = false, filterTagIds = []) {
   if (!urlDatabase || !urlDatabase.urls) return null;
 
   // If in approval mode, only show pending URLs
@@ -147,7 +147,7 @@ function getRandomUrl(excludeUrls = [], approvalMode = false) {
   }
 
   // Normal mode: Filter to only live URLs (or pending if user submitted them)
-  const availableUrls = urlDatabase.urls.filter(item => {
+  let availableUrls = urlDatabase.urls.filter(item => {
     // Don't show URLs that have been seen
     if (excludeUrls.includes(item.url)) return false;
 
@@ -166,8 +166,42 @@ function getRandomUrl(excludeUrls = [], approvalMode = false) {
     return false;
   });
 
-  // If all URLs seen, reset and use all available
-  const urlsToChooseFrom = availableUrls.length > 0 ? availableUrls : urlDatabase.urls.filter(item => item.status === 'live');
+  // Apply tag filter if specified (OR logic - URL must have at least one selected tag)
+  if (filterTagIds && filterTagIds.length > 0) {
+    availableUrls = availableUrls.filter(item => {
+      if (!item.tags || item.tags.length === 0) return false;
+      // Get tag IDs from the URL's tags (handle both object and ID formats)
+      const urlTagIds = item.tags.map(tag => {
+        if (typeof tag === 'object' && tag.id) return tag.id;
+        if (typeof tag === 'number') return tag;
+        if (typeof tag === 'string') return parseInt(tag);
+        return null;
+      }).filter(id => id !== null);
+      // OR logic: URL matches if it has at least one of the selected tags
+      return filterTagIds.some(tagId => urlTagIds.includes(tagId));
+    });
+    console.log('[Drift BG] After tag filter - available URLs:', availableUrls.length);
+  }
+
+  // If all URLs seen, reset and use all available (but still respect tag filter)
+  let urlsToChooseFrom = availableUrls;
+  if (availableUrls.length === 0) {
+    let resetUrls = urlDatabase.urls.filter(item => item.status === 'live');
+    // Re-apply tag filter even after reset
+    if (filterTagIds && filterTagIds.length > 0) {
+      resetUrls = resetUrls.filter(item => {
+        if (!item.tags || item.tags.length === 0) return false;
+        const urlTagIds = item.tags.map(tag => {
+          if (typeof tag === 'object' && tag.id) return tag.id;
+          if (typeof tag === 'number') return tag;
+          if (typeof tag === 'string') return parseInt(tag);
+          return null;
+        }).filter(id => id !== null);
+        return filterTagIds.some(tagId => urlTagIds.includes(tagId));
+      });
+    }
+    urlsToChooseFrom = resetUrls;
+  }
 
   if (urlsToChooseFrom.length === 0) return null;
 
@@ -189,9 +223,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       
       await getUrls(); // Ensure URLs are loaded
       console.log('[Drift BG] URL database loaded:', urlDatabase ? `${urlDatabase.urls?.length} URLs, pendingCount: ${urlDatabase.pendingCount}` : 'null');
-      const { excludeUrls, approvalMode } = request;
-      console.log('[Drift BG] Approval mode:', approvalMode);
-      const url = getRandomUrl(excludeUrls, approvalMode);
+      const { excludeUrls, approvalMode, filterTagIds } = request;
+      console.log('[Drift BG] Approval mode:', approvalMode, 'Filter tags:', filterTagIds);
+      const url = getRandomUrl(excludeUrls, approvalMode, filterTagIds);
       console.log('[Drift BG] Random URL selected:', url);
       sendResponse({ url, user: urlDatabase?.user, pendingCount: urlDatabase?.pendingCount });
     })();
