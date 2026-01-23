@@ -158,3 +158,51 @@ export async function isAdmin() {
   const user = await getCurrentUser();
   return user && user.role === 'admin';
 }
+
+// Request password reset email
+export async function forgotPassword(email) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await response.json();
+    // Always return success to match API behavior (prevents email enumeration)
+    return { success: true };
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+// Resend verification email
+export async function resendVerification() {
+  try {
+    const token = await getAuthToken();
+    if (!token) {
+      return { success: false, error: 'Not logged in' };
+    }
+
+    const response = await fetch(`${API_BASE_URL}/auth/send-verification`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to send verification email');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Resend verification error:', error);
+    return { success: false, error: error.message };
+  }
+}

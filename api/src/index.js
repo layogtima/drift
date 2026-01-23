@@ -1,5 +1,14 @@
 // Drift API - Cloudflare Workers
-import { handleRegister, handleLogin, handleLogout, handleGetMe } from './auth.js';
+import {
+  handleRegister,
+  handleLogin,
+  handleLogout,
+  handleGetMe,
+  handleSendVerification,
+  handleVerifyEmail,
+  handleForgotPassword,
+  handleResetPassword
+} from './auth.js';
 import { handleGetUrls, handleSubmitUrl, handleApproveUrl, handleRejectUrl, handleUpdateUrl, handleImportLegacy } from './urls.js';
 import { handleGetTags, handleCreateTag, handleUpdateTag, handleDeleteTag } from './tags.js';
 
@@ -94,6 +103,22 @@ async function handleRequest(request, env) {
 
     if (path === '/auth/me' && method === 'GET') {
       return await handleGetMe(request, env);
+    }
+
+    if (path === '/auth/send-verification' && method === 'POST') {
+      return await handleSendVerification(request, env);
+    }
+
+    if (path === '/auth/verify-email' && method === 'GET') {
+      return await handleVerifyEmail(request, env);
+    }
+
+    if (path === '/auth/forgot-password' && method === 'POST') {
+      return await handleForgotPassword(request, env);
+    }
+
+    if (path === '/auth/reset-password' && method === 'POST') {
+      return await handleResetPassword(request, env);
     }
 
     // URL routes
