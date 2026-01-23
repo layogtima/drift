@@ -173,3 +173,65 @@ export async function getPendingCount(db) {
   const result = await db.prepare('SELECT COUNT(*) as count FROM urls WHERE status = ?').bind('pending').first();
   return result.count;
 }
+
+// Email verification token functions
+export async function createVerificationToken(db, userId, token) {
+  const createdAt = Date.now();
+  const expiresAt = createdAt + (24 * 60 * 60 * 1000); // 24 hours
+
+  // Delete any existing tokens for this user first
+  await db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').bind(userId).run();
+
+  await db.prepare(
+    'INSERT INTO email_verification_tokens (token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)'
+  ).bind(token, userId, createdAt, expiresAt).run();
+
+  return { token, expiresAt };
+}
+
+export async function getVerificationToken(db, token) {
+  const result = await db.prepare(
+    'SELECT * FROM email_verification_tokens WHERE token = ? AND expires_at > ?'
+  ).bind(token, Date.now()).first();
+
+  return result;
+}
+
+export async function deleteVerificationToken(db, token) {
+  await db.prepare('DELETE FROM email_verification_tokens WHERE token = ?').bind(token).run();
+}
+
+export async function setEmailVerified(db, userId) {
+  await db.prepare('UPDATE users SET email_verified = 1 WHERE id = ?').bind(userId).run();
+}
+
+// Password reset token functions
+export async function createPasswordResetToken(db, userId, token) {
+  const createdAt = Date.now();
+  const expiresAt = createdAt + (60 * 60 * 1000); // 1 hour
+
+  // Delete any existing unused tokens for this user first
+  await db.prepare('DELETE FROM password_reset_tokens WHERE user_id = ? AND used = 0').bind(userId).run();
+
+  await db.prepare(
+    'INSERT INTO password_reset_tokens (token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)'
+  ).bind(token, userId, createdAt, expiresAt).run();
+
+  return { token, expiresAt };
+}
+
+export async function getPasswordResetToken(db, token) {
+  const result = await db.prepare(
+    'SELECT * FROM password_reset_tokens WHERE token = ? AND expires_at > ? AND used = 0'
+  ).bind(token, Date.now()).first();
+
+  return result;
+}
+
+export async function markPasswordResetTokenUsed(db, token) {
+  await db.prepare('UPDATE password_reset_tokens SET used = 1 WHERE token = ?').bind(token).run();
+}
+
+export async function updateUserPassword(db, userId, passwordHash) {
+  await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').bind(passwordHash, userId).run();
+}

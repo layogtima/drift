@@ -1,5 +1,6 @@
 // Authentication handlers
 import * as db from './db.js';
+import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
 
 // Simple password hashing (using Web Crypto API)
 async function hashPassword(password) {
@@ -87,6 +88,18 @@ export async function handleRegister(request, env) {
     const token = generateToken();
     const session = await db.createSession(env.DB, userId, token);
 
+    // Send verification email (don't block registration if it fails)
+    try {
+      if (env.RESEND_API_KEY) {
+        const verificationToken = generateToken();
+        await db.createVerificationToken(env.DB, userId, verificationToken);
+        await sendVerificationEmail(env.RESEND_API_KEY, email, verificationToken, username);
+      }
+    } catch (emailError) {
+      console.error('Failed to send verification email:', emailError);
+      // Continue anyway - user can request resend later
+    }
+
     return new Response(JSON.stringify({
       success: true,
       token: session.token,
@@ -94,7 +107,8 @@ export async function handleRegister(request, env) {
         id: userId,
         email,
         username,
-        role: 'user'
+        role: 'user',
+        emailVerified: false
       }
     }), {
       status: 201,
@@ -154,7 +168,8 @@ export async function handleLogin(request, env) {
         id: user.id,
         email: user.email,
         username: user.username,
-        role: user.role
+        role: user.role,
+        emailVerified: Boolean(user.email_verified)
       }
     }), {
       status: 200,
@@ -225,6 +240,7 @@ export async function handleGetMe(request, env) {
         email: user.email,
         username: user.username,
         role: user.role,
+        emailVerified: Boolean(user.email_verified),
         createdAt: user.created_at
       }
     }), {
@@ -256,4 +272,184 @@ export async function authenticateRequest(request, env) {
 
   const user = await db.getUser(env.DB, session.user_id);
   return user;
+}
+
+// POST /auth/send-verification - Resend verification email
+export async function handleSendVerification(request, env) {
+  try {
+    const user = await authenticateRequest(request, env);
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Authentication required' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check if already verified
+    if (user.email_verified) {
+      return new Response(JSON.stringify({ error: 'Email already verified' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check if RESEND_API_KEY is configured
+    if (!env.RESEND_API_KEY) {
+      return new Response(JSON.stringify({ error: 'Email service not configured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Create and send verification token
+    const verificationToken = generateToken();
+    await db.createVerificationToken(env.DB, user.id, verificationToken);
+    await sendVerificationEmail(env.RESEND_API_KEY, user.email, verificationToken, user.username);
+
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    console.error('Send verification error:', error);
+    return new Response(JSON.stringify({ error: 'Failed to send verification email' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// GET /auth/verify-email?token=xxx - Verify email with token
+export async function handleVerifyEmail(request, env) {
+  try {
+    const url = new URL(request.url);
+    const token = url.searchParams.get('token');
+
+    if (!token) {
+      return new Response(JSON.stringify({ error: 'Token is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Get and validate token
+    const verificationToken = await db.getVerificationToken(env.DB, token);
+    if (!verificationToken) {
+      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Mark user as verified
+    await db.setEmailVerified(env.DB, verificationToken.user_id);
+
+    // Delete the token
+    await db.deleteVerificationToken(env.DB, token);
+
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    console.error('Verify email error:', error);
+    return new Response(JSON.stringify({ error: 'Verification failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// POST /auth/forgot-password - Request password reset
+export async function handleForgotPassword(request, env) {
+  try {
+    const { email } = await request.json();
+
+    if (!email) {
+      return new Response(JSON.stringify({ error: 'Email is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Always return success to prevent email enumeration
+    const successResponse = new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    // Check if user exists (silently fail if not)
+    const user = await db.getUserByEmail(env.DB, email);
+    if (!user) {
+      return successResponse;
+    }
+
+    // Check if RESEND_API_KEY is configured
+    if (!env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY not configured');
+      return successResponse;
+    }
+
+    // Create and send reset token
+    const resetToken = generateToken();
+    await db.createPasswordResetToken(env.DB, user.id, resetToken);
+    await sendPasswordResetEmail(env.RESEND_API_KEY, user.email, resetToken, user.username);
+
+    return successResponse;
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    // Still return success to prevent enumeration
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// POST /auth/reset-password - Reset password with token
+export async function handleResetPassword(request, env) {
+  try {
+    const { token, password } = await request.json();
+
+    if (!token || !password) {
+      return new Response(JSON.stringify({ error: 'Token and password are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (password.length < 8) {
+      return new Response(JSON.stringify({ error: 'Password must be at least 8 characters' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Get and validate token
+    const resetToken = await db.getPasswordResetToken(env.DB, token);
+    if (!resetToken) {
+      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Update password
+    const passwordHash = await hashPassword(password);
+    await db.updateUserPassword(env.DB, resetToken.user_id, passwordHash);
+
+    // Mark token as used
+    await db.markPasswordResetTokenUsed(env.DB, token);
+
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return new Response(JSON.stringify({ error: 'Password reset failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 }

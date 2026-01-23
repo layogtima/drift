@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - Drift</title>
+    <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/png" href="https://drift.surf/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="https://drift.surf/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="https://drift.surf/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://drift.surf/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Drift" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sol: {
+                            base3: '#fdf6e3',
+                            base2: '#eee8d5',
+                            base1: '#93a1a1',
+                            base0: '#839496',
+                            base00: '#657b83',
+                            base01: '#586e75',
+                            blue: '#268bd2',
+                            cyan: '#2aa198',
+                            green: '#859900',
+                            red: '#dc322f',
+                            orange: '#cb4b16',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['EB Garamond', 'Lora', 'Merriweather', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/b32739cc1c.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-serif bg-sol-base3 text-sol-base00 min-h-screen px-4 sm:px-8 py-12">
+    <div class="max-w-md mx-auto mt-20">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-semibold text-sol-blue mb-2">Drift</h1>
+            <p class="text-sol-base1 italic">Email Verification</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="bg-sol-base2 rounded-xl p-8 text-center">
+            <i class="fa-light fa-spinner-third fa-spin text-4xl text-sol-cyan mb-4"></i>
+            <p class="text-lg text-sol-base01">Verifying your email...</p>
+        </div>
+
+        <!-- Success State -->
+        <div id="success-state" class="hidden bg-sol-base2 rounded-xl p-8 text-center">
+            <i class="fa-light fa-circle-check text-5xl text-sol-green mb-4"></i>
+            <h2 class="text-2xl font-semibold text-sol-base01 mb-2">Email Verified!</h2>
+            <p class="text-sol-base00 mb-6">Your email has been verified successfully. You're all set to drift!</p>
+            <a href="https://drift.surf" class="inline-flex items-center gap-2 px-6 py-2 bg-sol-cyan text-sol-base3 rounded-full font-medium hover:opacity-90 transition-opacity">
+                <i class="fa-light fa-home"></i>
+                Back to Drift
+            </a>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden bg-sol-base2 rounded-xl p-8 text-center">
+            <i class="fa-light fa-circle-xmark text-5xl text-sol-red mb-4"></i>
+            <h2 class="text-2xl font-semibold text-sol-base01 mb-2">Verification Failed</h2>
+            <p id="error-message" class="text-sol-base00 mb-6">The verification link is invalid or has expired.</p>
+            <p class="text-sm text-sol-base1 mb-4">You can request a new verification email from the extension.</p>
+            <a href="https://drift.surf" class="inline-flex items-center gap-2 px-6 py-2 bg-sol-base3 text-sol-base01 border border-sol-base1 rounded-full font-medium hover:border-sol-cyan hover:text-sol-cyan transition-colors">
+                <i class="fa-light fa-home"></i>
+                Back to Drift
+            </a>
+        </div>
+
+        <footer class="mt-12 text-center text-sm text-sol-base1">
+            <a href="https://drift.surf" class="hover:text-sol-cyan transition-colors">drift.surf</a>
+            <span class="mx-2">·</span>
+            <a href="privacy.html" class="hover:text-sol-cyan transition-colors">Privacy</a>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://api.drift.surf';
+
+        async function verifyEmail() {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+
+            if (!token) {
+                showError('No verification token provided.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/verify-email?token=${encodeURIComponent(token)}`);
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showSuccess();
+                } else {
+                    showError(data.error || 'Verification failed. The link may be invalid or expired.');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError('Something went wrong. Please try again later.');
+            }
+        }
+
+        function showSuccess() {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('success-state').classList.remove('hidden');
+        }
+
+        function showError(message) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+        }
+
+        // Run verification on page load
+        verifyEmail();
+    </script>
+</body>
+
+</html>

@@ -472,6 +472,90 @@ html body .drift-error {
   line-height: 2rem;
   margin-bottom: 12px;
 }
+html body .drift-success {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  color: var(--drift-success);
+  font-size: 13px;
+  line-height: 2rem;
+  margin-bottom: 12px;
+}
+html body .drift-link-btn {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  background: none;
+  border: none;
+  color: var(--drift-primary);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  margin-top: 12px;
+  transition: color 0.2s;
+}
+html body .drift-link-btn:hover {
+  color: var(--drift-primary-hover);
+  text-decoration: underline;
+}
+html body .drift-link-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+html body .drift-form-info {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  font-size: 13px;
+  color: var(--drift-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+html body .drift-verification-warning {
+  background: rgba(203, 75, 22, 0.1);
+  border: 1px solid var(--drift-danger);
+  border-radius: 6px;
+  padding: 12px !important;
+}
+html body .drift-verification-content {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+html body .drift-verification-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+html body .drift-verification-text {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  font-size: 13px;
+  color: var(--drift-danger);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+html body .drift-verification-status {
+  all: initial;
+  box-sizing: border-box;
+  font-family: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
+}
+html body .drift-verification-warning .drift-link-btn {
+  text-align: left;
+  margin-top: 0;
+  font-size: 12px;
+}
 html body .drift-primary-btn,
 html body .drift-secondary-btn {
   all: initial;

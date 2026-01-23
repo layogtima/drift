@@ -1,7 +1,7 @@
 // Drift Background Service Worker
 // Handles URL database fetching from API and message passing
 
-import { getAuthToken, getCurrentUser, login, register, logout } from './auth.js';
+import { getAuthToken, getCurrentUser, login, register, logout, forgotPassword, resendVerification } from './auth.js';
 
 // const API_BASE_URL = 'http://localhost:8787'; // Change to 'https://api.drift.surf' for production
 const API_BASE_URL = 'https://api.drift.surf'; // Change to 'https://api.drift.surf' for production
@@ -395,6 +395,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: true });
       } catch (error) {
         console.error('[Drift BG] Logout error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'forgotPassword') {
+    (async () => {
+      console.log('[Drift BG] Forgot password request received:', request.email);
+      try {
+        const result = await forgotPassword(request.email);
+        sendResponse(result);
+      } catch (error) {
+        console.error('[Drift BG] Forgot password error:', error);
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
+    return true;
+  }
+
+  if (request.action === 'resendVerification') {
+    (async () => {
+      console.log('[Drift BG] Resend verification request received');
+      try {
+        const result = await resendVerification();
+        sendResponse(result);
+      } catch (error) {
+        console.error('[Drift BG] Resend verification error:', error);
         sendResponse({ success: false, error: error.message });
       }
     })();

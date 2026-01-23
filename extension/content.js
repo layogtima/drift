@@ -584,6 +584,15 @@ function showAuthModal() {
       <input type="password" id="drift-login-password" placeholder="Password" />
       <div id="drift-login-error" class="drift-error"></div>
       <button id="drift-login-submit" class="drift-primary-btn">Sign in</button>
+      <button id="drift-forgot-password" class="drift-link-btn" type="button">Forgot password?</button>
+    </div>
+    <div id="drift-forgot-form" class="drift-auth-form" style="display: none;">
+      <p class="drift-form-info">Enter your email and we'll send you a reset link.</p>
+      <input type="email" id="drift-forgot-email" placeholder="Email" />
+      <div id="drift-forgot-error" class="drift-error"></div>
+      <div id="drift-forgot-success" class="drift-success" style="display: none;">Check your email for a reset link!</div>
+      <button id="drift-forgot-submit" class="drift-primary-btn">Send Reset Link</button>
+      <button id="drift-forgot-back" class="drift-link-btn" type="button">Back to sign in</button>
     </div>
     <div id="drift-register-form" class="drift-auth-form" style="display: none;">
       <input type="email" id="drift-register-email" placeholder="Email" />
@@ -610,6 +619,9 @@ function showAuthModal() {
   document.getElementById('drift-tab-register').addEventListener('click', () => switchAuthTab('register'));
   document.getElementById('drift-login-submit').addEventListener('click', handleLogin);
   document.getElementById('drift-register-submit').addEventListener('click', handleRegister);
+  document.getElementById('drift-forgot-password').addEventListener('click', () => switchAuthTab('forgot'));
+  document.getElementById('drift-forgot-submit').addEventListener('click', handleForgotPassword);
+  document.getElementById('drift-forgot-back').addEventListener('click', () => switchAuthTab('login'));
 }
 
 function switchAuthTab(tab) {
@@ -617,17 +629,30 @@ function switchAuthTab(tab) {
   const registerTab = document.getElementById('drift-tab-register');
   const loginForm = document.getElementById('drift-login-form');
   const registerForm = document.getElementById('drift-register-form');
-  
+  const forgotForm = document.getElementById('drift-forgot-form');
+  const tabsContainer = document.querySelector('.drift-tabs');
+
   if (tab === 'login') {
     loginTab.classList.add('active');
     registerTab.classList.remove('active');
     loginForm.style.setProperty('display', 'block', 'important');
     registerForm.style.setProperty('display', 'none', 'important');
-  } else {
+    forgotForm.style.setProperty('display', 'none', 'important');
+    tabsContainer.style.setProperty('display', 'flex', 'important');
+  } else if (tab === 'register') {
     registerTab.classList.add('active');
     loginTab.classList.remove('active');
     registerForm.style.setProperty('display', 'block', 'important');
     loginForm.style.setProperty('display', 'none', 'important');
+    forgotForm.style.setProperty('display', 'none', 'important');
+    tabsContainer.style.setProperty('display', 'flex', 'important');
+  } else if (tab === 'forgot') {
+    loginTab.classList.remove('active');
+    registerTab.classList.remove('active');
+    loginForm.style.setProperty('display', 'none', 'important');
+    registerForm.style.setProperty('display', 'none', 'important');
+    forgotForm.style.setProperty('display', 'block', 'important');
+    tabsContainer.style.setProperty('display', 'none', 'important');
   }
 }
 
@@ -680,6 +705,39 @@ async function handleRegister() {
         location.reload();
       } else {
         errorEl.textContent = response ? response.error : 'No response from background script';
+      }
+    }
+  );
+}
+
+async function handleForgotPassword() {
+  const email = document.getElementById('drift-forgot-email').value;
+  const errorEl = document.getElementById('drift-forgot-error');
+  const successEl = document.getElementById('drift-forgot-success');
+  const submitBtn = document.getElementById('drift-forgot-submit');
+
+  if (!email) {
+    errorEl.textContent = 'Please enter your email';
+    successEl.style.setProperty('display', 'none', 'important');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+  errorEl.textContent = '';
+
+  chrome.runtime.sendMessage(
+    { action: 'forgotPassword', email },
+    (response) => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Reset Link';
+
+      if (response && response.success) {
+        successEl.style.setProperty('display', 'block', 'important');
+        errorEl.textContent = '';
+      } else {
+        errorEl.textContent = response ? response.error : 'Failed to send reset email';
+        successEl.style.setProperty('display', 'none', 'important');
       }
     }
   );
@@ -797,6 +855,9 @@ function showUserMenu() {
                          currentUser.role === 'mod' ? 'drift-role-badge-mod' : 
                          'drift-role-badge-user';
   
+  // Check email verification status
+  const emailVerified = currentUser.emailVerified;
+
   const content = `
     <div class="drift-dropdown-header">
       <div class="drift-user-header-content">
@@ -807,8 +868,21 @@ function showUserMenu() {
       </div>
       <button id="drift-user-close" class="drift-close-btn">${icons.x}</button>
     </div>
-    
+
     <div class="drift-user-info">
+      ${!emailVerified ? `
+        <div class="drift-user-section drift-verification-warning">
+          <div class="drift-verification-content">
+            <span class="drift-verification-icon">⚠️</span>
+            <div>
+              <p class="drift-verification-text">Email not verified</p>
+              <button id="drift-resend-verification" class="drift-link-btn">Resend verification email</button>
+            </div>
+          </div>
+          <div id="drift-verification-status" class="drift-verification-status"></div>
+        </div>
+      ` : ''}
+
       ${stats.totalDrifts > 0 || stats.totalLikes > 0 || stats.totalDislikes > 0 ? `
         <div class="drift-user-section">
           <div class="drift-stats-grid">
@@ -836,7 +910,7 @@ function showUserMenu() {
           </div>
         </div>
       ` : ''}
-      
+
       ${pendingCount > 0 && (currentUser.role === 'mod' || currentUser.role === 'admin') ? `
         <div class="drift-user-section">
           <h3 class="drift-section-title">Moderation</h3>
@@ -846,7 +920,7 @@ function showUserMenu() {
           </div>
         </div>
       ` : ''}
-      
+
       <div class="drift-user-actions">
         <button id="drift-logout-btn" class="drift-secondary-btn">Sign out</button>
       </div>
@@ -857,6 +931,36 @@ function showUserMenu() {
   
   document.getElementById('drift-user-close').addEventListener('click', closeAllDropdowns);
   document.getElementById('drift-logout-btn').addEventListener('click', handleLogout);
+
+  // Add resend verification button listener if present
+  const resendBtn = document.getElementById('drift-resend-verification');
+  if (resendBtn) {
+    resendBtn.addEventListener('click', handleResendVerification);
+  }
+}
+
+async function handleResendVerification() {
+  const btn = document.getElementById('drift-resend-verification');
+  const statusEl = document.getElementById('drift-verification-status');
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  chrome.runtime.sendMessage(
+    { action: 'resendVerification' },
+    (response) => {
+      btn.disabled = false;
+      btn.textContent = 'Resend verification email';
+
+      if (response && response.success) {
+        statusEl.textContent = '✅ Verification email sent!';
+        statusEl.className = 'drift-verification-status drift-success';
+      } else {
+        statusEl.textContent = '❌ ' + (response ? response.error : 'Failed to send email');
+        statusEl.className = 'drift-verification-status drift-error';
+      }
+    }
+  );
 }
 
 async function handleLogout() {
