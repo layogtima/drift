@@ -12,6 +12,7 @@ let pendingCount = 0;
 let currentUrl = null; // Currently displayed URL data
 let approvalMode = false; // Approval mode for mods/admins
 let urlExistsInDb = false; // Whether current page URL exists in database
+let filterTagIds = []; // Tag IDs for filtering drift results
 
 // Initialize
 async function init() {
@@ -24,7 +25,8 @@ async function init() {
     'toolbarVisible',
     'currentUser',
     'approvalMode',
-    'urlCache'
+    'urlCache',
+    'filterTagIds'
   ]);
 
   driftHistory = data.driftHistory || [];
@@ -34,6 +36,7 @@ async function init() {
   toolbarVisible = data.toolbarVisible !== undefined ? data.toolbarVisible : true;
   currentUser = data.currentUser || null;
   approvalMode = data.approvalMode || false;
+  filterTagIds = data.filterTagIds || [];
 
   // Check if current URL exists in database
   if (data.urlCache && data.urlCache.urls) {
@@ -64,7 +67,8 @@ const icons = {
   chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>',
   user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  filter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>'
 };
 
 // Create toolbar HTML
@@ -93,6 +97,10 @@ function createToolbar() {
       <span>Submit</span>
     </button>
     ` : ''}
+    <button id="drift-filter-btn" class="${filterTagIds.length > 0 ? 'active' : ''}" title="Filter by tags">
+      <span class="drift-icon">${icons.filter}</span>
+      ${filterTagIds.length > 0 ? `<span id="drift-filter-count">${filterTagIds.length}</span>` : ''}
+    </button>
     <span id="drift-page-title" title="${document.title}">${pageTitle}</span>
   `;
 
@@ -159,6 +167,7 @@ function createToolbar() {
   document.getElementById('drift-btn').addEventListener('click', handleDrift);
   const submitBtn = document.getElementById('drift-submit-btn');
   if (submitBtn) submitBtn.addEventListener('click', handleSubmitClick);
+  document.getElementById('drift-filter-btn').addEventListener('click', showFilterDropdown);
   document.getElementById('drift-like-btn').addEventListener('click', handleLike);
   document.getElementById('drift-dislike-btn').addEventListener('click', handleDislike);
   document.getElementById('drift-copy-btn').addEventListener('click', handleCopy);
@@ -224,7 +233,8 @@ async function handleDrift() {
     {
       action: 'getDriftUrl',
       excludeUrls,
-      approvalMode // Pass approval mode flag
+      approvalMode, // Pass approval mode flag
+      filterTagIds: approvalMode ? [] : filterTagIds // Don't apply filter in approval mode
     },
     (response) => {
       console.log('[Drift] getDriftUrl response:', response);
@@ -269,6 +279,8 @@ async function handleDrift() {
           showNotification('✅ No pending URLs to review!');
         } else if (approvalMode && actualPendingCount > 0) {
           showNotification('⚠️ Could not load pending URLs. Try refreshing the page.');
+        } else if (filterTagIds.length > 0) {
+          showNotification('🏷️ No URLs match your tag filter. Try different tags or clear the filter.');
         } else if (response && response.error) {
           console.error('[Drift] Error:', response.error);
         }
@@ -970,6 +982,124 @@ async function handleLogout() {
       location.reload();
     }
   );
+}
+
+// Show filter dropdown
+function showFilterDropdown() {
+  const triggerBtn = document.getElementById('drift-filter-btn');
+  if (!triggerBtn) return;
+
+  const content = `
+    <div class="drift-dropdown-header">
+      <h2>Filter by Tags</h2>
+      <button id="drift-filter-close" class="drift-close-btn">${icons.x}</button>
+    </div>
+    <div id="drift-filter-tags-container" class="drift-tags-checkboxes">
+      <span class="drift-loading">Loading tags...</span>
+    </div>
+    <div class="drift-filter-actions">
+      <button id="drift-filter-clear" class="drift-secondary-btn" ${filterTagIds.length === 0 ? 'disabled' : ''}>Clear Filter</button>
+      <button id="drift-filter-done" class="drift-primary-btn">Done</button>
+    </div>
+  `;
+
+  const dropdown = createDropdown(triggerBtn, content);
+
+  document.getElementById('drift-filter-close').addEventListener('click', closeAllDropdowns);
+  document.getElementById('drift-filter-clear').addEventListener('click', handleClearFilter);
+  document.getElementById('drift-filter-done').addEventListener('click', closeAllDropdowns);
+
+  // Fetch tags from API
+  chrome.runtime.sendMessage({ action: 'getTags' }, (response) => {
+    const container = document.getElementById('drift-filter-tags-container');
+    if (!container) return;
+
+    if (response.success && response.tags.length > 0) {
+      container.innerHTML = response.tags.map(tag => {
+        const isChecked = filterTagIds.includes(tag.id);
+        return `
+          <label class="drift-tag-checkbox">
+            <input type="checkbox" name="drift-filter-tag" value="${tag.id}"
+                   data-name="${tag.display_name}" ${isChecked ? 'checked' : ''} />
+            <span>${tag.display_name}</span>
+          </label>
+        `;
+      }).join('');
+
+      // Add change listeners to checkboxes
+      container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', handleFilterTagChange);
+      });
+    } else if (response.success && response.tags.length === 0) {
+      container.innerHTML = '<span class="drift-no-tags">No tags available</span>';
+    } else {
+      container.innerHTML = '<span class="drift-error">Failed to load tags</span>';
+    }
+  });
+}
+
+// Handle filter tag checkbox change
+function handleFilterTagChange(event) {
+  const checkbox = event.target;
+  const tagId = parseInt(checkbox.value);
+
+  if (checkbox.checked) {
+    if (!filterTagIds.includes(tagId)) {
+      filterTagIds.push(tagId);
+    }
+  } else {
+    filterTagIds = filterTagIds.filter(id => id !== tagId);
+  }
+
+  // Save to storage
+  chrome.storage.local.set({ filterTagIds });
+
+  // Update filter button appearance
+  updateFilterButton();
+
+  // Update clear button state
+  const clearBtn = document.getElementById('drift-filter-clear');
+  if (clearBtn) {
+    clearBtn.disabled = filterTagIds.length === 0;
+  }
+}
+
+// Handle clear filter button
+function handleClearFilter() {
+  filterTagIds = [];
+  chrome.storage.local.set({ filterTagIds });
+
+  // Uncheck all checkboxes in dropdown
+  const checkboxes = document.querySelectorAll('#drift-filter-tags-container input[type="checkbox"]');
+  checkboxes.forEach(cb => cb.checked = false);
+
+  // Update filter button appearance
+  updateFilterButton();
+
+  // Update clear button state
+  const clearBtn = document.getElementById('drift-filter-clear');
+  if (clearBtn) {
+    clearBtn.disabled = true;
+  }
+}
+
+// Update filter button appearance
+function updateFilterButton() {
+  const btn = document.getElementById('drift-filter-btn');
+  if (!btn) return;
+
+  if (filterTagIds.length > 0) {
+    btn.classList.add('active');
+    btn.innerHTML = `
+      <span class="drift-icon">${icons.filter}</span>
+      <span id="drift-filter-count">${filterTagIds.length}</span>
+    `;
+  } else {
+    btn.classList.remove('active');
+    btn.innerHTML = `
+      <span class="drift-icon">${icons.filter}</span>
+    `;
+  }
 }
 
 // Show notification
